@@ -2,7 +2,7 @@
 
 class Packet {
     public:
-        string
+        
         
     
     // this is the constructor
