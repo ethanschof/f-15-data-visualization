@@ -11,7 +11,7 @@
 //basic c++ functions
 #include <iostream>
 //complete irig 106 library
-#include "i106lib/irig106lib.h"
+#include "irig106lib/irig106lib-master/src/irig106lib.h"
 
 int main(){
     printf("F15 packet data analyzer");
