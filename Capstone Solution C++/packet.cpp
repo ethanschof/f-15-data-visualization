@@ -1,9 +1,12 @@
+#include <string>
+
 class Packet {
     public:
+        string
         
     
     // this is the constructor
-        packet() {
+        Packet() {
             
         }
 };

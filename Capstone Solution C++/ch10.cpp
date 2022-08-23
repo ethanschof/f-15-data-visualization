@@ -1,4 +1,4 @@
-class ch10 {
+class Ch10 {
     private:
 
     public:
