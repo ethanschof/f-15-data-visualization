@@ -7,6 +7,11 @@ public:
 	uint32_t msgCnt : 24; ///< Message count
 	uint32_t reserved : 6;
 	uint32_t TTB : 2; ///< Time tag bit
+	ChanSpecData(string dataStream)
+	{
+		// call bit manipulate function to get the three attributes of this then assign them
+
+	}
 	ChanSpecData(uint32_t msgCnt, uint32_t reserved, uint32_t TTB)
 	{
 		this->msgCnt = msgCnt;
@@ -33,7 +38,7 @@ public:
 	uint8_t uGapTime1;
 	uint8_t uGapTime2;
 	uint16_t uMsgLen;
-	IntraPackHeader ()
+	IntraPackHeader (string dataStream)
 	{
 		
 	}
