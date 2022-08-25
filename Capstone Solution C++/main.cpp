@@ -34,5 +34,5 @@ int main(){
     // Close the file
     MyReadFile.close();
 
-
+    return 1;
 }
