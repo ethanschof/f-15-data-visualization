@@ -10,9 +10,29 @@
  */
 //basic c++ functions
 #include <iostream>
-//complete irig 106 library
-#include "irig106lib/irig106lib-master/src/irig106lib.h"
+#include <string>
+using namespace std;
 
 int main(){
     printf("F15 packet data analyzer");
+
+    string fileName = "mychap10.ch10";
+
+    //Ch10(fileName);
+
+    string myText;
+
+    // Read from the text file
+    ifstream MyReadFile(fileName);
+
+    // Use a while loop together with the getline() function to read the file line by line
+    while (getline(MyReadFile, myText)) {
+        // Output the text from the file
+        cout << myText;
+    }
+
+    // Close the file
+    MyReadFile.close();
+
+
 }
