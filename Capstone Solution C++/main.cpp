@@ -10,13 +10,15 @@
  */
 //basic c++ functions
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include <string>
 using namespace std;
 
 int main(){
     printf("F15 packet data analyzer");
 
-    string fileName = "mychap10.ch10";
+    string fileName = "myChap10.ch10";
 
     //Ch10(fileName);
 
