@@ -1,6 +1,6 @@
 #include <string>
 using namespace std;
-#include <C:/Users/C23Ethan.Schofield/Source/Repos/ethanschof/f-15-data-visualization/Capstone Solution C++/1553helper.hpp>
+#include <1553helper.hpp>
 
 class Packet
 {
