@@ -13,6 +13,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "1553helper.hpp"
+#include "ch10.hpp"
+#include "packet.hpp"
+
+#define PACKET_SYNC_LENGTH 16
+#define CHAN_ID_LENGTH 16
+#define PACKET_LENGTH_LENGTH 32
+#define DATA_LENGTH 32
 
 using namespace std;
 
@@ -81,6 +89,47 @@ unsigned char *bitManipulator(unsigned char* data, int numBits, long *fSize){
     *fSize = *fSize - numBytes;
     return desiredBits;
 }
+
+
+/**
+ *
+ * @param data the buffer data from the file
+ * @return an array of Packet objects containing the data from the file
+ */
+Packet* createPackets(unsigned char* data, long* fSize){
+    vector <Packet>
+    //Packet* myPackets = new Packet[0];
+    int done = 0;
+    int packetsCreated = 0;
+
+    while (!done){
+        unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH, fSize);
+
+        // checks for packet sync
+        if (packetSync[0] == 0x25 && packetSync[1] == 0xEB){
+            unsigned char *channelID = bitManipulator(data, (long)CHAN_ID_LENGTH, fSize);
+            unsigned char *packetLength = bitManipulator(data, (long)PACKET_LENGTH_LENGTH, fSize);
+            unsigned char *dataLength = bitManipulator(data, (long)DATA_LENGTH, fSize);
+
+            // determine how many bits left are in the packet
+            long bitsLeft = (long)*packetLength - PACKET_SYNC_LENGTH - CHAN_ID_LENGTH - PACKET_LENGTH_LENGTH - DATA_LENGTH;
+
+            unsigned char *restOfPacket = bitManipulator(data, bitsLeft, fSize);
+
+            myPackets[packetsCreated] = Packet(restOfPacket, channelID, packetLength, dataLength);
+
+            // fix the realloc
+
+
+
+        } else {
+            // Fail
+        }
+
+    }
+
+}
+
 
 int main(){
     cout << "==========================\n F15 packet data analyzer \n==========================\n\n";

@@ -5,24 +5,27 @@ using namespace std;
 class Packet
 {
 private:
-	string data;
-	string type;
+	unsigned char *data;
+    unsigned char *channelID;
+    unsigned char *packetLength;
+    unsigned char *dataLength;
 
 public:
-	Packet(string inData)
+    Packet(){
+        this->data = nullptr;
+        this->channelID = nullptr;
+        this->packetLength = nullptr;
+        this->dataLength = nullptr;
+    }
+	Packet(unsigned char *myPacketsData, unsigned char *chanID, unsigned char *packLength, unsigned char *datLen)
 	{
-		this->data = inData;
+		this->data = myPacketsData;
+        this->channelID = chanID;
+        this->packetLength = packLength;
+        this->dataLength = datLen;
 	}
 
-	void set_data(string myData)
-	{
-		this->data = myData;
-	}
 
-	void set_type(string newType)
-	{
-		this->type = newType;
-	}
 
 	string get_data() { return this->data; }
 	string get_type() { return this->type; }
