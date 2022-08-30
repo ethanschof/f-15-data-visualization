@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 #include "1553helper.hpp"
 #include "ch10.hpp"
 #include "packet.hpp"
@@ -21,6 +22,12 @@
 #define CHAN_ID_LENGTH 16
 #define PACKET_LENGTH_LENGTH 32
 #define DATA_LENGTH 32
+#define DATA_TYPE_VERSION_LENGTH 8
+#define SEQ_NUM_LENGTH 8
+#define PACKET_FLAGS_LENGTH 8
+#define DATA_TYPE_BIT_LENGTH 8
+#define RELATIVE_TIME_COUNTER_LENGTH 48
+#define HEADER_CHECKSUM_LENGTH 16
 
 using namespace std;
 
@@ -96,9 +103,8 @@ unsigned char *bitManipulator(unsigned char* data, int numBits, long *fSize){
  * @param data the buffer data from the file
  * @return an array of Packet objects containing the data from the file
  */
-Packet* createPackets(unsigned char* data, long* fSize){
-    vector <Packet>
-    //Packet* myPackets = new Packet[0];
+vector<Packet> createPackets(unsigned char* data, long* fSize){
+    vector<Packet> myPackets;
     int done = 0;
     int packetsCreated = 0;
 
@@ -107,23 +113,37 @@ Packet* createPackets(unsigned char* data, long* fSize){
 
         // checks for packet sync
         if (packetSync[0] == 0x25 && packetSync[1] == 0xEB){
+            // Get data from the packet header MUST STAY IN THIS ORDER
             unsigned char *channelID = bitManipulator(data, (long)CHAN_ID_LENGTH, fSize);
             unsigned char *packetLength = bitManipulator(data, (long)PACKET_LENGTH_LENGTH, fSize);
             unsigned char *dataLength = bitManipulator(data, (long)DATA_LENGTH, fSize);
+            unsigned char *dataTypeVer = bitManipulator(data, (long)DATA_TYPE_VERSION_LENGTH, fSize);
+            unsigned char *seqNum = bitManipulator(data, (long)SEQ_NUM_LENGTH, fSize);
+            unsigned char *packetFlags = bitManipulator(data, (long)PACKET_FLAGS_LENGTH, fSize);
+            unsigned char *dataType = bitManipulator(data, (long)DATA_TYPE_BIT_LENGTH, fSize);
+            unsigned char *relativeTimeCounter = bitManipulator(data, (long)RELATIVE_TIME_COUNTER_LENGTH, fSize);
+            unsigned char *headerCheckSum = bitManipulator(data, (long)HEADER_CHECKSUM_LENGTH, fSize);
 
-            // determine how many bits left are in the packet
-            long bitsLeft = (long)*packetLength - PACKET_SYNC_LENGTH - CHAN_ID_LENGTH - PACKET_LENGTH_LENGTH - DATA_LENGTH;
+            // 0x19 SHOULD be a 1553 packet, need to double-check
+            if (dataType[0] == 0x19){
 
-            unsigned char *restOfPacket = bitManipulator(data, bitsLeft, fSize);
+            }
+            // For all other packet types
+            else {
+                // determine how many bits left are in the packet
+                long bitsLeft = (long)*packetLength - PACKET_SYNC_LENGTH - CHAN_ID_LENGTH - PACKET_LENGTH_LENGTH - DATA_LENGTH;
 
-            myPackets[packetsCreated] = Packet(restOfPacket, channelID, packetLength, dataLength);
+                unsigned char *restOfPacket = bitManipulator(data, bitsLeft, fSize);
 
-            // fix the realloc
+                // Using emplace_back calls the packet constructor for us
+                myPackets.emplace_back(restOfPacket, channelID, packetLength,
+                                       dataLength, dataTypeVer,seqNum,
+                                       packetFlags, dataType, relativeTimeCounter,
+                                       headerCheckSum);
+            }
 
 
 
-        } else {
-            // Fail
         }
 
     }

@@ -9,6 +9,13 @@ private:
     unsigned char *channelID;
     unsigned char *packetLength;
     unsigned char *dataLength;
+    unsigned char *dataTypeVer;
+    unsigned char *seqNum;
+    unsigned char *packetFlags;
+    unsigned char *dataType;
+    unsigned char *relativeTimeCounter;
+    unsigned char *headerCheckSum;
+
 
 public:
     Packet(){
@@ -16,27 +23,37 @@ public:
         this->channelID = nullptr;
         this->packetLength = nullptr;
         this->dataLength = nullptr;
+        this->dataTypeVer = nullptr;
+        this->seqNum = nullptr;
+        this->packetFlags = nullptr;
+        this->dataType = nullptr;
+        this->relativeTimeCounter = nullptr;
+        this->headerCheckSum = nullptr;
     }
-	Packet(unsigned char *myPacketsData, unsigned char *chanID, unsigned char *packLength, unsigned char *datLen)
+	Packet(unsigned char *myPacketsData, unsigned char *chanID, unsigned char *packLength, unsigned char *datLen,
+           unsigned char *datatypever, unsigned char *sequenceNumber, unsigned char *packetflags,
+           unsigned char *myDataType, unsigned char *timeCounter, unsigned char *checkSum)
 	{
 		this->data = myPacketsData;
         this->channelID = chanID;
         this->packetLength = packLength;
         this->dataLength = datLen;
+        this->dataTypeVer = datatypever;
+        this->seqNum = sequenceNumber;
+        this->packetFlags = packetflags;
+        this->dataType = myDataType;
+        this->relativeTimeCounter = timeCounter;
+        this->headerCheckSum = checkSum;
 	}
 
 
 
-	string get_data() { return this->data; }
-	string get_type() { return this->type; }
 };
 
 class P1553 : public Packet
 {
 private:
 	int msgCount;
-	uint32_t bufferOffset; // Offset into data buffer - also might not need, depends on how we handle buffers
-	uint32_t dataLen; // may not need this
 	ChanSpecData chanSpec; // uses ChanSpecData class from 1553helper.hpp
 	IntraPackHeader intraPHdr; // uses IntraPackHeader class from 1553helper.hpp
 	CommandWord CmdWord1; // uses CommandWord class from 1553helper.hpp
@@ -47,15 +64,28 @@ private:
 	uint16_t* pauData;
 
 public:
-	P1553(string dataStream)
+    P1553() : Packet() {
+        int msgCount = 0;
+        ChanSpecData chanSpec = ChanSpecData();
+        IntraPackHeader intraPHdr = IntraPackHeader();
+        CommandWord CmdWord1 = CommandWord();
+        CommandWord CmdWord2 = CommandWord();
+        uint16_t* statWord1 = 0;
+        uint16_t* statWord2 = 0;
+        uint16_t wordCnt = 0;
+        uint16_t* pauData = 0;
+    }
+
+	P1553(unsigned char *channelData, unsigned char *intraPacketHeader, unsigned char *commWord1,
+          unsigned char *commWord2, unsigned char *statusWord1, unsigned char *statusWord2)
+          : Packet(unsigned char *myPacketsData, unsigned char *chanID, unsigned char *packLength,
+                   unsigned char *datLen, unsigned char *datatypever, unsigned char *sequenceNumber,
+                   unsigned char *packetflags, unsigned char *myDataType, unsigned char *timeCounter,
+                   unsigned char *checkSum)
 	{
 		// call function passing in the DataStream as a parameter that assigns values to msgCount bufferOffset dataLen
 
 		// passing in bufferOffset or dataStream will assign something to ChanSpecData
-		this->chanSpec = ChanSpecData(dataStream);
-
-			// passing in bufferOffset or dataStream will allow IntraPackHeader to parse the next 48 bits
-			this->intraPHdr = IntraPackHeader(dataStream);
 
 		// call constructor for command words
 	}
