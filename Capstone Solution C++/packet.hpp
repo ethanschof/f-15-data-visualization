@@ -6,33 +6,33 @@ class Packet
 {
 private:
 	unsigned char *data;
-    unsigned char *channelID;
-    unsigned char *packetLength;
-    unsigned char *dataLength;
-    unsigned char *dataTypeVer;
-    unsigned char *seqNum;
-    unsigned char *packetFlags;
-    unsigned char *dataType;
+    unsigned long channelID;
+    unsigned long packetLength;
+    unsigned long dataLength;
+    unsigned long dataTypeVer;
+    unsigned long seqNum;
+    unsigned long packetFlags;
+    unsigned long dataType;
     unsigned char *relativeTimeCounter;
-    unsigned char *headerCheckSum;
+    unsigned long headerCheckSum;
 
 
 public:
     Packet(){
         this->data = nullptr;
-        this->channelID = nullptr;
-        this->packetLength = nullptr;
-        this->dataLength = nullptr;
-        this->dataTypeVer = nullptr;
-        this->seqNum = nullptr;
-        this->packetFlags = nullptr;
-        this->dataType = nullptr;
+        this->channelID = 0;
+        this->packetLength = 0;
+        this->dataLength = 0;
+        this->dataTypeVer = 0;
+        this->seqNum = 0;
+        this->packetFlags = 0;
+        this->dataType = 0;
         this->relativeTimeCounter = nullptr;
-        this->headerCheckSum = nullptr;
+        this->headerCheckSum = 0;
     }
-	Packet(unsigned char *myPacketsData, unsigned char *chanID, unsigned char *packLength, unsigned char *datLen,
-           unsigned char *datatypever, unsigned char *sequenceNumber, unsigned char *packetflags,
-           unsigned char *myDataType, unsigned char *timeCounter, unsigned char *checkSum)
+	Packet(unsigned char *myPacketsData, unsigned long chanID, unsigned long packLength, unsigned long datLen,
+           unsigned long datatypever, unsigned long sequenceNumber, unsigned long packetflags,
+           unsigned long myDataType, unsigned char *timeCounter, unsigned long checkSum)
 	{
 		this->data = myPacketsData;
         this->channelID = chanID;
@@ -45,8 +45,6 @@ public:
         this->relativeTimeCounter = timeCounter;
         this->headerCheckSum = checkSum;
 	}
-
-
 
 };
 
@@ -76,7 +74,7 @@ public:
         uint16_t* pauData = 0;
     }
 
-	P1553(unsigned char *channelData, unsigned char *intraPacketHeader, unsigned char *commWord1,
+	P1553(unsigned char* channelData, unsigned char *intraPacketHeader, unsigned char *commWord1,
           unsigned char *commWord2, unsigned char *statusWord1, unsigned char *statusWord2)
           : Packet()
 	{
