@@ -1,6 +1,6 @@
 #include <string>
 using namespace std;
-#include <1553helper.hpp>
+#include "1553helper.hpp"
 
 class Packet
 {
@@ -78,15 +78,18 @@ public:
 
 	P1553(unsigned char *channelData, unsigned char *intraPacketHeader, unsigned char *commWord1,
           unsigned char *commWord2, unsigned char *statusWord1, unsigned char *statusWord2)
-          : Packet(unsigned char *myPacketsData, unsigned char *chanID, unsigned char *packLength,
-                   unsigned char *datLen, unsigned char *datatypever, unsigned char *sequenceNumber,
-                   unsigned char *packetflags, unsigned char *myDataType, unsigned char *timeCounter,
-                   unsigned char *checkSum)
+          : Packet()
 	{
 		// call function passing in the DataStream as a parameter that assigns values to msgCount bufferOffset dataLen
 
 		// passing in bufferOffset or dataStream will assign something to ChanSpecData
 
 		// call constructor for command words
+
+        //TEMPORARILY BANISHED TO THE SHADOW REALM
+        /*unsigned char *myPacketsData, unsigned char *chanID, unsigned char *packLength,
+                   unsigned char *datLen, unsigned char *datatypever, unsigned char *sequenceNumber,
+                   unsigned char *packetflags, unsigned char *myDataType, unsigned char *timeCounter,
+                   unsigned char *checkSum*/
 	}
 };
