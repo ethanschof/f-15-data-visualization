@@ -14,7 +14,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
-#include "1553helper.hpp"
+#include <cmath>
+
 #include "ch10.hpp"
 #include "packet.hpp"
 
@@ -97,6 +98,38 @@ unsigned char *bitManipulator(unsigned char* data, int numBits, long *fSize){
     return desiredBits;
 }
 
+/**
+ * @brief converts array of unsigned char into a long value, must be in Little Endian
+ *      --CONCEPTUAL--
+ *      bitval = 2^[bit# + (byte# * 8)]
+ *      totval = totval + bit*bitval
+ * 
+ * @param bytes the bytes and bits to be converted
+ * @param numBytes the length of the array
+ * @return long values contained in the array
+ */
+unsigned long bytesToLong(unsigned char* bytes, int numBytes){
+    long totalVal = 0;
+
+    if(numBytes <= 4){
+        numBytes--;
+
+        for(int i = numBytes; i >= 0; i--){
+            //parse each byte (start LSB - highest array value)
+            for(int j = 0; j < 8; j++){
+                //parse each bit
+                long bitVal = (long)pow(2, (((numBytes-i)*8)+j));
+                
+                if(bytes[i]&(1 << j)){
+                    totalVal = totalVal + bitVal;
+                }
+            }
+        }
+    }else{
+        cout << "ERROR: Too many Bytes to process; returning 0...\n";
+    }
+    return totalVal;
+}
 
 /**
  *
@@ -147,7 +180,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
         }
 
     }
-
+    return myPackets;
 }
 
 
@@ -216,6 +249,9 @@ int main(){
                 printf("%2x ", tester[i]);
             }
             cout << "\n";
+
+            //convert to long SANITY CHECK #3
+            cout << "DECIMAL VALUE:  " << bytesToLong(tester, numBytes) << "\n";
             free(tester);
         }else{
             done = 1;
@@ -224,7 +260,5 @@ int main(){
 
     free(dataBuffer);
     fclose(ptr);
-
-    system("pause");
     return 0;
 }
