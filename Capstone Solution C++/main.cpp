@@ -119,7 +119,7 @@ unsigned long bytesToLong(unsigned char* bytes, int numBytes){
             for(int j = 0; j < 8; j++){
                 //parse each bit
                 long bitVal = (long)pow(2, (((numBytes-i)*8)+j));
-                
+
                 if(bytes[i]&(1 << j)){
                     totalVal = totalVal + bitVal;
                 }
@@ -131,6 +131,22 @@ unsigned long bytesToLong(unsigned char* bytes, int numBytes){
     return totalVal;
 }
 
+/**
+ * @brief reverses position of bytes in the array
+ * 
+ * @param bytes the array of bytes
+ * @param numBytes the length of the array
+ * 
+ * @return the array of bytes in Big Endian notation
+ */
+unsigned char* LittleEndianToBigEndian(unsigned char* bytes, int numBytes){
+    unsigned char* BEBytes = (unsigned char*)malloc(numBytes * sizeof(unsigned char));
+    for(int i = 0; i < numBytes; i++){
+        BEBytes[(numBytes-1)-i] = bytes[i];
+        bytes[i] = BEBytes[(numBytes-1)-i];
+    }
+    return BEBytes;
+}
 /**
  *
  * @param data the buffer data from the file
@@ -252,6 +268,15 @@ int main(){
 
             //convert to long SANITY CHECK #3
             cout << "DECIMAL VALUE:  " << bytesToLong(tester, numBytes) << "\n";
+
+            //convert to Big Endian Notation SANITY CHECK #4
+            cout << "BIG ENDIAN:  ";
+            unsigned char* tester2 = LittleEndianToBigEndian(tester, numBytes);
+            for(int i = 0; i < numBytes; i++){
+                printf("%2x ", tester2[i]);
+            }
+            cout << "\n\n";
+
             free(tester);
         }else{
             done = 1;
