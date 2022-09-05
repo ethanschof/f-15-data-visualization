@@ -292,12 +292,14 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
                     // Get Command / Data words
                     unsigned char *commandWord1 = bitManipulator(data, 16, fSize);
 
+                    // TODO this also could be where the data count goes off because I'm not sure when a second word is there
                     // Get the second word
                     unsigned char *secondWord2 = bitManipulator(data, 16, fSize);
 
                     Words thisMessageWords(commandWord1, secondWord2);
 
                     // Get the data
+                    // TODO this might be where the data count gets off
                     int bitsLeftInMessage = (int)(msgLength * 8) - 32;
                     unsigned char *messageData = bitManipulator(data, bitsLeftInMessage, fSize);
 
