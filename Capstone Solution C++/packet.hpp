@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 using namespace std;
 #include "1553helper.hpp"
 
@@ -45,6 +46,20 @@ public:
         this->relativeTimeCounter = timeCounter;
         this->headerCheckSum = checkSum;
 	}
+    Packet(unsigned long chanID, unsigned long packLength, unsigned long datLen,
+           unsigned long datatypever, unsigned long sequenceNumber, unsigned long packetflags,
+           unsigned long myDataType, unsigned char *timeCounter, unsigned long checkSum)
+    {
+        this->channelID = chanID;
+        this->packetLength = packLength;
+        this->dataLength = datLen;
+        this->dataTypeVer = datatypever;
+        this->seqNum = sequenceNumber;
+        this->packetFlags = packetflags;
+        this->dataType = myDataType;
+        this->relativeTimeCounter = timeCounter;
+        this->headerCheckSum = checkSum;
+    }
 
 };
 
@@ -53,11 +68,7 @@ class P1553 : public Packet
 private:
 	int msgCount;
 	ChanSpecData chanSpec; // uses ChanSpecData class from 1553helper.hpp
-	IntraPackHeader intraPHdr; // uses IntraPackHeader class from 1553helper.hpp
-	CommandWord CmdWord1; // uses CommandWord class from 1553helper.hpp
-	CommandWord CmdWord2; // uses CommandWord class from 1553helper.hpp
-	uint16_t* statWord1;
-	uint16_t* statWord2;
+	Messages messages; // uses Message class from 1553helper.hpp
 	uint16_t wordCnt;
 	uint16_t* pauData;
 
@@ -65,29 +76,19 @@ public:
     P1553() : Packet() {
         int msgCount = 0;
         ChanSpecData chanSpec = ChanSpecData();
-        IntraPackHeader intraPHdr = IntraPackHeader();
-        CommandWord CmdWord1 = CommandWord();
-        CommandWord CmdWord2 = CommandWord();
-        uint16_t* statWord1 = 0;
-        uint16_t* statWord2 = 0;
-        uint16_t wordCnt = 0;
-        uint16_t* pauData = 0;
+        Messages messages;
     }
 
-	P1553(unsigned char* channelData, unsigned char *intraPacketHeader, unsigned char *commWord1,
-          unsigned char *commWord2, unsigned char *statusWord1, unsigned char *statusWord2)
-          : Packet()
+	P1553(unsigned long chanID, unsigned long packLength, unsigned long datLen,
+          unsigned long datatypever, unsigned long sequenceNumber, unsigned long packetflags,
+          unsigned long myDataType, unsigned char *timeCounter, unsigned long checkSum,
+          unsigned long msgCount, ChanSpecData channelData, Messages packMessages)
+          : Packet(chanID, packLength, datLen, datatypever,
+                   sequenceNumber, packetflags, myDataType, timeCounter, checkSum)
 	{
-		// call function passing in the DataStream as a parameter that assigns values to msgCount bufferOffset dataLen
+		this->chanSpec = channelData;
+        this->msgCount = msgCount;
+        this->messages = packMessages;
 
-		// passing in bufferOffset or dataStream will assign something to ChanSpecData
-
-		// call constructor for command words
-
-        //TEMPORARILY BANISHED TO THE SHADOW REALM
-        /*unsigned char *myPacketsData, unsigned char *chanID, unsigned char *packLength,
-                   unsigned char *datLen, unsigned char *datatypever, unsigned char *sequenceNumber,
-                   unsigned char *packetflags, unsigned char *myDataType, unsigned char *timeCounter,
-                   unsigned char *checkSum*/
 	}
 };

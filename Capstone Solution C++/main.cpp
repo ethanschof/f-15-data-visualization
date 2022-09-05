@@ -184,7 +184,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
             unsigned long newDataType = bytesToLong(dataType, DATA_TYPE_BIT_LENGTH/8);
             unsigned long newCheckSum = bytesToLong(headerCheckSum, HEADER_CHECKSUM_LENGTH/8);
 
-            // 0x19 SHOULD be a 1553 packet, need to double-check
+            // 0x19 is a 1553 packet version format 1
             if (dataType[0] == 0x19){
                 // We're going to get the channel specific data now
                 unsigned char *mcChar = bitManipulator(data, 24, fSize);
@@ -200,95 +200,115 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
                 // eat the garbage
                 bitManipulator(data, 8, fSize);
 
-                ChanSpecData specificData(messageCount, chanSpecReservedChar, timeTagBits);
+                ChanSpecData thisPacketsChanSpecificData(messageCount, chanSpecReservedChar, timeTagBits);
 
-                // Get intrapacket time stamp
-                unsigned char *intraPacketTimeStamp = bitManipulator(data, 64, fSize);
+                Messages packetMessages;
+                packetMessages.numMessages = messageCount;
 
-                unsigned char *blockStatusWord = bitManipulator(data, 16, fSize);
-                blockStatusWord = swapEndian(blockStatusWord, 2);
+                // Do this for as many messages are in the packet
+                for (int i = 0; i < messageCount; ++i) {
+                    // Get intrapacket time stamp
+                    unsigned char *intraPacketTimeStamp = bitManipulator(data, 64, fSize);
 
-                long *wordSize = nullptr;
-                *wordSize = 2;
+                    unsigned char *blockStatusWord = bitManipulator(data, 16, fSize);
+                    blockStatusWord = swapEndian(blockStatusWord, 2);
 
-                unsigned char *reserved1Char = bitManipulator(blockStatusWord, 2, wordSize);
-                int reserved1 = (int)reserved1Char[0];
-                free(reserved1Char);
+                    long *wordSize = nullptr;
+                    *wordSize = 2;
 
-                unsigned char *bidChar = bitManipulator(blockStatusWord, 1, wordSize);
-                int BusID = (int)bidChar[0];
-                free(bidChar);
+                    unsigned char *reserved1Char = bitManipulator(blockStatusWord, 2, wordSize);
+                    int reserved1 = (int)reserved1Char[0];
+                    free(reserved1Char);
 
-                unsigned char *meChar = bitManipulator(blockStatusWord, 1, wordSize);
-                int BSWmessageError = (int)meChar[0];
-                free(meChar);
+                    unsigned char *bidChar = bitManipulator(blockStatusWord, 1, wordSize);
+                    int BusID = (int)bidChar[0];
+                    free(bidChar);
 
-                unsigned char *rtchar = bitManipulator(blockStatusWord, 1, wordSize);
-                int RT_to_RT = (int)rtchar[0];
-                free(rtchar);
+                    unsigned char *meChar = bitManipulator(blockStatusWord, 1, wordSize);
+                    int BSWmessageError = (int)meChar[0];
+                    free(meChar);
 
-                unsigned char *formErrChar = bitManipulator(blockStatusWord, 1, wordSize);
-                int BSWformatErr = (int)formErrChar[0];
-                free(formErrChar);
+                    unsigned char *rtchar = bitManipulator(blockStatusWord, 1, wordSize);
+                    int RT_to_RT = (int)rtchar[0];
+                    free(rtchar);
 
-                unsigned char *respTO = bitManipulator(blockStatusWord, 1, wordSize);
-                int BSWTimeOut = (int)respTO[0];
-                free(respTO);
+                    unsigned char *formErrChar = bitManipulator(blockStatusWord, 1, wordSize);
+                    int BSWformatErr = (int)formErrChar[0];
+                    free(formErrChar);
 
-                unsigned char *resCharpt1 = bitManipulator(blockStatusWord, 1, wordSize);
-                int reservPT1 = (int)resCharpt1[0];
-                free(resCharpt1);
+                    unsigned char *respTO = bitManipulator(blockStatusWord, 1, wordSize);
+                    int BSWTimeOut = (int)respTO[0];
+                    free(respTO);
 
-                // Eat the garbage byte
-                bitManipulator(blockStatusWord, 8, wordSize);
+                    unsigned char *resCharpt1 = bitManipulator(blockStatusWord, 1, wordSize);
+                    int reservPT1 = (int)resCharpt1[0];
+                    free(resCharpt1);
 
-                unsigned char *reservedCharpart2 = bitManipulator(blockStatusWord, 2, wordSize);
-                int reserved2 = (int)reservedCharpart2[0] + (reservPT1 << 2);
-                free(reservedCharpart2);
+                    // Eat the garbage byte
+                    bitManipulator(blockStatusWord, 8, wordSize);
 
-                unsigned char *WEchar = bitManipulator(blockStatusWord, 1, wordSize);
-                int BSWWordCountError = (int)WEchar[0];
-                free(WEchar);
+                    unsigned char *reservedCharpart2 = bitManipulator(blockStatusWord, 2, wordSize);
+                    int reserved2 = (int)reservedCharpart2[0] + (reservPT1 << 2);
+                    free(reservedCharpart2);
 
-                unsigned char *seChar = bitManipulator(blockStatusWord, 1, wordSize);
-                int BSWSyncErr = (int)seChar[0];
-                free(seChar);
+                    unsigned char *WEchar = bitManipulator(blockStatusWord, 1, wordSize);
+                    int BSWWordCountError = (int)WEchar[0];
+                    free(WEchar);
 
-                unsigned char *weChar = bitManipulator(blockStatusWord, 1, wordSize);
-                int BSWWordErr = (int)weChar[0];
-                free(weChar);
+                    unsigned char *seChar = bitManipulator(blockStatusWord, 1, wordSize);
+                    int BSWSyncErr = (int)seChar[0];
+                    free(seChar);
 
-                unsigned char *resChar3 = bitManipulator(blockStatusWord, 3, wordSize);
-                int reserved3 = (int)resChar3[0];
-                free(resChar3);
+                    unsigned char *weChar = bitManipulator(blockStatusWord, 1, wordSize);
+                    int BSWWordErr = (int)weChar[0];
+                    free(weChar);
 
-                unsigned char *gapTimesWord = bitManipulator(data, 16, fSize);
-                gapTimesWord = swapEndian(gapTimesWord, 2);
+                    unsigned char *resChar3 = bitManipulator(blockStatusWord, 3, wordSize);
+                    int reserved3 = (int)resChar3[0];
+                    free(resChar3);
 
-                long *gapTimesSize = nullptr;
-                *gapTimesSize = 2;
+                    unsigned char *gapTimesWord = bitManipulator(data, 16, fSize);
+                    gapTimesWord = swapEndian(gapTimesWord, 2);
 
-                unsigned char *gap1Char = bitManipulator(gapTimesWord, 8, gapTimesSize);
-                auto gap1 = (unsigned long)gap1Char[0];
-                free(gap1Char);
+                    long *gapTimesSize = nullptr;
+                    *gapTimesSize = 2;
 
-                unsigned char *gap2Char = bitManipulator(gapTimesWord, 8, gapTimesSize);
-                auto gap2 = (unsigned long)gap2Char[0];
-                free(gap2Char);
+                    unsigned char *gap1Char = bitManipulator(gapTimesWord, 8, gapTimesSize);
+                    auto gap1 = (unsigned long)gap1Char[0];
+                    free(gap1Char);
 
-                unsigned char *msgLenChar = bitManipulator(data, 16, fSize);
-                auto msgLength = (unsigned long)msgLenChar[0];
+                    unsigned char *gap2Char = bitManipulator(gapTimesWord, 8, gapTimesSize);
+                    auto gap2 = (unsigned long)gap2Char[0];
+                    free(gap2Char);
 
-
-                IntraPackHeader thisPacketsHeader(intraPacketTimeStamp, reserved1, BusID, BSWmessageError, RT_to_RT,
-                                                  BSWformatErr, BSWTimeOut, reserved2, BSWWordCountError, BSWSyncErr,
-                                                  BSWWordErr, reserved3, gap1, gap2, msgLength);
-
-
+                    unsigned char *msgLenChar = bitManipulator(data, 16, fSize);
+                    auto msgLength = (unsigned long)msgLenChar[0];
 
 
+                    IntraPackHeader thisMessagesHeader(intraPacketTimeStamp, reserved1, BusID, BSWmessageError, RT_to_RT,
+                                                      BSWformatErr, BSWTimeOut, reserved2, BSWWordCountError, BSWSyncErr,
+                                                      BSWWordErr, reserved3, gap1, gap2, msgLength);
 
-                // TODO Get command word and store it
+                    // Get Command / Data words
+                    unsigned char *commandWord1 = bitManipulator(data, 16, fSize);
+
+                    // Get the second word
+                    unsigned char *secondWord2 = bitManipulator(data, 16, fSize);
+
+                    Words thisMessageWords(commandWord1, secondWord2);
+
+                    // Get the data
+                    int bitsLeftInMessage = (int)(msgLength * 8) - 32;
+                    unsigned char *messageData = bitManipulator(data, bitsLeftInMessage, fSize);
+
+                    packetMessages.addMessage(thisMessagesHeader, thisMessageWords, messageData);
+
+                } // End of message loop
+
+                myPackets.push_back(P1553(newChannelID, newPacketLength,
+                                          newDataLength, newDataTypeVer, newSeqNum,
+                                          newPacketFlags, newDataType, relativeTimeCounter,
+                                          newCheckSum, messageCount, thisPacketsChanSpecificData, packetMessages));
 
 
             }
@@ -313,7 +333,11 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
 
         }
 
-    }
+        if (*fSize <= 0) {
+            done = 1;
+        }
+
+    } // End of big loop
     return myPackets;
 }
 

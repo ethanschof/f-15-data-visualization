@@ -1,6 +1,8 @@
 #include <string>
 using namespace std;
 
+
+
 class ChanSpecData
 {
 public:
@@ -81,7 +83,28 @@ public:
     }
 };
 
-class CommandWord
+class Words
 {
+private :
+    unsigned char *word1;
+    unsigned char *word2;
 public:
+    Words(unsigned char* part1, unsigned char* part2){
+    this->word1 = part1;
+    this->word2 = part2;
+}
+};
+
+class Messages {
+public:
+    vector <IntraPackHeader> intraHeaders;
+    vector <Words> commWords;
+    vector <unsigned char*> data;
+    unsigned long numMessages;
+    void addMessage(IntraPackHeader header, Words commandWords, unsigned char* messageData){
+        this->intraHeaders.push_back(header);
+        this->commWords.push_back(commandWords);
+        this->data.push_back(messageData);
+    }
+
 };
