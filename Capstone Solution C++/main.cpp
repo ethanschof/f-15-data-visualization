@@ -341,36 +341,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
     return myPackets;
 }
 
-
-int main(){
-    cout << "==========================\n F15 packet data analyzer \n==========================\n\n";
-
-    //get file to open
-    char fileName[25];
-    cout << "Enter the name of the ch10 file: ";
-    cin >> fileName;
-    FILE *ptr;
-    ptr = fopen(fileName, "rb");
-
-    if(ptr == NULL){
-        cout << "Failed to open file.\n";
-        return 1;
-    }
-
-    //find the size of the file
-    fseek(ptr, 0, SEEK_END);
-    long fSize = ftell(ptr); 
-    cout << "file size (in bytes) : " << fSize << "\n";
-
-    //ignore ch10 header info
-    fseek(ptr, 0, SEEK_SET);
-
-    //transfer binary into a buffer
-    unsigned char *dataBuffer = (unsigned char*)malloc(fSize * sizeof(unsigned char));
-    for(int i = 0; i < fSize; i++){
-        dataBuffer[i] = (unsigned char)fgetc(ptr);
-    }
-    
+void testBitManipulate(unsigned char *dataBuffer, long fSize){
     //SANITY CHECKER #1
     //ask user if they would like to dump the current data in 'dataBuffer'
     cout << "Would you like to dump the data to the terminal? [y/n] ";
@@ -424,6 +395,45 @@ int main(){
             done = 1;
         }
     }
+}
+
+int main(){
+    cout << "==========================\n F15 packet data analyzer \n==========================\n\n";
+
+    //get file to open
+    char fileName[25];
+    cout << "Enter the name of the ch10 file: ";
+    cin >> fileName;
+    FILE *ptr;
+    ptr = fopen(fileName, "rb");
+
+    if(ptr == NULL){
+        cout << "Failed to open file.\n";
+        return 1;
+    }
+
+    //find the size of the file
+    fseek(ptr, 0, SEEK_END);
+    long fSize = ftell(ptr); 
+    cout << "file size (in bytes) : " << fSize << "\n";
+
+    //ignore ch10 header info
+    fseek(ptr, 0, SEEK_SET);
+
+    //transfer binary into a buffer
+    unsigned char *dataBuffer = (unsigned char*)malloc(fSize * sizeof(unsigned char));
+    for(int i = 0; i < fSize; i++){
+        dataBuffer[i] = (unsigned char)fgetc(ptr);
+    }
+
+    // Uncomment to test the bit manipulate function
+    // testBitManipulate(dataBuffer, fSize);
+
+    // Putting the packets into a data structure
+    vector<Packet> myPackets;
+    myPackets = createPackets(dataBuffer, &fSize);
+    
+
 
     free(dataBuffer);
     fclose(ptr);
