@@ -57,29 +57,7 @@ void fileDump(unsigned char *data, long fileSize, int quickDump){
     }
     cout << "\n\n";
 }
-/**
- * @brief quick dumps data and stops for testing
- * @param data
- * @param fSize
- */
-void debug(unsigned char * data, long fSize){
-    fileDump(data, fSize, 2);
 
-    //search for next packet sync
-    int i =0;
-    while(data[i] != 0x25 && data[i+1] != 0xEB){
-        i++;
-        if(i >= fSize - 2){
-            i = -1;
-            break;
-        }
-    }
-    cout << "\nThe next packet is " << i << " bytes away...\n";
-
-    cout << "\nC++ is dumb, ascend to C [y/n]: ";
-    char waste;
-    cin >> waste;
-}
 
 /**
  * @brief takes in a file Buffer and returns the number of bits from the front requested and reallocates the file Buffer to no longer have those bits
@@ -120,6 +98,33 @@ unsigned char *bitManipulator(unsigned char* data, int numBits, long *fSize){
     }
     *fSize = *fSize - numBytes;
     return desiredBits;
+}
+
+/**
+ * @brief quick dumps data and stops for testing
+ * @param data
+ * @param fSize
+ */
+void debug(unsigned char * data, long fSize){
+    fileDump(data, fSize, 2);
+
+    //search for next packet sync
+    int i =0;
+    while(data[i] != 0xEB && data[i+1] != 0x25){
+        i++;
+        if(i >= fSize - 2){
+            i = -1;
+            break;
+        }
+    }
+    cout << "\nThe next packet is " << i << " bytes away...\n";
+
+    // This causes a seg fault
+    // bitManipulator(data, i*8, &fSize);
+
+    cout << "\nC++ is dumb, ascend to C [y/n]: ";
+    char waste;
+    cin >> waste;
 }
 
 /**
@@ -361,7 +366,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
 
 
         }
-        debug(data, *fSize);
+        // debug(data, *fSize);
         if (*fSize <= 0) {
             done = 1;
         }
@@ -456,10 +461,11 @@ int main(){
         dataBuffer[i] = (unsigned char)fgetc(ptr);
     }
 
-    debug(dataBuffer, fSize);
+    //debug(dataBuffer, fSize);
 
     // Uncomment to test the bit manipulate function
     // testBitManipulate(dataBuffer, fSize);
+    bitManipulator(dataBuffer, (41336 * 8), &fSize);
 
     // Putting the packets into a data structure
     vector<Packet> myPackets;
