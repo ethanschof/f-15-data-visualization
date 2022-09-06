@@ -18,7 +18,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
@@ -95,6 +94,7 @@
       <workItem from="1662404455708" duration="5136000" />
       <workItem from="1662409746501" duration="435000" />
       <workItem from="1662477886542" duration="6057000" />
+      <workItem from="1662484559479" duration="367000" />
     </task>
     <servers />
   </component>
