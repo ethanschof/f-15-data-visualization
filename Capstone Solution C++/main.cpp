@@ -63,7 +63,7 @@ void fileDump(unsigned char *data, long fileSize, int quickDump){
  * @param fSize
  */
 void debug(unsigned char * data, long fSize){
-    fileDump(data, fSize, 5);
+    fileDump(data, fSize, 2);
 
     //search for next packet sync
     int i =0;
