@@ -70,9 +70,9 @@ void fileDump(unsigned char *data, long fileSize, int quickDump){
  * @param fSize the number of bytes in the buffer
  * @return unsigned char* the bits at the top of the array of bytes
  */
-unsigned char *bitManipulator(unsigned char* data, int numBits, long *fSize){
-    int numBytes = numBits / 8;
-    int bitShift = 0;
+unsigned char *bitManipulator(unsigned char* data, unsigned long numBits, long *fSize){
+    unsigned long numBytes = numBits / 8;
+    unsigned long bitShift = 0;
 
     if(numBits%8 != 0){
         //deal with truncation
@@ -81,7 +81,7 @@ unsigned char *bitManipulator(unsigned char* data, int numBits, long *fSize){
     }
 
     unsigned char *desiredBits = (unsigned char *)malloc(numBytes * sizeof(unsigned char));
-    for(int i = 0; i < numBytes; i++){
+    for(unsigned long i = 0; i < numBytes; i++){
         desiredBits[i] = data[i];
     }
 
@@ -93,7 +93,7 @@ unsigned char *bitManipulator(unsigned char* data, int numBits, long *fSize){
     }
     
     //remove used bytes
-    for(int i = 0; i < *fSize; i++){
+    for(unsigned long i = 0; i < *fSize - numBytes; i++){
         data[i] = data[i+numBytes];
     }
     *fSize = *fSize - numBytes;
@@ -104,27 +104,45 @@ unsigned char *bitManipulator(unsigned char* data, int numBits, long *fSize){
  * @brief quick dumps data and stops for testing
  * @param data
  * @param fSize
+ * @param allPackets if set to 0, will print the location of every packet
  */
-void debug(unsigned char * data, long fSize){
+void debug(unsigned char * data, long fSize, int numPackets){
     fileDump(data, fSize, 2);
 
     //search for next packet sync
     int i =0;
-    while(data[i] != 0xEB && data[i+1] != 0x25){
-        i++;
-        if(i >= fSize - 2){
-            i = -1;
-            break;
+    if(!numPackets){
+        int Packetnum = 1;
+        while(1){
+            if(data[i] == 0x25 && data[i+1] == 0xEB){
+                cout << "Packet " << Packetnum <<" is " << i << " bytes away...\n";
+                Packetnum++;
+            }
+            i++;
+            if(i >= fSize - 2){
+                i = -1;
+                break;
+            }
+        }
+    }else{
+        int packetsFound = 0;
+        while(numPackets > packetsFound){
+            while(data[i] != 0x25 && data[i+1] != 0xEB){
+                i++;
+                if(i >= fSize - 2){
+                    i = -1;
+                    break;
+                }
+            }
+            cout << "The next packet is " << i << " bytes away...\n";
+            i++;
+            packetsFound++;
         }
     }
-    cout << "\nThe next packet is " << i << " bytes away...\n";
 
     // This causes a seg fault
     // bitManipulator(data, i*8, &fSize);
-
-    cout << "\nC++ is dumb, ascend to C [y/n]: ";
-    char waste;
-    cin >> waste;
+    system("pause");
 }
 
 /**
@@ -181,16 +199,18 @@ unsigned char* swapEndian(unsigned char* bytes, int numBytes){
  * @param data the buffer data from the file
  * @return an array of Packet objects containing the data from the file
  */
-vector<Packet> createPackets(unsigned char* data, long* fSize){
+vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
     vector<Packet> myPackets;
     int done = 0;
     int packetsCreated = 0;
+    int num1553 = 0;
 
     while (!done){
         unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH, fSize);
 
         // checks for packet sync
         if (packetSync[0] == 0x25 && packetSync[1] == 0xEB){
+            
             // Get data from the packet header MUST STAY IN THIS ORDER
             unsigned char *channelID = bitManipulator(data, (long)CHAN_ID_LENGTH, fSize);
             channelID = swapEndian(channelID, 2);
@@ -217,8 +237,22 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
             unsigned long newDataType = bytesToLong(dataType, DATA_TYPE_BIT_LENGTH/8);
             unsigned long newCheckSum = bytesToLong(headerCheckSum, HEADER_CHECKSUM_LENGTH/8);
 
+            //prints packet header data
+            if(verbose){
+                cout << "\n:::PACKET HEADER DATA:::\n\n";
+                cout << "Channel ID: " << newChannelID << "\n";
+                cout << "Packet length: " << newPacketLength << "\n";
+                cout << "Data length: " << newDataLength << "\n";
+                cout << "Data type version: " << newDataTypeVer << "\n";
+                cout << "Sequence number: " << newSeqNum << "\n";
+                cout << "Data Type: " << newDataType << "\n";
+                cout << "Checksum: " << newCheckSum << "\n\n";
+            }
+
             // 0x19 is a 1553 packet version format 1
             if (dataType[0] == 0x19){
+                num1553++;
+                cout << "1553 packet #" << num1553 << " detected. Let's get ready to rumble!\n";
                 // We're going to get the channel specific data now
                 unsigned char *mcChar = bitManipulator(data, 24, fSize);
                 mcChar = swapEndian(mcChar, 3);
@@ -351,10 +385,9 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
             else {
                 // determine how many bits left are in the packet
                 // 192 is the total bits in the packet header
-                long bitsLeft = ((long)*packetLength * 8) - 192;
+                unsigned long bitsLeft = (newPacketLength * 8) - 192;
 
                 unsigned char *restOfPacket = bitManipulator(data, bitsLeft, fSize);
-
 
                 // Using emplace_back calls the packet constructor for us
                 myPackets.emplace_back(restOfPacket, newChannelID, newPacketLength,
@@ -366,7 +399,9 @@ vector<Packet> createPackets(unsigned char* data, long* fSize){
 
 
         }
-        // debug(data, *fSize);
+        if(verbose){
+            debug(data, *fSize, 1);
+        }
         if (*fSize <= 0) {
             done = 1;
         }
@@ -461,15 +496,15 @@ int main(){
         dataBuffer[i] = (unsigned char)fgetc(ptr);
     }
 
-    //debug(dataBuffer, fSize);
+    debug(dataBuffer, fSize, 3);
 
     // Uncomment to test the bit manipulate function
     // testBitManipulate(dataBuffer, fSize);
-    bitManipulator(dataBuffer, (41336 * 8), &fSize);
+    //bitManipulator(dataBuffer, (41336 * 8), &fSize);
 
     // Putting the packets into a data structure
     vector<Packet> myPackets;
-    myPackets = createPackets(dataBuffer, &fSize);
+    myPackets = createPackets(dataBuffer, &fSize, true);
 
 
     free(dataBuffer);
