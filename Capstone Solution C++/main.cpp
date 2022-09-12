@@ -31,6 +31,8 @@
 #define HEADER_CHECKSUM_LENGTH 16
 #define CHANNEL_SPECIFIC_DATA_LENGTH 32
 
+long byteIndex = 0;
+
 using namespace std;
 
 /**
@@ -53,18 +55,17 @@ void fileDump(unsigned char *data, long fileSize, int quickDump){
         if(i%50 == 0){
             printf("\n%7d:  ", i);
         }
-        printf("%2x ", data[i]);
+        printf("%2x ", data[i+byteIndex]);
     }
     cout << "\n\n";
 }
 
-
 /**
- * @brief takes in a file Buffer and returns the number of bits from the front requested and reallocates the file Buffer to no longer have those bits
+ * @brief takes in an array and returns the number of bits from the front requested and reallocates the file Buffer to no longer have those bits
  *          returns in BIG ENDIAN
- * 
+ *
  * @bug Will not decriment if bits do not result in a byte. Ex 2 function calls for 4 bits will result in the front byte being '00' and will need to be consumed
- * 
+ *
  * @param data the buffer data from the file
  * @param numBits the number of bits needed
  * @param fSize the number of bytes in the buffer
@@ -91,12 +92,54 @@ unsigned char *bitManipulator(unsigned char* data, unsigned long numBits, long *
         data[numBytes-1] = data[numBytes-1] << (numBits%8);
         numBytes--;
     }
-    
+
     //remove used bytes
     for(unsigned long i = 0; i < *fSize - numBytes; i++){
         data[i] = data[i+numBytes];
     }
     *fSize = *fSize - numBytes;
+    return desiredBits;
+}
+
+/**
+ * @brief takes in the file Buffer ONLY and returns the number of bits from the front requested and reallocates the file Buffer to no longer have those bits
+ *          returns in BIG ENDIAN
+ * 
+ * @bug Will not decriment if bits do not result in a byte. Ex 2 function calls for 4 bits will result in the front byte being '00' and will need to be consumed
+ * 
+ * @param data the buffer data from the file
+ * @param numBits the number of bits needed
+ * @param fSize the number of bytes in the buffer
+ * @return unsigned char* the bits at the top of the array of bytes
+ */
+unsigned char *bitManipulator(unsigned char* data, unsigned long numBits){
+    unsigned long numBytes = numBits / 8;
+    unsigned long bitShift = 0;
+
+    if(numBits%8 != 0){
+        //deal with truncation
+        numBytes++;
+        bitShift = 1;
+    }
+
+    unsigned char *desiredBits = (unsigned char *)malloc(numBytes * sizeof(unsigned char));
+    for(unsigned long i = byteIndex; i < (byteIndex+numBytes); i++){
+        desiredBits[i-byteIndex] = data[i];
+    }
+
+    if(bitShift){
+        //for non-byte sized needs...
+        desiredBits[numBytes-1] = desiredBits[numBytes-1] >> (8 - numBits%8);
+        data[numBytes-1] = data[numBytes-1] << (numBits%8);
+        numBytes--;
+    }
+    
+    //remove used bytes
+    /*for(unsigned long i = 0; i < *fSize - numBytes; i++){
+        data[i] = data[i+numBytes];
+    }*/
+    byteIndex = byteIndex + numBytes; //this working
+    //*fSize = *fSize - numBytes;
     return desiredBits;
 }
 
@@ -107,7 +150,6 @@ unsigned char *bitManipulator(unsigned char* data, unsigned long numBits, long *
  * @param allPackets if set to 0, will print the location of every packet
  */
 void debug(unsigned char * data, long fSize, int numPackets){
-    fileDump(data, fSize, 2);
 
     //search for next packet sync
     int i =0;
@@ -115,16 +157,18 @@ void debug(unsigned char * data, long fSize, int numPackets){
         int Packetnum = 1;
         while(1){
             if(data[i] == 0x25 && data[i+1] == 0xEB){
-                cout << "Packet " << Packetnum <<" is " << i << " bytes away...\n";
+                //cout << "Packet " << Packetnum <<" is " << i << " bytes away...\n";
                 Packetnum++;
             }
             i++;
             if(i >= fSize - 2){
                 i = -1;
+                cout << "There are " << Packetnum << " packets in this file.\n";
                 break;
             }
         }
     }else{
+        fileDump(data, fSize, 2);
         int packetsFound = 0;
         while(numPackets > packetsFound){
             while(data[i] != 0x25 && data[i+1] != 0xEB){
@@ -206,25 +250,25 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
     int num1553 = 0;
 
     while (!done){
-        unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH, fSize);
+        unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
 
         // checks for packet sync
         if (packetSync[0] == 0x25 && packetSync[1] == 0xEB){
             
             // Get data from the packet header MUST STAY IN THIS ORDER
-            unsigned char *channelID = bitManipulator(data, (long)CHAN_ID_LENGTH, fSize);
+            unsigned char *channelID = bitManipulator(data, (long)CHAN_ID_LENGTH);
             channelID = swapEndian(channelID, 2);
-            unsigned char *packetLength = bitManipulator(data, (long)PACKET_LENGTH_LENGTH, fSize);
+            unsigned char *packetLength = bitManipulator(data, (long)PACKET_LENGTH_LENGTH);
             packetLength = swapEndian(packetLength, 4);
-            unsigned char *dataLength = bitManipulator(data, (long)DATA_LENGTH, fSize);
+            unsigned char *dataLength = bitManipulator(data, (long)DATA_LENGTH);
             dataLength = swapEndian(dataLength, 4);
-            unsigned char *dataTypeVer = bitManipulator(data, (long)DATA_TYPE_VERSION_LENGTH, fSize);
-            unsigned char *seqNum = bitManipulator(data, (long)SEQ_NUM_LENGTH, fSize);
-            unsigned char *packetFlags = bitManipulator(data, (long)PACKET_FLAGS_LENGTH, fSize);
-            unsigned char *dataType = bitManipulator(data, (long)DATA_TYPE_BIT_LENGTH, fSize);
-            unsigned char *relativeTimeCounter = bitManipulator(data, (long)RELATIVE_TIME_COUNTER_LENGTH, fSize);
+            unsigned char *dataTypeVer = bitManipulator(data, (long)DATA_TYPE_VERSION_LENGTH);
+            unsigned char *seqNum = bitManipulator(data, (long)SEQ_NUM_LENGTH);
+            unsigned char *packetFlags = bitManipulator(data, (long)PACKET_FLAGS_LENGTH);
+            unsigned char *dataType = bitManipulator(data, (long)DATA_TYPE_BIT_LENGTH);
+            unsigned char *relativeTimeCounter = bitManipulator(data, (long)RELATIVE_TIME_COUNTER_LENGTH);
             relativeTimeCounter = swapEndian(relativeTimeCounter, 6);
-            unsigned char *headerCheckSum = bitManipulator(data, (long)HEADER_CHECKSUM_LENGTH, fSize);
+            unsigned char *headerCheckSum = bitManipulator(data, (long)HEADER_CHECKSUM_LENGTH);
             headerCheckSum = swapEndian(headerCheckSum, 2);
 
             // Change into long values
@@ -247,6 +291,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                 cout << "Sequence number: " << newSeqNum << "\n";
                 cout << "Data Type: " << newDataType << "\n";
                 cout << "Checksum: " << newCheckSum << "\n\n";
+                cout << "File byte Index: "<< byteIndex << "\n\n";
             }
 
             // 0x19 is a 1553 packet version format 1
@@ -254,15 +299,15 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                 num1553++;
                 cout << "1553 packet #" << num1553 << " detected. Let's get ready to rumble!\n";
                 // We're going to get the channel specific data now
-                unsigned char *mcChar = bitManipulator(data, 24, fSize);
+                unsigned char *mcChar = bitManipulator(data, 24);
                 mcChar = swapEndian(mcChar, 3);
                 unsigned long messageCount = bytesToLong(mcChar, 3);
 
-                unsigned char *timeTagBitsChar = bitManipulator(data, (long)2, fSize);
+                unsigned char *timeTagBitsChar = bitManipulator(data, (long)2);
                 int timeTagBits = (int)timeTagBitsChar[0];
                 free(timeTagBitsChar);
 
-                unsigned char *chanSpecReservedChar = bitManipulator(data, 6, fSize);
+                unsigned char *chanSpecReservedChar = bitManipulator(data, 6);
 
                 // eat the garbage
                 bitManipulator(data, 8, fSize);
@@ -275,12 +320,12 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                 // Do this for as many messages are in the packet
                 for (int i = 0; i < messageCount; ++i) {
                     // Get intrapacket time stamp
-                    unsigned char *intraPacketTimeStamp = bitManipulator(data, 64, fSize);
+                    unsigned char *intraPacketTimeStamp = bitManipulator(data, 64);
 
-                    unsigned char *blockStatusWord = bitManipulator(data, 16, fSize);
+                    unsigned char *blockStatusWord = bitManipulator(data, 16);
                     blockStatusWord = swapEndian(blockStatusWord, 2);
 
-                    long *wordSize = nullptr;
+                    long *wordSize;
                     *wordSize = 2;
 
                     unsigned char *reserved1Char = bitManipulator(blockStatusWord, 2, wordSize);
@@ -334,7 +379,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                     int reserved3 = (int)resChar3[0];
                     free(resChar3);
 
-                    unsigned char *gapTimesWord = bitManipulator(data, 16, fSize);
+                    unsigned char *gapTimesWord = bitManipulator(data, 16);
                     gapTimesWord = swapEndian(gapTimesWord, 2);
 
                     long *gapTimesSize = nullptr;
@@ -348,7 +393,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                     auto gap2 = (unsigned long)gap2Char[0];
                     free(gap2Char);
 
-                    unsigned char *msgLenChar = bitManipulator(data, 16, fSize);
+                    unsigned char *msgLenChar = bitManipulator(data, 16);
                     auto msgLength = (unsigned long)msgLenChar[0];
 
 
@@ -357,18 +402,18 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                                                       BSWWordErr, reserved3, gap1, gap2, msgLength);
 
                     // Get Command / Data words
-                    unsigned char *commandWord1 = bitManipulator(data, 16, fSize);
+                    unsigned char *commandWord1 = bitManipulator(data, 16);
 
                     // TODO this also could be where the data count goes off because I'm not sure when a second word is there
                     // Get the second word
-                    unsigned char *secondWord2 = bitManipulator(data, 16, fSize);
+                    unsigned char *secondWord2 = bitManipulator(data, 16);
 
                     Words thisMessageWords(commandWord1, secondWord2);
 
                     // Get the data
                     // TODO this might be where the data count gets off
                     int bitsLeftInMessage = (int)(msgLength * 8) - 32;
-                    unsigned char *messageData = bitManipulator(data, bitsLeftInMessage, fSize);
+                    unsigned char *messageData = bitManipulator(data, bitsLeftInMessage);
 
                     packetMessages.addMessage(thisMessagesHeader, thisMessageWords, messageData);
 
@@ -387,7 +432,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                 // 192 is the total bits in the packet header
                 unsigned long bitsLeft = (newPacketLength * 8) - 192;
 
-                unsigned char *restOfPacket = bitManipulator(data, bitsLeft, fSize);
+                unsigned char *restOfPacket = bitManipulator(data, bitsLeft);
 
                 // Using emplace_back calls the packet constructor for us
                 myPackets.emplace_back(restOfPacket, newChannelID, newPacketLength,
@@ -484,7 +529,7 @@ int main(){
 
     //find the size of the file
     fseek(ptr, 0, SEEK_END);
-    long fSize = ftell(ptr); 
+    long fSize = ftell(ptr);
     cout << "file size (in bytes) : " << fSize << "\n";
 
     //ignore ch10 header info
@@ -496,8 +541,9 @@ int main(){
         dataBuffer[i] = (unsigned char)fgetc(ptr);
     }
 
-    debug(dataBuffer, fSize, 3);
-
+    debug(dataBuffer, fSize, 0);
+    string junk;
+    cin >> junk;
     // Uncomment to test the bit manipulate function
     // testBitManipulate(dataBuffer, fSize);
     //bitManipulator(dataBuffer, (41336 * 8), &fSize);
