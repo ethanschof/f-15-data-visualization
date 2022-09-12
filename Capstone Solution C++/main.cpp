@@ -250,6 +250,19 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
     int num1553 = 0;
 
     while (!done){
+        if(packetsCreated % 10000 == 0){
+            double percentDone = byteIndex / (*fSize);
+            cout << "\n\n\n\n\nPercent Complete\n[";
+            for(int i = 1; i <= 25; i++){
+                if(percentDone > (i*0.04)){
+                    cout << "#";
+                }else{
+                    cout << " ";
+                }
+            }
+            cout << "]\n";
+        }
+
         unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
 
         // checks for packet sync
@@ -297,7 +310,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
             // 0x19 is a 1553 packet version format 1
             if (dataType[0] == 0x19){
                 num1553++;
-                cout << "1553 packet #" << num1553 << " detected. Let's get ready to rumble!\n";
+                //cout << "1553 packet #" << num1553 << " detected. Let's get ready to rumble!\n";
                 // We're going to get the channel specific data now
                 unsigned char *mcChar = bitManipulator(data, 24);
                 mcChar = swapEndian(mcChar, 3);
@@ -325,7 +338,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                     unsigned char *blockStatusWord = bitManipulator(data, 16);
                     blockStatusWord = swapEndian(blockStatusWord, 2);
 
-                    long *wordSize;
+                    long *wordSize = (long*)malloc(sizeof(long));
                     *wordSize = 2;
 
                     unsigned char *reserved1Char = bitManipulator(blockStatusWord, 2, wordSize);
@@ -382,7 +395,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                     unsigned char *gapTimesWord = bitManipulator(data, 16);
                     gapTimesWord = swapEndian(gapTimesWord, 2);
 
-                    long *gapTimesSize = nullptr;
+                    long *gapTimesSize = (long*)malloc(sizeof(long));
                     *gapTimesSize = 2;
 
                     unsigned char *gap1Char = bitManipulator(gapTimesWord, 8, gapTimesSize);
@@ -450,7 +463,7 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
         if (*fSize <= 0) {
             done = 1;
         }
-
+        packetsCreated++;
     } // End of big loop
     return myPackets;
 }
@@ -550,7 +563,7 @@ int main(){
 
     // Putting the packets into a data structure
     vector<Packet> myPackets;
-    myPackets = createPackets(dataBuffer, &fSize, true);
+    myPackets = createPackets(dataBuffer, &fSize, false);
 
 
     free(dataBuffer);

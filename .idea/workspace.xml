@@ -99,6 +99,7 @@
       <workItem from="1662487916082" duration="1671000" />
       <workItem from="1662997591455" duration="1329000" />
       <workItem from="1662999171784" duration="2894000" />
+      <workItem from="1663002237725" duration="1283000" />
     </task>
     <servers />
   </component>
@@ -117,25 +118,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Capstone Solution C++/main.cpp</url>
-          <line>414</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Capstone Solution C++/main.cpp</url>
-          <line>298</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Capstone Solution C++/main.cpp</url>
-          <line>328</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="newPacketLength" />
