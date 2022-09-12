@@ -250,18 +250,19 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
     int num1553 = 0;
 
     while (!done){
-        if(packetsCreated % 10000 == 0){
-            double percentDone = byteIndex / (*fSize);
-            cout << "\n\n\n\n\nPercent Complete\n[";
-            for(int i = 1; i <= 25; i++){
-                if(percentDone > (i*0.04)){
-                    cout << "#";
-                }else{
-                    cout << " ";
-                }
-            }
-            cout << "]\n";
-        }
+        // Colin's broken progress bar UwU
+//        if(packetsCreated % 10000 == 0){
+//            double percentDone = byteIndex / (*fSize);
+//            cout << "\n\n\n\n\nPercent Complete\n[";
+//            for(int i = 1; i <= 25; i++){
+//                if(percentDone > (i*0.04)){
+//                    cout << "#";
+//                }else{
+//                    cout << " ";
+//                }
+//            }
+//            cout << "]\n";
+//        }
 
         unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
 
@@ -417,14 +418,12 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                     // Get Command / Data words
                     unsigned char *commandWord1 = bitManipulator(data, 16);
 
-                    // TODO this also could be where the data count goes off because I'm not sure when a second word is there
                     // Get the second word
                     unsigned char *secondWord2 = bitManipulator(data, 16);
 
                     Words thisMessageWords(commandWord1, secondWord2);
 
                     // Get the data
-                    // TODO this might be where the data count gets off
                     int bitsLeftInMessage = (int)(msgLength * 8) - 32;
                     unsigned char *messageData = bitManipulator(data, bitsLeftInMessage);
 
