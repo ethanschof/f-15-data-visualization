@@ -142,7 +142,7 @@ void debug(unsigned char * data, long fSize, int numPackets){
 
     // This causes a seg fault
     // bitManipulator(data, i*8, &fSize);
-    system("pause");
+    // system("pause");
 }
 
 /**
