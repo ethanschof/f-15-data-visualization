@@ -1,8 +1,6 @@
 #include <string>
 using namespace std;
 
-
-
 class ChanSpecData
 {
 public:
