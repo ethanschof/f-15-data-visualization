@@ -17,7 +17,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="" />
+    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/f_15_data_visualization.dir/Capstone_Solution_C++/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/f_15_data_visualization.dir/Capstone_Solution_C++/main.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/f_15_data_visualization.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/f_15_data_visualization.exe" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -95,6 +103,7 @@
       <workItem from="1663006690381" duration="243000" />
       <workItem from="1663007603251" duration="99000" />
       <workItem from="1663086903981" duration="6000" />
+      <workItem from="1663087107552" duration="1470000" />
     </task>
     <servers />
   </component>
@@ -113,6 +122,15 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Capstone Solution C++/main.cpp</url>
+          <line>433</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="newPacketLength" />

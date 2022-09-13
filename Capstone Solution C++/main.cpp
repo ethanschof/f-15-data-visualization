@@ -243,8 +243,8 @@ unsigned char* swapEndian(unsigned char* bytes, int numBytes){
  * @param data the buffer data from the file
  * @return an array of Packet objects containing the data from the file
  */
-vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
-    vector<Packet> myPackets;
+vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize, bool verbose){
+    vector<unique_ptr<Packet>> myPackets;
     int done = 0;
     int packetsCreated = 0;
     int num1553 = 0;
@@ -431,10 +431,10 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
 
                 } // End of message loop
 
-                myPackets.push_back(P1553(newChannelID, newPacketLength,
+                myPackets.emplace_back(new P1553{newChannelID, newPacketLength,
                                           newDataLength, newDataTypeVer, newSeqNum,
                                           newPacketFlags, newDataType, relativeTimeCounter,
-                                          newCheckSum, messageCount, thisPacketsChanSpecificData, packetMessages));
+                                          newCheckSum, messageCount, thisPacketsChanSpecificData, packetMessages});
 
 
             }
@@ -447,10 +447,10 @@ vector<Packet> createPackets(unsigned char* data, long* fSize, bool verbose){
                 unsigned char *restOfPacket = bitManipulator(data, bitsLeft);
 
                 // Using emplace_back calls the packet constructor for us
-                myPackets.emplace_back(restOfPacket, newChannelID, newPacketLength,
+                myPackets.emplace_back(new Packet{restOfPacket, newChannelID, newPacketLength,
                                        newDataLength, newDataTypeVer,newSeqNum,
                                        newPacketFlags, newDataType, relativeTimeCounter,
-                                       newCheckSum);
+                                       newCheckSum});
             }
 
 
@@ -561,7 +561,7 @@ int main(){
     //bitManipulator(dataBuffer, (41336 * 8), &fSize);
 
     // Putting the packets into a data structure
-    vector<Packet> myPackets;
+    vector<unique_ptr<Packet>> myPackets;
     myPackets = createPackets(dataBuffer, &fSize, false);
 
 
