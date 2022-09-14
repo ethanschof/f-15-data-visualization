@@ -21,6 +21,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Capstone Solution C++/1553helper.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/1553helper.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/packet.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/packet.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/f_15_data_visualization.dir/Capstone_Solution_C++/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/f_15_data_visualization.dir/Capstone_Solution_C++/main.cpp.obj" afterDir="false" />
@@ -106,6 +107,7 @@
       <workItem from="1663086903981" duration="6000" />
       <workItem from="1663087107552" duration="1470000" />
       <workItem from="1663089331969" duration="1263000" />
+      <workItem from="1663169988623" duration="6185000" />
     </task>
     <servers />
   </component>
@@ -127,15 +129,16 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Capstone Solution C++/packet.hpp</url>
-          <line>81</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/Capstone Solution C++/main.cpp</url>
+          <line>439</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="newPacketLength" />
+        <watch expression="myPackets[37]" />
       </configuration>
     </watches-manager>
   </component>

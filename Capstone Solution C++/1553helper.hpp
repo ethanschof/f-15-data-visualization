@@ -83,10 +83,9 @@ public:
 
 class Words
 {
-private :
+public:
     unsigned char *word1;
     unsigned char *word2;
-public:
     Words(unsigned char* part1, unsigned char* part2){
     this->word1 = part1;
     this->word2 = part2;

@@ -42,19 +42,17 @@ using namespace std;
  * @param quickDump if not 0, dump only the first 200 * quickDump bytes
  */
 void fileDump(unsigned char *data, long fileSize, int quickDump){
-    //pause the program
     cout << "\n:::::BEGINNING FILE DUMP:::::\n";
-    int stopper = fileSize;
+    int stopper = fileSize-byteIndex;
     if(quickDump){
         stopper = 200 * quickDump;
     }
     //test case 1: output hex
-    //printf("      0:  ");
-    for(int i = 0; i < stopper; i++){
+    for(int i = byteIndex; i < stopper+byteIndex; i++){
         if(i%50 == 0){
             printf("\n%7d:  ", i);
         }
-        printf("%2x ", data[i+byteIndex]);
+        printf("%2x ", data[i]);
     }
     cout << "\n\n";
 }
@@ -242,8 +240,8 @@ unsigned char* swapEndian(unsigned char* bytes, int numBytes){
  * @param data the buffer data from the file
  * @return an array of Packet objects containing the data from the file
  */
-vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize, bool verbose){
-    vector<unique_ptr<Packet>> myPackets;
+vector<unique_ptr<P1553>> createPackets(unsigned char* data, long* fSize, bool verbose){
+    vector<unique_ptr<P1553>> myPackets;
     int done = 0;
     int packetsCreated = 0;
     int num1553 = 0;
@@ -310,6 +308,10 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize, bool 
             // 0x19 is a 1553 packet version format 1
             if (dataType[0] == 0x19){
                 num1553++;
+//                fileDump(data, *fSize, 1);
+//                cout << "Type junk to continue\n";
+//                string junk;
+//                cin >> junk;
                 //cout << "1553 packet #" << num1553 << " detected. Let's get ready to rumble!\n";
                 // We're going to get the channel specific data now
                 unsigned char *mcChar = bitManipulator(data, 24);
@@ -414,8 +416,13 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize, bool 
                                                       BSWformatErr, BSWTimeOut, reserved2, BSWWordCountError, BSWSyncErr,
                                                       BSWWordErr, reserved3, gap1, gap2, msgLength);
 
+//                    fileDump(data, *fSize, 1);
+//                    cout << "Type junk to continue\n";
+//                    string junk;
+//                    cin >> junk;
                     // Get Command / Data words
                     unsigned char *commandWord1 = bitManipulator(data, 16);
+                    swapEndian(commandWord1, 2);
 
                     // Get the second word
                     unsigned char *secondWord2 = bitManipulator(data, 16);
@@ -446,7 +453,7 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize, bool 
                 unsigned char *restOfPacket = bitManipulator(data, bitsLeft);
 
                 // Using emplace_back calls the packet constructor for us
-                myPackets.emplace_back(new Packet{restOfPacket, newChannelID, newPacketLength,
+                myPackets.emplace_back(new P1553{restOfPacket, newChannelID, newPacketLength,
                                        newDataLength, newDataTypeVer,newSeqNum,
                                        newPacketFlags, newDataType, relativeTimeCounter,
                                        newCheckSum});
@@ -560,7 +567,7 @@ int main(){
     //bitManipulator(dataBuffer, (41336 * 8), &fSize);
 
     // Putting the packets into a data structure
-    vector<unique_ptr<Packet>> myPackets;
+    vector<unique_ptr<P1553>> myPackets;
     myPackets = createPackets(dataBuffer, &fSize, false);
 
 
