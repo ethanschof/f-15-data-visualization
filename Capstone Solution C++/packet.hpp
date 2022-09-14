@@ -211,13 +211,127 @@ public:
 
                 unsigned long machNumValue = bytesToLong(machNum, 2);
 
-                // Word 4, Pitch ange 2 bytes
+                // Word 4, Pitch angle 2 bytes
+                unsigned char* pitchAngle = bitManipulator(data, 16, fSize);
+                pitchAngle = swapEndian(pitchAngle, 2);
 
+                unsigned long pitchAngleValue = bytesToLong(pitchAngle, 2);
 
+                // Word 5 Roll Angle 2 bytes
+                unsigned char* rollAngle = bitManipulator(data, 16, fSize);
+                rollAngle = swapEndian(rollAngle, 2);
 
+                unsigned long rollAngleValue = bytesToLong(rollAngle, 2);
 
+                // Word 6 Roll Rate 2 bytes
+                unsigned char* rollRate = bitManipulator(data, 16, fSize);
+                rollRate = swapEndian(rollRate, 2);
 
+                unsigned long rollRateValue = bytesToLong(rollRate, 2);
 
+                // Word 7 Pitch Rate 2 bytes
+                unsigned char* pitchRate = bitManipulator(data, 16, fSize);
+                pitchRate = swapEndian(pitchRate, 2);
+
+                unsigned long pitchRateValue = bytesToLong(pitchRate, 2);
+
+                // Word 8 Yaw Rate 2 bytes
+                unsigned char* yawRate = bitManipulator(data, 16, fSize);
+                yawRate = swapEndian(yawRate, 2);
+
+                unsigned long yawRateValue = bytesToLong(yawRate, 2);
+
+                // Word 9 Roll Acceleration 2 bytes, bits 14-15 spare
+                unsigned char* rollAcceleration = bitManipulator(data, 16, fSize);
+                rollAcceleration = swapEndian(rollAcceleration, 2);
+
+                // Ensure that bits 14-15 are zeroed out
+                rollAcceleration[0] = rollAcceleration[0]&0x6F;
+
+                unsigned long rollAccelerationValue = bytesToLong(rollAcceleration, 2);
+
+                // Word 10 Pitch Acceleration 2 bytes, bits 12-15 spare
+                unsigned char* pitchAcceleration = bitManipulator(data, 16, fSize);
+                pitchAcceleration = swapEndian(pitchAcceleration, 2);
+
+                // Ensure that bits 12-15 are zeroed out
+                pitchAcceleration[0] = pitchAcceleration[0]&0x4F;
+
+                unsigned long pitchAccelerationValue = bytesToLong(pitchAcceleration, 2);
+
+                // Word 11 Yaw Acceleration 2 bytes, bits 12-15 spare
+                unsigned char* yawAcceleration = bitManipulator(data, 16, fSize);
+                yawAcceleration = swapEndian(yawAcceleration, 2);
+
+                // Ensure that bits 12-15 are zeroed out
+                yawAcceleration[0] = yawAcceleration[0]&0x4F;
+
+                unsigned long yawAccelerationValue = bytesToLong(yawAcceleration, 2);
+
+                // Word 12 Longitudinal Acceleration 2 bytes
+                unsigned char* longitudinalAccel = bitManipulator(data, 16, fSize);
+                longitudinalAccel = swapEndian(longitudinalAccel, 2);
+
+                unsigned long longitudinalAccelValue = bytesToLong(longitudinalAccel, 2);
+
+                // Word 13 Lateral Acceleration 2 bytes
+                unsigned char* lateralAccel = bitManipulator(data, 16, fSize);
+                lateralAccel = swapEndian(lateralAccel, 2);
+
+                unsigned long lateralAccelValue = bytesToLong(lateralAccel, 2);
+
+                // Word 14 Roll Rate AFCS 2 bytes
+                unsigned char* rollRateAFCS = bitManipulator(data, 16, fSize);
+                rollRateAFCS = swapEndian(rollRateAFCS, 2);
+
+                unsigned long rollRateAFCSValue = bytesToLong(rollRateAFCS, 2);
+
+                // Word 15 Lateral Stick Force 2 bytes
+                unsigned char* lateralStickForce = bitManipulator(data, 16, fSize);
+                lateralStickForce = swapEndian(lateralStickForce, 2);
+
+                unsigned long lateralStickForceValue = bytesToLong(lateralStickForce, 2);
+
+                // Word 16 Longitudinal Stick Force 2 bytes
+                unsigned char* longitudinalStickForce = bitManipulator(data, 16, fSize);
+                longitudinalStickForce = swapEndian(longitudinalStickForce, 2);
+
+                unsigned long longitudinalStickForceValue = bytesToLong(longitudinalStickForce, 2);
+
+                // Word 17 Right Stabilator Deflection 2 bytes
+                unsigned char* rStabilatorDef = bitManipulator(data, 16, fSize);
+                rStabilatorDef = swapEndian(rStabilatorDef, 2);
+
+                unsigned long rStabilatorDeflectionValue = bytesToLong(rStabilatorDef, 2);
+
+                // Word 18 Left Stabilator Deflection 2 bytes
+                unsigned char* lStabilatorDef = bitManipulator(data, 16, fSize);
+                lStabilatorDef = swapEndian(lStabilatorDef, 2);
+
+                unsigned long lStabilatorDeflectionValue = bytesToLong(lStabilatorDef, 2);
+
+                // Word 19 Normal Acceleration 2 bytes
+                unsigned char* normalAccel = bitManipulator(data, 16, fSize);
+                normalAccel = swapEndian(normalAccel, 2);
+
+                unsigned long normalAccelValue = bytesToLong(normalAccel, 2);
+
+                // Word 20 Angle of Sideslip 2 bytes w/ data is invalid byte
+                unsigned char* sideslipAngle = bitManipulator(data, 16, fSize);
+                sideslipAngle = swapEndian(sideslipAngle, 2);
+
+                bool sideslipAngleINVALID = sideslipAngle[0] >> 7;
+
+                sideslipAngle[0] = sideslipAngle[0]&0x7F;
+
+                unsigned long sideslipAngleValue = bytesToLong(sideslipAngle, 2);
+
+                // Word 21 Dynamic pressure 2 bytes
+                unsigned char* dynamicPressure = bitManipulator(data, 16, fSize);
+                dynamicPressure = swapEndian(dynamicPressure, 2);
+
+                unsigned long dynamicPressureValue = bytesToLong(dynamicPressure, 2);
+                
 
 
 
