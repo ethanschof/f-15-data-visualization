@@ -164,7 +164,7 @@ public:
         return desiredBits;
     }
 
-    void interpretData(){
+    void interpretData(bool print){
 
         // iterate through all messages in the packet
         for (int messageNumber = 0; messageNumber < this->messages.intraHeaders.size(); ++messageNumber) {
@@ -332,7 +332,55 @@ public:
 
                 unsigned long dynamicPressureValue = bytesToLong(dynamicPressure, 2);
 
+                // display the data we've processed
+                if (print){
+                    cout << "Message " << messageNumber << "\n\n";
 
+                    if (airspeedValid){
+                        cout << "True Airspeed: " << trueAirspeedValue << " knots\n";
+
+                    } else {
+                        cout << "True Airspeed data invalid\n";
+                    }
+
+                    if (angleAttackValid){
+                        cout << "Angle of Attack: " << angleAttackValue << " BAMS\n";
+                    } else {
+                        cout << "Angle of Attack data is invalid\n";
+                    }
+
+                    if (machNumValid){
+                        cout << "Mach Number: " << machNumValue << "\n";
+                    } else {
+                        cout << "Mach Number data invalid\n";
+                    }
+
+                    cout << "Pitch Angle: " << pitchAngleValue << " BAMS\n";
+                    cout << "Roll Angle: " << rollAngleValue << " BAMS\n";
+                    cout << "Roll Rate: " << rollRateValue << " Deg/s\n";
+                    cout << "Pitch Rate: " << pitchRateValue << " Deg/s\n";
+                    cout << "Yaw Rate: " << yawRateValue << " Deg/s\n";
+                    cout << "Roll Acceleration: " << rollAccelerationValue << " Deg/s^2\n";
+                    cout << "Pitch Acceleration: " << pitchAccelerationValue << " Deg/s^2\n";
+                    cout << "Yaw Acceleration: " << yawAccelerationValue << " Deg/s^2\n";
+                    cout << "Longitudinal Acceleration: " << longitudinalAccelValue << " ft/s^2\n";
+                    cout << "Lateral Acceleration: " << lateralAccelValue << " ft/s^2\n";
+                    cout << "Roll Rate AFCS: " << rollRateAFCSValue << " Deg/s\n";
+                    cout << "Lateral Stick Force: " << lateralStickForceValue << " lbs\n";
+                    cout << "Longitudinal Stick Force: " << longitudinalStickForceValue << " lbs\n";
+                    cout << "Right Stabilator Deflection: " << rStabilatorDeflectionValue << " BAMS\n";
+                    cout << "Left Stabilator Deflection: " << lStabilatorDeflectionValue << " BAMS\n";
+                    cout << "Normal Acceleration: " << normalAccelValue << " G\n";
+
+                    if (!sideslipAngleINVALID){
+                        cout << "Angle of Sideslip: " << sideslipAngleValue << " BAMS\n";
+                    } else {
+                        cout << "Angle of Sideslip data invalid\n";
+                    }
+
+                    cout << "Dynamic Pressure: " << dynamicPressureValue << " lb/ft^2\n\n";
+
+                } // end of printing for command word 0x4035
 
 
             } else if (commandWord[0] == 0x40 && commandWord[1] == 0x55){
