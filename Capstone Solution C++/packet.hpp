@@ -331,7 +331,7 @@ public:
                 dynamicPressure = swapEndian(dynamicPressure, 2);
 
                 unsigned long dynamicPressureValue = bytesToLong(dynamicPressure, 2);
-                
+
 
 
 
