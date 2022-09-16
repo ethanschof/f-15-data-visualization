@@ -384,6 +384,165 @@ public:
 
 
             } else if (commandWord[0] == 0x40 && commandWord[1] == 0x55){
+                // Word 1 Left Engine Total Fuel FLow Lb/Hr 2 bytes
+                unsigned char* leftEngineFuelFlow = bitManipulator(data, 16, fSize);
+                leftEngineFuelFlow = swapEndian(leftEngineFuelFlow, 2);
+
+                unsigned long leftEngineFuelFlowValue = bytesToLong(leftEngineFuelFlow, 2);
+
+                // Word 2 Right Engine Total Fuel Flow lb/hr 2 bytes
+
+                // Word 3
+
+                // Word 4
+
+                // Word 5
+
+                // Word 6 Discrete word 04 2 bytes, 16 bool values
+                unsigned char* discreteWord4 = bitManipulator(data, 16, fSize);
+                discreteWord4 = swapEndian(discreteWord4, 2);
+
+                long *wordSize = (long*)malloc(sizeof(long));
+                *wordSize = 2;
+
+                // Grab bit 15
+                unsigned char* tmp =  bitManipulator(discreteWord4, 1, wordSize);
+                bool radarLowSpeedCaution = tmp [0];
+
+                // Grab bit 14
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarJamWarning = tmp [0];
+
+                // Grab bit 13
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarNoTerrainWarning = tmp [0];
+
+                // 12
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarLimitWarning = tmp [0];
+
+                // 11
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarDiveAngleWarning = tmp[0];
+
+                // 10
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarTurnAccelWarning = tmp[0];
+
+                // 9
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarTurnRateWarning = tmp[0];
+
+                // 8
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarRollAngleWarning = tmp[0];
+
+                // After eating a 8 bits, you must delete it
+                unsigned char* trash = bitManipulator(discreteWord4, 8, wordSize);
+
+                // 7
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarRightTurnCaution = tmp[0];
+
+                // 6
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarLeftTurnCaution = tmp[0];
+
+                // 5
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarSetClearanceWarning = tmp[0];
+
+                // 4
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarGLimitWarning = tmp[0];
+
+                // 3
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarObstacleWarning = tmp[0];
+
+                // 2
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool radarDataGood = tmp[0];
+
+                // 1
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool afcsGCommandValid = tmp[0];
+
+                // 0
+                tmp = bitManipulator(discreteWord4, 1, wordSize);
+                bool displayGCommandValid = tmp[0];
+
+                // Eat garbage
+                trash = bitManipulator(discreteWord4, 8, wordSize);
+                free(trash);
+
+                // Word 7 Stores Data Word 1 2 bytes
+                unsigned char* storeWord1 = bitManipulator(data, 16, fSize);
+                storeWord1 = swapEndian(storeWord1, 2);
+
+                *wordSize = 2;
+
+                // Bits 15 - 12 spare
+                unsigned char* spare = bitManipulator(storeWord1, 4, wordSize);
+
+                // Bit 11
+                tmp = bitManipulator(storeWord1, 1, wordSize);
+                bool station8PylonPresent = tmp[0];
+
+                // Bit 10
+                tmp = bitManipulator(storeWord1, 1, wordSize);
+                bool station5PylonPresent = tmp[0];
+
+                // bit 9
+
+                // bit 8 spare bit to destroy
+
+                // Eat the garbage byte
+
+                // Bit 7-5 spare bits
+
+                // bit 4
+
+                // bit 3
+
+                // bit 2
+
+                // bit 1
+
+                // bit 0
+
+                // Word 8
+
+                // Word 9
+
+                // Word 10
+
+                // Word 11
+
+                // Word 12
+
+                // Word 13
+
+                // Word 14
+
+                // Word 15
+
+                // Word 16
+
+                // Word 17
+
+                // Word 18
+
+                // Word 19
+
+                // Word 20
+
+                // Word 21
+
+                // Display the processed data
+                if (print){
+
+                }
 
             } else if (commandWord[0] == 0x40 && commandWord[1] == 0x6B){
 
