@@ -247,19 +247,6 @@ vector<unique_ptr<P1553>> createPackets(unsigned char* data, long* fSize, bool v
     int num1553 = 0;
 
     while (!done){
-        // Colin's broken progress bar UwU
-//        if(packetsCreated % 10000 == 0){
-//            double percentDone = byteIndex / (*fSize);
-//            cout << "\n\n\n\n\nPercent Complete\n[";
-//            for(int i = 1; i <= 25; i++){
-//                if(percentDone > (i*0.04)){
-//                    cout << "#";
-//                }else{
-//                    cout << " ";
-//                }
-//            }
-//            cout << "]\n";
-//        }
 
         unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
 
