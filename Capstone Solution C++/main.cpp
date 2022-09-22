@@ -460,6 +460,71 @@ vector<unique_ptr<P1553>> createPackets(unsigned char* data, long* fSize, bool v
     return myPackets;
 }
 
+void createPkt(unsigned char* data, long* fSize){
+    int done = 0;
+    int packetsCreated = 0;
+    int num1553 = 0;
+    long startByte;
+    long endByte;
+
+    while (!done){
+        startByte = byteIndex;
+        unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
+
+        // checks for packet sync
+        if (packetSync[0] == 0x25 && packetSync[1] == 0xEB){
+
+            // Get data from the packet header MUST STAY IN THIS ORDER
+            unsigned char *channelID = bitManipulator(data, (long)CHAN_ID_LENGTH);
+            channelID = swapEndian(channelID, 2);
+            unsigned char *packetLength = bitManipulator(data, (long)PACKET_LENGTH_LENGTH);
+            packetLength = swapEndian(packetLength, 4);
+            unsigned char *dataLength = bitManipulator(data, (long)DATA_LENGTH);
+            dataLength = swapEndian(dataLength, 4);
+            unsigned char *dataTypeVer = bitManipulator(data, (long)DATA_TYPE_VERSION_LENGTH);
+            unsigned char *seqNum = bitManipulator(data, (long)SEQ_NUM_LENGTH);
+            unsigned char *packetFlags = bitManipulator(data, (long)PACKET_FLAGS_LENGTH);
+            unsigned char *dataType = bitManipulator(data, (long)DATA_TYPE_BIT_LENGTH);
+            unsigned char *relativeTimeCounter = bitManipulator(data, (long)RELATIVE_TIME_COUNTER_LENGTH);
+            relativeTimeCounter = swapEndian(relativeTimeCounter, 6);
+            unsigned char *headerCheckSum = bitManipulator(data, (long)HEADER_CHECKSUM_LENGTH);
+            headerCheckSum = swapEndian(headerCheckSum, 2);
+
+            unsigned long newPacketLength = bytesToLong(packetLength, PACKET_LENGTH_LENGTH/8);
+            unsigned long newDataLength = bytesToLong(dataLength, DATA_LENGTH/8);
+
+            // determine how many bits left are in the packet
+            // 192 is the total bits in the packet header
+            unsigned long bitsLeft = (newPacketLength * 8) - 192;
+
+            unsigned char *restOfPacket = bitManipulator(data, bitsLeft);
+            int length = (endByte - startByte)
+
+            unsigned char* pkt = (unsigned char*)malloc(length * sizeof(unsigned char));
+            for(int i = startByte; i < endByte; i++){
+                pkt[i-startByte] = data[i];
+            }
+
+            FILE* pktFile;
+            if((pktFile = fopen("pound.pkt", "ab")) == NULL){
+                cout << "File failed to open\n";
+                int pause;
+                cin >> pause;
+                exit(1);
+            }
+            //fputs("hello world\n", pktFile);
+            fprintf(pktFile, "%s%s", pkt, "#meJon");
+            fclose(pktFile);
+            free(pkt);
+        }
+
+        if (*fSize <= 0) {
+            done = 1;
+        }
+        packetsCreated++;
+    } // End of big loop
+} // end of createPkt()
+
 void testBitManipulate(unsigned char *dataBuffer, long fSize){
     //SANITY CHECKER #1
     //ask user if they would like to dump the current data in 'dataBuffer'
@@ -546,16 +611,17 @@ int main(){
         dataBuffer[i] = (unsigned char)fgetc(ptr);
     }
 
-    debug(dataBuffer, fSize, 0);
+    /*debug(dataBuffer, fSize, 0);
     string junk;
-    cin >> junk;
+    cin >> junk;*/
     // Uncomment to test the bit manipulate function
     // testBitManipulate(dataBuffer, fSize);
     //bitManipulator(dataBuffer, (41336 * 8), &fSize);
 
     // Putting the packets into a data structure
-    vector<unique_ptr<P1553>> myPackets;
-    myPackets = createPackets(dataBuffer, &fSize, false);
+//    vector<unique_ptr<P1553>> myPackets;
+//    myPackets = createPackets(dataBuffer, &fSize, false);
+    createPkt(dataBuffer, &fSize);
 
 
     free(dataBuffer);
