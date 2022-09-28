@@ -406,7 +406,8 @@ public:
                 } // end of printing for command word 0x4035
 
 
-            } else if (commandWord[0] == 0x40 && commandWord[1] == 0x55){
+            }
+            else if (commandWord[0] == 0x40 && commandWord[1] == 0x55){
                 // Word 1 Left Engine Total Fuel FLow Lb/Hr 2 bytes
                 unsigned char* leftEngineFuelFlow = bitManipulator(data, 16, fSize);
                 leftEngineFuelFlow = swapEndian(leftEngineFuelFlow, 2);
@@ -768,9 +769,166 @@ public:
                 if (print){
 
                 }
-
-            } else if (commandWord[0] == 0x40 && commandWord[1] == 0x6B){
                 
+            }
+            else if (commandWord[0] == 0x40 && commandWord[1] == 0x6B){
+                unsigned char* word5 = bitManipulator(data, 16, fSize);
+                word5 = swapEndian(word5, 2);
+
+                long *wordSize = (long*)malloc(sizeof(long));
+                *wordSize = 2;
+
+                bool cautionAltitude = bitManipulator(word5, 1, wordSize);
+                bitManipulator(word5, 1, wordSize);
+                bool cautionRightBleedAir = bitManipulator(word5, 1, fSize);
+                bool cautionLeftBleedAir = bitManipulator(word5, 1, fSize);
+                bitManipulator(word5, 4, wordSize);
+
+                // clear byte 1
+                bitManipulator(word5, 8, wordSize);
+
+                // trash 4 bites
+                bitManipulator(word5, 4, wordSize);
+
+                bool cautionCASyaw = bitManipulator(word5, 1, wordSize);
+                bool cautionCASroll = bitManipulator(word5, 1, wordSize);
+                bool cautionCASpitch = bitManipulator(word5, 1, wordSize);
+
+
+                // Word 2 2 bytes
+                unsigned char* word6 = bitManipulator(data, 16, fSize);
+                word6 = swapEndian(word6, 2);
+
+                *wordSize = 2;
+
+                bool cautionHydraulicPressure = bitManipulator(word6, 1, wordSize);
+                bool cautionBoostSystemMalfunction = bitManipulator(word6, 1, wordSize);
+                bool cautionRightEngineController = bitManipulator(word6, 1, wordSize);
+                bool cautionLeftEngineController = bitManipulator(word6, 1, wordSize);
+                bitManipulator(word6, 4, wordSize);
+
+                // clear byte
+                bitManipulator(word6, 8, wordSize);
+
+                // spare bit
+                bitManipulator(word6, 1, wordSize);
+
+                bool cautionEmergencyBoostOn = bitManipulator(word6, 1, wordSize);
+                bool cautionRollRatio = bitManipulator(word6, 1, wordSize);
+                bitManipulator(word6, 4, wordSize);
+                bool cautionPitchRatio = bitManipulator(word6, 1, wordSize);
+
+                // Word 3
+                unsigned char* word7 = bitManipulator(data, 16, fSize);
+                word7 = swapEndian(word7, 2);
+
+                *wordSize = 2;
+
+                // spare 15-7
+                bitManipulator(word7, 8, wordSize);
+                bitManipulator(word7, 1, wordSize);
+
+                bool cautionHydraulicPressurePC2B = bitManipulator(word7, 1, wordSize);
+                bool cautionHydraulicPressurePC1B = bitManipulator(word7, 1, wordSize);
+                bool cautionHydraulicPressureUTILB = bitManipulator(word7, 1, wordSize);
+                bool cautionHydraulicPressurePC1A = bitManipulator(word7, 1, wordSize);
+
+                // Word 4 TFR Set Clearance Status
+                unsigned char* TFRsetClearanceStatus = bitManipulator(data, 16, fSize);
+                TFRsetClearanceStatus = swapEndian(TFRsetClearanceStatus, 2);
+
+                // Word 5
+                unsigned char* pressureRatio = bitManipulator(data, 16, fSize);
+                pressureRatio = swapEndian(pressureRatio, 2);
+
+                // Get the first bit to see if the data is valid
+                bool pressureRatioValid = pressureRatio[0] >> 7;
+
+                // Turn the first bit into a 0 so it doesn't effect our value
+                pressureRatio[0] = pressureRatio[0]&0x7F;
+                // Convert the characters to a usable long value
+                unsigned long trueAirspeedValue = bytesToLong(pressureRatio, 2);
+
+                // Word 6
+                unsigned char* barCorrectedPressureAlt = bitManipulator(data, 16, fSize);
+                barCorrectedPressureAlt = swapEndian(barCorrectedPressureAlt, 2);
+
+                // Unit ft
+                unsigned long barCorrectedPressureAltValue = bytesToLong(barCorrectedPressureAlt, 2);
+
+                // Word 7
+                unsigned char* trueHeading = bitManipulator(data, 16, fSize);
+                trueHeading = swapEndian(trueHeading, 2);
+
+                unsigned long trueHeadingValue = bytesToLong(trueHeading, 2);
+
+                // Word 8
+                unsigned char* verticalVelocity = bitManipulator(data, 16, fSize);
+                verticalVelocity = swapEndian(verticalVelocity, 2);
+
+                unsigned long verticalVelocityValue = bytesToLong(verticalVelocity, 2);
+
+                // Word 9
+                unsigned char* word1 = bitManipulator(data, 16, fSize);
+                word1 = swapEndian(word1, 2);
+
+                *wordSize = 2;
+
+                // 15-6 spare
+                bitManipulator(word1, 8, wordSize);
+                bitManipulator(word1, 2, wordSize);
+
+                bool landingGearHandleUp = bitManipulator(word1, 1, wordSize);
+
+                // Word 10
+                unsigned char* word2 = bitManipulator(data, 16, fSize);
+                word2 = swapEndian(word2, 2);
+
+                *wordSize = 2;
+
+                // 15-10 spare
+                bitManipulator(word2, 6, wordSize);
+                bool autoTFconnect = bitManipulator(word2, 1, wordSize);
+                bool manualTFconnect = bitManipulator(word2, 1, wordSize);
+
+                // 7-0 are spare nothing else needed
+
+                // word 11
+                unsigned char* word3 = bitManipulator(data, 16, fSize);
+                word3 = swapEndian(word3, 2);
+
+                *wordSize = 2;
+
+                // 15-14 spare
+                bitManipulator(word3, 2, wordSize);
+
+                bool highLowAirspeedIndicatorFlashed = bitManipulator(word3, 1, wordSize);
+
+                // 12-11 spare
+                bitManipulator(word3, 2, wordSize);
+
+                bool aftControlStickOverrideIndicated = bitManipulator(word3, 1, wordSize);
+
+                bool AFCSDetectedTFfailed = bitManipulator(word3, 1, wordSize);
+
+                // 8-6 spare
+                bitManipulator(word3, 1, wordSize);
+
+                bitManipulator(word3, 8, wordSize);
+
+                bitManipulator(word3, 2, wordSize);
+
+                bool lowAltitudeMonitorFailed = bitManipulator(word3, 1, wordSize);
+
+                bool modeBFlyUpIndicated = bitManipulator(word3, 1, wordSize);
+
+                bool modeAFlyUpIndicated = bitManipulator(word3, 1, wordSize);
+
+                // 2-1 spare
+                bitManipulator(word3, 2, wordSize);
+
+                bool TFBitInhibited = bitManipulator(word3, 1, wordSize);
+
             } else if (commandWord[0] == 0x40 && commandWord[1] == 0x90){
 
                 // Word 1 Left Engine Fan Turbing Inlet Temp Deg C* 2 bytes
