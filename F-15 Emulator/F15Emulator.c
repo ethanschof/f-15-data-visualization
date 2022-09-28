@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <winsock2.h>
+#include "socket.h"
 #pragma comment(lib, "ws2_32.lib") //Winsock Library
 
 #define PORT 2023
