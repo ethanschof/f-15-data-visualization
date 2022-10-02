@@ -1095,7 +1095,7 @@ public:
                 *wordSize = 2;
 
                 // bit 15
-                unsigned char* tmp = bitManipulator(rightEngineValidityWord1, 1, wordSize);
+                tmp = bitManipulator(rightEngineValidityWord1, 1, wordSize);
                 bool validRightMachNum = tmp[0];
 
                 // bit 14
@@ -1180,7 +1180,7 @@ public:
                 unsigned long overloadWarningSystemStatusValue = bytesToLong(overloadWarningSystemStatus, 2);
 
             // bit 15
-                unsigned char* tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
+                tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool ADCSpikeTrueAOA = tmp[0];
             // bit 14
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
@@ -1249,10 +1249,10 @@ public:
                 bool ASPLatch72 = tmp[0];
 
             // Word 4 Forward Fuselage Warning Ratio 2 bytes
-                unsigned char* fwdFueslageWarningRatio = bitManipulator(data, 16, fSize);
-                fwdFueslageWarningRatio = swapEndian(fwdFueslageWarningRatio, 2);
+                unsigned char* fwdFuselageWarningRatio = bitManipulator(data, 16, fSize);
+                fwdFuselageWarningRatio = swapEndian(fwdFuselageWarningRatio, 2);
 
-                unsigned long fwdFueslageWarningRatioValue = bytesToLong(fwdFueslageWarningRatio, 2);
+                unsigned long fwdFuselageWarningRatioValue = bytesToLong(fwdFuselageWarningRatio, 2);
 
             // Word 5 Wing Warning Ratio 2 bytes
                 unsigned char* wingWarningRatio = bitManipulator(data, 16, fSize);
@@ -1367,19 +1367,19 @@ public:
                 unsigned char* tmp = bitManipulator(overloadWarning, 1, wordSize);
                 bool excessFuel = tmp[0];
                 // bit 14
-                unsigned char* tmp = bitManipulator(overloadWarning, 1, wordSize);
+                tmp = bitManipulator(overloadWarning, 1, wordSize);
                 bool PACSCommInvalid = tmp[0];
                 // bit 13
-                unsigned char* tmp = bitManipulator(overloadWarning, 1, wordSize);
+                tmp = bitManipulator(overloadWarning, 1, wordSize);
                 bool invalidCFTSAboard = tmp[0];
                 // bit 12
-                unsigned char* tmp = bitManipulator(overloadWarning, 1, wordSize);
+                tmp = bitManipulator(overloadWarning, 1, wordSize);
                 bool AGCountGT1 = tmp[0];
                 // bit 11
-                unsigned char* tmp = bitManipulator(overloadWarning, 1, wordSize);
+                tmp = bitManipulator(overloadWarning, 1, wordSize);
                 bool invalidArmamentAGCountNoID = tmp[0];
                 // bit 10
-                unsigned char* tmp = bitManipulator(overloadWarning, 1, wordSize);
+                tmp = bitManipulator(overloadWarning, 1, wordSize);
                 bool TEWSIDOnAnyStationBut5 = tmp[0];
                 // bit 9-0 Reserved
                 unsigned char* spare = bitManipulator(overloadWarning, 10, wordSize);
@@ -1417,26 +1417,26 @@ public:
                 unsigned char* spareW2 = bitManipulator(date, 8, wordSize);
 
                 // 39-36
-                unsigned char* tmp = bitManipulator(date, 4, wordSize);
+                tmp = bitManipulator(date, 4, wordSize);
                 bool dayOnesDigit = tmp[0];
                 // 35-32
-                unsigned char* tmp = bitManipulator(date, 4, wordSize);
+                tmp = bitManipulator(date, 4, wordSize);
                 bool dayTensDigit = tmp[0];
                 // clear byte 5 from bitmanipulator
                 bitManipulator(date, 8, wordSize);
                 // 23-20
-                unsigned char* tmp = bitManipulator(date, 4, wordSize);
+                tmp = bitManipulator(date, 4, wordSize);
                 bool monthOnesDigit = tmp[0];
                 // 19-16
-                unsigned char* tmp = bitManipulator(date, 4, wordSize);
+                tmp = bitManipulator(date, 4, wordSize);
                 bool monthTensDigit = tmp[0];
                // clear byte 2 from bitmanipulator
                 bitManipulator(date, 8, wordSize);
                 // 7-4
-                unsigned char* tmp = bitManipulator(date, 4, wordSize);
+                tmp = bitManipulator(date, 4, wordSize);
                 bool yearOnesDigit = tmp[0];
                 // 3-0
-                unsigned char* tmp = bitManipulator(date, 4, wordSize);
+                tmp = bitManipulator(date, 4, wordSize);
                 bool yearTensDigit = tmp[0];
 
                 // Word 11 Mission Type Code 2 bytes
@@ -1448,11 +1448,11 @@ public:
                 //bit 15-8 spare
 
                 //bit 7-4
-                unsigned char* tmp = bitManipulator(missionTypeCode, 4, wordSize);
+                tmp = bitManipulator(missionTypeCode, 4, wordSize);
                 bool missionCodeDigit7 = tmp[0];
 
                 //bit 3-0
-                unsigned char* tmp = bitManipulator(missionTypeCode, 4, wordSize);
+                tmp = bitManipulator(missionTypeCode, 4, wordSize);
                 bool missionCodeDigit1 = tmp[0];
 
                 // Word 12 Aircraft Serial Number 6 bytes
