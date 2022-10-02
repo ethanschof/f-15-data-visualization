@@ -1,7 +1,9 @@
 #include <string>
 #include <vector>
+#include <cmath>
 using namespace std;
 #include "1553helper.hpp"
+
 
 class Packet
 {
@@ -109,6 +111,15 @@ public:
             bytes[i] = BEBytes[(numBytes-1)-i];
         }
         return BEBytes;
+    }
+
+    int bitsToInt(unsigned char* bits, int numBits){
+        int value = 0;
+        for (int i = 1; i <= numBits; ++i) {
+            value = value + (int)bits[i] * pow(2, numBits-1);
+        }
+
+        return value;
     }
 
     unsigned long bytesToLong(unsigned char* bytes, int numBytes){
@@ -786,7 +797,7 @@ public:
                 // clear byte 1
                 bitManipulator(word5, 8, wordSize);
 
-                // trash 4 bites
+                // trash 4 bits
                 bitManipulator(word5, 4, wordSize);
 
                 bool cautionCASyaw = bitManipulator(word5, 1, wordSize);
@@ -928,7 +939,8 @@ public:
 
                 bool TFBitInhibited = bitManipulator(word3, 1, wordSize);
 
-            } else if (commandWord[0] == 0x40 && commandWord[1] == 0x90){
+            }
+            else if (commandWord[0] == 0x40 && commandWord[1] == 0x90){
 
                 // Word 1 Left Engine Fan Turbing Inlet Temp Deg C* 2 bytes
                 unsigned char* leftEngineFanTemp = bitManipulator(data, 16, fSize);
@@ -1053,6 +1065,9 @@ public:
                 // bit 8
                 tmp = bitManipulator(leftEngineValidityWord1, 1, wordSize);
                 bool validLeftBurnerPressure = tmp[0];
+
+                // Clear byte 1
+                bitManipulator(leftEngineValidityWord1, 8, wordSize);
                 
                 // bit 7
                 tmp = bitManipulator(leftEngineValidityWord1, 1, wordSize);
@@ -1086,7 +1101,7 @@ public:
                  tmp = bitManipulator(leftEngineValidityWord1, 1, wordSize);
                 bool validLeftFanTurbineInletTemp = tmp[0];
                 
-                // Word 15 Right Engine Validity Word 1 2 bytes
+                // Word 16 Right Engine Validity Word 1 2 bytes
                 unsigned char* rightEngineValidityWord1 = bitManipulator(data, 16, fSize);
                 rightEngineValidityWord1 = swapEndian(rightEngineValidityWord1, 2);
 
@@ -1125,6 +1140,9 @@ public:
                 // bit 8
                 tmp = bitManipulator(rightEngineValidityWord1, 1, wordSize);
                 bool validRightBurnerPressure = tmp[0];
+
+                // Clear byte
+                bitManipulator(rightEngineValidityWord1, 8, wordSize);
                 
                 // bit 7
                 tmp = bitManipulator(rightEngineValidityWord1, 1, wordSize);
@@ -1158,209 +1176,260 @@ public:
                  tmp = bitManipulator(rightEngineValidityWord1, 1, wordSize);
                 bool validRightFanTurbineInletTemp = tmp[0];
                 
-            } else if (commandWord[0] == 0x40 && commandWord[1] == 0xB0){
-            // Word 1 Discrete Word 8 2 bytes
+            }
+            else if (commandWord[0] == 0x40 && commandWord[1] == 0xB0){
+                // Word 1 Discrete Word 8 2 bytes
                 unsigned char* discreteWord8 = bitManipulator(data, 16, fSize);
                 discreteWord8 = swapEndian(discreteWord8, 2);
 
-                unsigned long discreteWord8Value = bytesToLong(discreteWord8, 2);
-
                 *wordSize = 2;
 
-            // bits 15-1 spare
-                unsigned char* spare = bitManipulator(discreteWord8, 15, wordSize);
-            // bit 0 Weight Off Wheels
+                // bits 15-1 spare
+                bitManipulator(discreteWord8, 8, wordSize);
+                bitManipulator(discreteWord8, 7, wordSize);
+
+                // bit 0 Weight Off Wheels
                 unsigned char* tmp = bitManipulator(discreteWord8, 1, wordSize);
                 bool weightOffWheels = tmp[0];
 
-            // Word 2 Overload Warning System Status 2 bytes
+                // Word 2 Overload Warning System Status 2 bytes
                 unsigned char* overloadWarningSystemStatus = bitManipulator(data, 16, fSize);
                 overloadWarningSystemStatus = swapEndian(overloadWarningSystemStatus, 2);
 
-                unsigned long overloadWarningSystemStatusValue = bytesToLong(overloadWarningSystemStatus, 2);
+                *wordSize = 2;
 
-            // bit 15
+                // bit 15
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool ADCSpikeTrueAOA = tmp[0];
-            // bit 14
+                // bit 14
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool ADCSpikePressureRatio = tmp[0];
-            // bit 13
+               // bit 13
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool ADCSpikeMachNum = tmp[0];
-            // bit 12
+                // bit 12
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool ADCSpikeBaroCorrectedPressAlt = tmp[0];
-            // bit 11
+                // bit 11
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool ADCSpikeNormAcceleration = tmp[0];
-            // bit 10
+                // bit 10
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool ADCDataInvalid = tmp[0];
-            // bit 9
+                // bit 9
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool cumVoiceTimerTimedOut = tmp[0];
-            // bit 8
+                // bit 8
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool MPDPCommInvalid = tmp[0];
-            // bit 7
+
+                // clear byte 1
+                bitManipulator(overloadWarningSystemStatus, 8, wordSize);
+
+                 // bit 7
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool SGPNotOperative = tmp[0];
-            // bit 6
+                // bit 6
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool GPNotOperative = tmp[0];
-            // bit 5
+                // bit 5
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool AFCSCommORDataInvalid = tmp[0];
-            // bit 4
+                // bit 4
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool SGPBCommInvalid = tmp[0];
-            // bit 3
+                // bit 3
                 tmp = bitManipulator(overloadWarningSystemStatus, 1, wordSize);
                 bool CAUFailure = tmp[0];
-            // bits 2-0 spare
-                spare = bitManipulator(overloadWarningSystemStatus, 3, wordSize);
+                // bits 2-0 spare
+                bitManipulator(overloadWarningSystemStatus, 3, wordSize);
                 
-            // Word 3 Discrete Word 9 2 bytes
+                // Word 3 Discrete Word 9 2 bytes
                 unsigned char* discreteWord9 = bitManipulator(data, 16, fSize);
                 discreteWord9 = swapEndian(discreteWord9, 2);
 
-                unsigned long discreteWord9Value = bytesToLong(discreteWord9, 2);
+                *wordSize = 2;
 
-            // bits 15-6 spare
-                spare = bitManipulator(discreteWord9, 10, wordSize);
-            // bit 5 Solid 900Hz Tone
+                // bits 15-6 spare
+                bitManipulator(discreteWord9, 8, wordSize);
+                bitManipulator(discreteWord9, 2, wordSize);
+
+                // bit 5 Solid 900Hz Tone
                 tmp = bitManipulator(discreteWord9, 1, wordSize);
                 bool solid900Tone = tmp[0];
-            // bit 4 AOA Doublet Tone
+
+                // bit 4 AOA Doublet Tone
                 tmp = bitManipulator(discreteWord9, 1, wordSize);
                 bool AOADoubletTone = tmp[0];
-            // bit 3 Intermittent 4Hz Tone
+
+                // bit 3 Intermittent 4Hz Tone
                 tmp = bitManipulator(discreteWord9, 1, wordSize);
                 bool intermittent4Tone = tmp[0];
-            // bit 2 Intermittent 10Hz Tone
+
+                // bit 2 Intermittent 10Hz Tone
                 tmp = bitManipulator(discreteWord9, 1, wordSize);
                 bool intermittent10Tone = tmp[0];
-            // bit 1 Overload Warning System Voice Msg
+
+                // bit 1 Overload Warning System Voice Msg
                 tmp = bitManipulator(discreteWord9, 1, wordSize);
                 bool overloadWarningSystemVMsg = tmp[0];
-            // bit 0 ASP Latch 72 Set
+
+                // bit 0 ASP Latch 72 Set
                 tmp = bitManipulator(discreteWord9, 1, wordSize);
                 bool ASPLatch72 = tmp[0];
 
-            // Word 4 Forward Fuselage Warning Ratio 2 bytes
+                // Word 4 Forward Fuselage Warning Ratio 2 bytes
                 unsigned char* fwdFuselageWarningRatio = bitManipulator(data, 16, fSize);
                 fwdFuselageWarningRatio = swapEndian(fwdFuselageWarningRatio, 2);
 
                 unsigned long fwdFuselageWarningRatioValue = bytesToLong(fwdFuselageWarningRatio, 2);
 
-            // Word 5 Wing Warning Ratio 2 bytes
+                // Word 5 Wing Warning Ratio 2 bytes
                 unsigned char* wingWarningRatio = bitManipulator(data, 16, fSize);
                 wingWarningRatio = swapEndian(wingWarningRatio, 2);
 
                 unsigned long wingWarningRatioValue = bytesToLong(wingWarningRatio, 2);
 
-            // Word 6 Left Horizontal Tail Warning Ratio 2 bytes
+                // Word 6 Left Horizontal Tail Warning Ratio 2 bytes
                 unsigned char* lHorizontalTailWarningRatio = bitManipulator(data, 16, fSize);
                 lHorizontalTailWarningRatio = swapEndian(lHorizontalTailWarningRatio, 2);
 
                 unsigned long lHorizontalTailWarningRatioValue = bytesToLong(lHorizontalTailWarningRatio, 2);
 
-            // Word 7 Right Horizontal Tail Warning Ratio 2 bytes
+                // Word 7 Right Horizontal Tail Warning Ratio 2 bytes
                 unsigned char* rHorizontalTailWarningRatio = bitManipulator(data, 16, fSize);
                 rHorizontalTailWarningRatio = swapEndian(rHorizontalTailWarningRatio, 2);
 
                 unsigned long rHorizontalTailWarningRatioValue = bytesToLong(rHorizontalTailWarningRatio, 2);
 
-            // Word 8 Pylon Warning Ratio 2 bytes
+                // Word 8 Pylon Warning Ratio 2 bytes
                 unsigned char* pylonWarningRatio = bitManipulator(data, 16, fSize);
                 pylonWarningRatio = swapEndian(pylonWarningRatio, 2);
 
                 unsigned long pylonWarningRatioValue = bytesToLong(pylonWarningRatio, 2);
 
-            // Word 9 Mass Items Warning Ratio 2 bytes
+                // Word 9 Mass Items Warning Ratio 2 bytes
                 unsigned char* massItemsWarningRatio = bitManipulator(data, 16, fSize);
                 massItemsWarningRatio = swapEndian(massItemsWarningRatio, 2);
 
                 unsigned long massItemsWarningRatioValue = bytesToLong(massItemsWarningRatio, 2);
 
-            // Word 10 CFT Warning Ratio 2 bytes
+                // Word 10 CFT Warning Ratio 2 bytes
                 unsigned char* CFTWarningRatio = bitManipulator(data, 16, fSize);
                 CFTWarningRatio = swapEndian(CFTWarningRatio, 2);
 
                 unsigned long CFTWarningRatioValue = bytesToLong(CFTWarningRatio, 2);
 
-            // Word 11 Forward Fuselage NZ Allowable 2 bytes
+                // Word 11 Forward Fuselage NZ Allowable 2 bytes
                 unsigned char* fwdFuselageNZAllowable = bitManipulator(data, 16, fSize);
                 fwdFuselageNZAllowable = swapEndian(fwdFuselageNZAllowable, 2);
 
                 unsigned long fwdFuselageNZAllowableValue = bytesToLong(fwdFuselageNZAllowable, 2);
 
-            // Word 12 Wing NZ Allowable 2 bytes
+                // Word 12 Wing NZ Allowable 2 bytes
                 unsigned char* wingNZAllowable = bitManipulator(data, 16, fSize);
                 wingNZAllowable = swapEndian(wingNZAllowable, 2);
 
                 unsigned long wingNZAllowableValue = bytesToLong(wingNZAllowable, 2);
 
-            // Word 13 Pylon NZ Allowable 2 bytes
+                // Word 13 Pylon NZ Allowable 2 bytes
                 unsigned char* pylonNZAllowable = bitManipulator(data, 16, fSize);
                 pylonNZAllowable = swapEndian(pylonNZAllowable, 2);
 
                 unsigned long pylonNZAllowableValue = bytesToLong(pylonNZAllowable, 2);
 
-            // Word 14 CFT NZ Allowable 2 bytes
+                // Word 14 CFT NZ Allowable 2 bytes
                 unsigned char* CFTNZAllowable = bitManipulator(data, 16, fSize);
                 CFTNZAllowable = swapEndian(CFTNZAllowable, 2);
 
                 unsigned long CFTNZAllowableValue = bytesToLong(CFTNZAllowable, 2);
 
-            // Word 15 Time 2 bytes
+                // Word 15 Time 2 bytes
                 unsigned char* time = bitManipulator(data, 16, fSize);
                 time = swapEndian(time, 2);
 
-                unsigned long timeValue = bytesToLong(time, 2);
+                *wordSize = 2;
 
-            // bits spare 15-12
-                spare = bitManipulator(time, 4, wordSize);
-            // bits 11-6 Minutes
+                // bits spare 15-12
+                bitManipulator(time, 4, wordSize);
+
+                // bits 11-6 Minutes
+                tmp = bitManipulator(time, 4, wordSize);
+
+                // conduct a modified bits to int because of the bits being split across the bytes
+                int value = 0;
+                for (int i = 1; i <= 4; ++i) {
+                    value = value + (int)tmp[i] * pow(2, 6-i);
+                }
+
+                // Clear byte
+                bitManipulator(time, 8, wordSize);
+
+                // grab bits 7 and 6
+                tmp = bitManipulator(time, 2, wordSize);
+
+                for (int i = 0; i < 2; ++i) {
+                    value = value + (int)tmp[i] * pow(2, 1-i);
+                }
+
+                int minutes = value;
+
+
+                // bits 5-0 Hours
                 tmp = bitManipulator(time, 6, wordSize);
-                bool minutes = tmp[0];
-            // bits 5-0 Hours
-                tmp = bitManipulator(time, 6, wordSize);
-                bool hours = tmp[0];
-            // Word 16 Seconds 2 bytes with Valid Bit
-                unsigned char* seconds = bitManipulator(data, 16, fSize);
-                seconds = swapEndian(seconds, 2);
+                int hours = bitsToInt(tmp, 6);
 
-                unsigned long secondsValue = bytesToLong(seconds, 2);
+                // Word 16 Seconds 2 bytes with Valid Bit
+                unsigned char* secondsChar = bitManipulator(data, 16, fSize);
+                secondsChar = swapEndian(secondsChar, 2);
 
-            // bits 31 time is valid
-                tmp = bitManipulator(seconds, 1, wordSize);
+                *wordSize = 2;
+
+                // bits 31 time is valid
+                tmp = bitManipulator(secondsChar, 1, wordSize);
                 bool timeValid = tmp[0];
-            // bits 30-22 spare
-                spare = bitManipulator(seconds, 9, wordSize);
-            // bits 21-16 seconds
-                tmp = bitManipulator(seconds, 6, wordSize);
-                bool secondsBits = tmp[0];
+
+                // bits 30-22 spare
+                bitManipulator(secondsChar, 7, wordSize);
+                // clear byte
+                bitManipulator(secondsChar, 8, wordSize);
+                bitManipulator(secondsChar, 2, wordSize);
+
+                // bits 21-16 secondsChar
+                tmp = bitManipulator(secondsChar, 6, wordSize);
+                int seconds = bitsToInt(tmp, 6);
               
-            } else if (commandWord[0] == 0x40 && commandWord[1] == 0xD3){
-                // Word 1 DiscreteWord10  2 bytes
-                unsigned char* DiscreteWord10 = bitManipulator(data, 16, fSize);
-                DiscreteWord10 = swapEndian(DiscreteWord10, 2);
+            } 
+            else if (commandWord[0] == 0x40 && commandWord[1] == 0xD3){
+                // Word 1 discreteWord10  2 bytes
+                unsigned char* discreteWord10 = bitManipulator(data, 16, fSize);
+                discreteWord10 = swapEndian(discreteWord10, 2);
 
-                unsigned long DiscreteWord10Value = bytesToLong(DiscreteWord10, 2);
+                *wordSize = 2;
 
-                // Word 2 DiscreteWord11  2 bytes
-                unsigned char* DiscreteWord11 = bitManipulator(data, 16, fSize);
-                DiscreteWord11 = swapEndian(DiscreteWord11, 2);
+                // Bits 15-1 spare
+                bitManipulator(discreteWord10, 8, wordSize);
+                bitManipulator(discreteWord10, 7, wordSize);
 
-                unsigned long DiscreteWord11Value = bytesToLong(DiscreteWord11, 2);
+                // Bit 0 is value
+                bool IPEEngineInstalled = bitManipulator(discreteWord10, 1, wordSize);
+
+                // Word 2 discreteWord11  2 bytes
+                unsigned char* discreteWord11 = bitManipulator(data, 16, fSize);
+                discreteWord11 = swapEndian(discreteWord11, 2);
+
+                *wordSize = 2;
+
+                // Bits 15-1 spare
+                bitManipulator(discreteWord11, 8, wordSize);
+                bitManipulator(discreteWord11, 7, wordSize);
+
+                // Bit 0
+                bool CFTSInstalled = bitManipulator(discreteWord11, 1, wordSize);
 
                 // Word 3 Overload Warning System Status 2  2 bytes
                 unsigned char* overloadWarning = bitManipulator(data, 16, fSize);
                 overloadWarning = swapEndian(overloadWarning, 2);
-
-                unsigned long overloadWarningValue = bytesToLong(overloadWarning, 2);
 
                 *wordSize = 2;
                 // bit 15
@@ -1381,8 +1450,9 @@ public:
                 // bit 10
                 tmp = bitManipulator(overloadWarning, 1, wordSize);
                 bool TEWSIDOnAnyStationBut5 = tmp[0];
+
                 // bit 9-0 Reserved
-                unsigned char* spare = bitManipulator(overloadWarning, 10, wordSize);
+                // So we don't have to do anything
 
                 // Word 4 Aircraft Gross Weight Lb  2 bytes
                 unsigned char* ACWeight = bitManipulator(data, 16, fSize);
@@ -1414,81 +1484,145 @@ public:
 
                 *wordSize = 6;
 
-                unsigned char* spareW2 = bitManipulator(date, 8, wordSize);
+                // bits 47 - 40 are spare
+                bitManipulator(date, 8, wordSize);
 
                 // 39-36
                 tmp = bitManipulator(date, 4, wordSize);
-                bool dayOnesDigit = tmp[0];
+                int dayOnesDigit = bitsToInt(tmp, 4);
+
                 // 35-32
                 tmp = bitManipulator(date, 4, wordSize);
-                bool dayTensDigit = tmp[0];
+                int dayTensDigit = bitsToInt(tmp, 4);
+
                 // clear byte 5 from bitmanipulator
                 bitManipulator(date, 8, wordSize);
+
+                // Byte 4 is spare
+                bitManipulator(data, 8, wordSize);
+
                 // 23-20
                 tmp = bitManipulator(date, 4, wordSize);
-                bool monthOnesDigit = tmp[0];
+                int monthOnesDigit = bitsToInt(tmp, 4);
+
                 // 19-16
                 tmp = bitManipulator(date, 4, wordSize);
-                bool monthTensDigit = tmp[0];
-               // clear byte 2 from bitmanipulator
+                int monthTensDigit = bitsToInt(tmp, 4);
+
+               // clear byte 3 from bitmanipulator
                 bitManipulator(date, 8, wordSize);
+
+                // Byte 2 spare
+                bitManipulator(date, 8, wordSize);
+
                 // 7-4
                 tmp = bitManipulator(date, 4, wordSize);
-                bool yearOnesDigit = tmp[0];
+                int yearOnesDigit = bitsToInt(tmp, 4);
+
                 // 3-0
                 tmp = bitManipulator(date, 4, wordSize);
-                bool yearTensDigit = tmp[0];
+                int yearTensDigit = bitsToInt(tmp, 4);
 
                 // Word 11 Mission Type Code 2 bytes
                 unsigned char* missionTypeCode = bitManipulator(data, 16, fSize);
                 missionTypeCode = swapEndian(missionTypeCode, 2);
 
-                unsigned long missionTypeCodeValue = bytesToLong(missionTypeCode, 2);
-
-                //bit 15-8 spare
+                *wordSize = 2;
+                // First byte is spare
+                bitManipulator(missionTypeCode, 8, wordSize);
 
                 //bit 7-4
                 tmp = bitManipulator(missionTypeCode, 4, wordSize);
-                bool missionCodeDigit7 = tmp[0];
+                int missionCodeDigit7 = bitsToInt(tmp, 4);
 
                 //bit 3-0
                 tmp = bitManipulator(missionTypeCode, 4, wordSize);
-                bool missionCodeDigit1 = tmp[0];
+                int missionCodeDigit1 = bitsToInt(tmp, 4);
 
                 // Word 12 Aircraft Serial Number 6 bytes
                 unsigned char* ACSerialNum = bitManipulator(data, 48, fSize);
                 ACSerialNum = swapEndian(ACSerialNum, 2);
 
-                unsigned long ACSerialNumValue = bytesToLong(ACSerialNum, 2);
+                *wordSize = 6;
+
+                // 47 -40 spare
+                bitManipulator(ACSerialNum, 8, wordSize);
+
+                // 39-36
+                tmp = bitManipulator(ACSerialNum, 4, wordSize);
+                int acNumDigit6 = bitsToInt(tmp, 4);
+
+                // 35-32
+                tmp = bitManipulator(ACSerialNum, 4, wordSize);
+                int acNumDigit5 = bitsToInt(tmp, 4);
+
+                // Clear byte 5
+                bitManipulator(ACSerialNum, 8, wordSize);
+
+                // Byte 4 spare
+                bitManipulator(ACSerialNum, 8, wordSize);
+
+                // 23-20
+                tmp = bitManipulator(ACSerialNum, 4, wordSize);
+                int acNumDigit4 = bitsToInt(tmp, 4);
+
+                // 19-16
+                tmp = bitManipulator(ACSerialNum, 4, wordSize);
+                int acNumDigit2 = bitsToInt(tmp, 4);
+
+                // Clear byte 3
+                bitManipulator(ACSerialNum, 8, wordSize);
+
+                // Byte 2 spare
+                bitManipulator(ACSerialNum, 8, wordSize);
+
+                // 7-4
+                tmp = bitManipulator(ACSerialNum, 4, wordSize);
+                int acNumDigit3 = bitsToInt(tmp, 4);
+
+                // 3 - 0
+                tmp = bitManipulator(ACSerialNum, 4, wordSize);
+                int acNumDigit1 = bitsToInt(tmp, 4);
+
                 // Word 15 Wing ID 4 bytes
                 unsigned char* wingID = bitManipulator(data, 32, fSize);
                 wingID = swapEndian(wingID, 2);
 
-                unsigned long wingIDValue = bytesToLong(wingID, 2);
+                *wordSize = 4;
 
-                // bit 31-24 spare
+                // Byte 4 spare
+                bitManipulator(wingID, 8, wordSize);
 
                 // bit 23-20
                 tmp = bitManipulator(wingID, 4, wordSize);
-                bool wingNumDigit4 = tmp[0];
+                int wingNumDigit4 = bitsToInt(tmp, 4);
                 // bit 19-16
                 tmp = bitManipulator(wingID, 4, wordSize);
-                bool wingNumDigit2 = tmp[0];
-                // bit 15-8 spare
+                int wingNumDigit2 = bitsToInt(tmp, 4);
+
+                // Clear byte 3
+                bitManipulator(wingID, 8, wordSize);
+
+                // Byte 2 spare
+                bitManipulator(wingID, 8, wordSize);
 
                 // bit 7-4
                 tmp = bitManipulator(wingID, 4, wordSize);
-                bool wingNumDigit3 = tmp[0];
+                int wingNumDigit3 = bitsToInt(tmp, 4);
+
                 // bit 3-0
                 tmp = bitManipulator(wingID, 4, wordSize);
-                bool wingNumDigit1 = tmp[0];
+                int wingNumDigit1 = bitsToInt(tmp, 4);
 
                 // Word 17 SFDR IBIT Control
                 unsigned char* IBITControl = bitManipulator(data, 16, fSize);
                 IBITControl = swapEndian(IBITControl, 2);
-                unsigned long IBITControlValue = bytesToLong(IBITControl, 2);
+
+                *wordSize = 2;
 
                 // bit 15-1 spare
+                bitManipulator(IBITControl, 8, wordSize);
+                bitManipulator(IBITControl, 7, wordSize);
 
                 // bit 0
                 tmp = bitManipulator(IBITControl, 1, wordSize);
@@ -1506,216 +1640,226 @@ public:
 
                 unsigned long station8WeightValue = bytesToLong(station8Weight, 2);
 
-            } else if (commandWord[0] == 0x40 && commandWord[1] == 0xE8){
+            }
+            else if (commandWord[0] == 0x40 && commandWord[1] == 0xE8){
                 // Word 1 GCWS Status Discretes  2 bytes
                 unsigned char* GCWSStatusDiscretes = bitManipulator(data, 16, fSize);
                 GCWSStatusDiscretes = swapEndian(GCWSStatusDiscretes, 2);
 
-                unsigned long GCWSStatusDiscretesValue = bytesToLong(GCWSStatusDiscretes, 2);
-
                 *wordSize = 2;
+
                 //bit 15
                 unsigned char* tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete16 = tmp [0];
+                bool GCWSStatusDiscrete16 = tmp [0];
 
                 //bit 14
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete15 = tmp [0];
+                bool GCWSStatusDiscrete15 = tmp [0];
 
                 //bit 13
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete14 = tmp [0];
+                bool GCWSStatusDiscrete14 = tmp [0];
 
                 //bit 12
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete13 = tmp [0];
+                bool GCWSStatusDiscrete13 = tmp [0];
 
                 //bit 11
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete12 = tmp [0];
+                bool GCWSStatusDiscrete12 = tmp [0];
 
                 //bit 10
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete11 = tmp [0];
+                bool GCWSStatusDiscrete11 = tmp [0];
 
                 //bit 9
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete10 = tmp [0];
+                bool GCWSStatusDiscrete10 = tmp [0];
 
                 //bit 8
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete9 = tmp [0];
+                bool GCWSStatusDiscrete9 = tmp [0];
+
+                // Clear the first byte
+                bitManipulator(GCWSStatusDiscretes, 8, wordSize);
 
                 //bit 7
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete8 = tmp [0];
+                bool GCWSStatusDiscrete8 = tmp [0];
 
                 //bit 6
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete7 = tmp [0];
+                bool GCWSStatusDiscrete7 = tmp [0];
 
                 //bit 5
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete6 = tmp [0];
+                bool GCWSStatusDiscrete6 = tmp [0];
 
                 //bit 4
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete5 = tmp [0];
+                bool GCWSStatusDiscrete5 = tmp [0];
 
                 //bit 3
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete4 = tmp [0];
+                bool GCWSStatusDiscrete4 = tmp [0];
 
                 //bit 2
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete3 = tmp [0];
+                bool GCWSStatusDiscrete3 = tmp [0];
 
                 //bit 1
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete2 = tmp [0];
+                bool GCWSStatusDiscrete2 = tmp [0];
 
                 //bit 0
                 tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete1 = tmp [0];
+                bool GCWSStatusDiscrete1 = tmp [0];
+
                 // Word 2 GCWS Validity Discretes  2 bytes
                 unsigned char* GCWSValidityDiscretes = bitManipulator(data, 16, fSize);
                 GCWSValidityDiscretes = swapEndian(GCWSValidityDiscretes, 2);
 
-                unsigned long GCWSValidityDiscretesValue = bytesToLong(GCWSValidityDiscretes, 2);
+                *wordSize = 2;
                 
                  //bit 15
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete16 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete16 = tmp [0];
 
                 //bit 14
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete15 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete15 = tmp [0];
 
                 //bit 13
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete14 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete14 = tmp [0];
 
                 //bit 12
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete13 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete13 = tmp [0];
 
                 //bit 11
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete12 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete12 = tmp [0];
 
                 //bit 10
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete11 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete11 = tmp [0];
 
                 //bit 9
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete10 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete10 = tmp [0];
 
                 //bit 8
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete9 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete9 = tmp [0];
+
+                // Clear first byte
+                bitManipulator(GCWSValidityDiscretes, 8, wordSize);
 
                 //bit 7
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete8 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete8 = tmp [0];
 
                 //bit 6
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete7 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete7 = tmp [0];
 
                 //bit 5
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete6 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete6 = tmp [0];
 
                 //bit 4
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete5 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete5 = tmp [0];
 
                 //bit 3
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete4 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete4 = tmp [0];
 
                 //bit 2
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete3 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete3 = tmp [0];
 
                 //bit 1
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete2 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete2 = tmp [0];
 
                 //bit 0
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete1 = tmp [0];
+                tmp = bitManipulator(GCWSValidityDiscretes, 1, wordSize);
+                bool GCWSValidityDiscrete1 = tmp [0];
 
                 // Word 3 GCWS Data Reasonable Discretes  2 bytes
                 unsigned char* GCWSReasonableDiscretes = bitManipulator(data, 16, fSize);
                 GCWSReasonableDiscretes = swapEndian(GCWSReasonableDiscretes, 2);
 
-                unsigned long GCWSReasonableDiscretesValue = bytesToLong(GCWSReasonableDiscretes, 2);
+                *wordSize = 2;
 
                  //bit 15
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete16 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete16 = tmp [0];
 
                 //bit 14
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete15 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete15 = tmp [0];
 
                 //bit 13
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete14 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete14 = tmp [0];
 
                 //bit 12
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete13 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete13 = tmp [0];
 
                 //bit 11
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete12 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete12 = tmp [0];
 
                 //bit 10
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete11 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete11 = tmp [0];
 
                 //bit 9
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete10 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete10 = tmp [0];
 
                 //bit 8
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete9 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete9 = tmp [0];
+
+                // Trash the first byte
+                bitManipulator(GCWSReasonableDiscretes, 8, wordSize);
 
                 //bit 7
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete8 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete8 = tmp [0];
 
                 //bit 6
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete7 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete7 = tmp [0];
 
                 //bit 5
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete6 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete6 = tmp [0];
 
                 //bit 4
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete5 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete5 = tmp [0];
 
                 //bit 3
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete4 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete4 = tmp [0];
 
                 //bit 2
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete3 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete3 = tmp [0];
 
                 //bit 1
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete2 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete2 = tmp [0];
 
                 //bit 0
-                tmp = bitManipulator(GCWSStatusDiscretes, 1, wordSize);
-                bool Discrete1 = tmp [0];
+                tmp = bitManipulator(GCWSReasonableDiscretes, 1, wordSize);
+                bool GCWSReasonableDiscrete1 = tmp [0];
                 
                 // Word 4 GCWS HD feet 2 bytes
                 unsigned char* GCWSHD = bitManipulator(data, 16, fSize);
