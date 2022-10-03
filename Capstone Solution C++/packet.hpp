@@ -68,13 +68,14 @@ public:
 class P1553 : public Packet
 {
 private:
-	int msgCount;
 	ChanSpecData chanSpec; // uses ChanSpecData class from 1553helper.hpp
 	Messages messages; // uses Message class from 1553helper.hpp
 	uint16_t wordCnt;
 	uint16_t* pauData;
 
 public:
+    int msgCount;
+
     P1553() : Packet() {
         int msgCount = 0;
         ChanSpecData chanSpec = ChanSpecData();
@@ -198,11 +199,28 @@ public:
         return desiredBits;
     }
 
+    bool isPrintable(){
+        if (this->msgCount == 0){
+            return false;
+        }
+
+        int numMessages = this->messages.intraHeaders.size();
+        for (int messageNumber = 0; messageNumber < numMessages; ++messageNumber){
+            unsigned char *commandWord = this->messages.commWords.at(messageNumber).word1;
+
+            if (commandWord[0] == 0x40 && commandWord[1] == 0x35){
+                return true;
+            }
+        }
+        return false;
+    }
+
     void interpretData(bool print){
         long *wordSize = (long*)malloc(sizeof(long));
+        int numMessages = this->messages.intraHeaders.size();
 
         // iterate through all messages in the packet
-        for (int messageNumber = 0; messageNumber < this->messages.intraHeaders.size(); ++messageNumber) {
+        for (int messageNumber = 0; messageNumber < numMessages; ++messageNumber) {
             // Get the command word for this message
             unsigned char *commandWord = this->messages.commWords.at(messageNumber).word1;
 
@@ -488,7 +506,7 @@ public:
                 tmp = bitManipulator(discreteWord4, 1, wordSize);
                 bool radarRollAngleWarning = tmp[0];
 
-                // After eating a 8 bits, you must delete it
+                // After eating 8 bits, you must delete it
                 unsigned char* trash = bitManipulator(discreteWord4, 8, wordSize);
 
                 // 7
@@ -583,20 +601,34 @@ public:
                 *wordSize = 2;
                 
                 // bit 15
+                tmp = bitManipulator(storeWord2, 1, wordSize);
+                bool station8FuelTankPresent = tmp[0];
 
                 // bit 14
+                tmp = bitManipulator(storeWord2, 1, wordSize);
+                bool station5FuelTankPresent = tmp[0];
 
                 // bit 13
+                tmp = bitManipulator(storeWord2, 1, wordSize);
+                bool station2FuelTankPresent = tmp[0];
 
                 // bit 12-10 spare bits
+                bitManipulator(storeWord2, 3, wordSize);
                 
                 // bit 9-8
+                unsigned char* aaWeaponIDStation7 = bitManipulator(storeWord2, 2, wordSize);
+
+                // clear
+                bitManipulator(storeWord2, 8, wordSize);
 
                 // bit 7-6
+                unsigned char* aaWeaponIDStation6 = bitManipulator(storeWord2, 2, wordSize);
 
                 // bit 5-4
+                unsigned char* aaWeaponIDStation4 = bitManipulator(storeWord2, 2, wordSize);
 
                 // bit 3-2
+                unsigned char* aaWeaponIDStation3 = bitManipulator(storeWord2, 2, wordSize);
 
                 // bits 1-0 spare bits
 
@@ -607,22 +639,39 @@ public:
                 *wordSize = 2;
                 
                 // bit 15-8 spare bits
+                bitManipulator(storeWord3, 8, wordSize);
 
                 // bit 7
+                tmp = bitManipulator(storeWord3, 1, wordSize);
+                bool missileStorePresent7 = tmp[0];
 
                 // bit 6
+                tmp = bitManipulator(storeWord3, 1, wordSize);
+                bool missileStorePresent6 = tmp[0];
 
                 // bit 5
+                tmp = bitManipulator(storeWord3, 1, wordSize);
+                bool missileStorePresent4 = tmp[0];
 
                 // bit 4
+                tmp = bitManipulator(storeWord3, 1, wordSize);
+                bool missileStorePresent3 = tmp[0];
 
                 // bit 3
+                tmp = bitManipulator(storeWord3, 1, wordSize);
+                bool missileStorePresen8B = tmp[0];
 
                 // bit 2
+                tmp = bitManipulator(storeWord3, 1, wordSize);
+                bool missileStorePresent8A = tmp[0];
 
                 // bit 1
+                tmp = bitManipulator(storeWord3, 1, wordSize);
+                bool missileStorePresent2A = tmp[0];
 
                 // bit 0
+                tmp = bitManipulator(storeWord3, 1, wordSize);
+                bool missileStorePresent2B = tmp[0];
 
                 // Word 10
                 unsigned char* storeWord4 = bitManipulator(data, 16, fSize);
@@ -631,16 +680,40 @@ public:
                 *wordSize = 2;
                 
                 // bit 15 spare bit
+                bitManipulator(storeWord4, 1, wordSize);
 
                 // bit 14-12
+                tmp = bitManipulator(storeWord4, 3, wordSize);
+                int agWeaponCountStationRC = bitsToInt(tmp, 3);
 
                 // bit 11-9
+                tmp = bitManipulator(storeWord4, 3, wordSize);
+                int agWeaponCountStationLC = bitsToInt(tmp, 3);
 
                 // bit 6-8
+                tmp = bitManipulator(storeWord4, 1,wordSize);
+                bool msbOn = tmp[0];
+
+                // clear
+                bitManipulator(storeWord4, 8, wordSize);
+
+                tmp = bitManipulator(storeWord4, 2, wordSize);
+                int value = bitsToInt(tmp, 2);
+
+                // Most significant bit was the 4s place so we add 4 to this if it was a 1
+                if (msbOn){
+                    value = value + 4;
+                }
+
+                int agWeaponCountStation8 = value;
 
                 // bit 5-3
+                tmp = bitManipulator(storeWord4, 3, wordSize);
+                int agWeaponCountStation5 = bitsToInt(tmp, 3);
 
                 // bit 2-0
+                tmp = bitManipulator(storeWord4, 3, wordSize);
+                int agWeaponCountStation2 = bitsToInt(tmp, 3);
 
                 // Word 11
                 unsigned char* storeWord5 = bitManipulator(data, 16, fSize);
@@ -776,10 +849,6 @@ public:
 
                 // bit 3-0
 
-                // Display the processed data
-                if (print){
-
-                }
                 
             }
             else if (commandWord[0] == 0x40 && commandWord[1] == 0x6B){

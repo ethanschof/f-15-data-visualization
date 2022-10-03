@@ -529,6 +529,17 @@ void testBitManipulate(unsigned char *dataBuffer, long fSize){
     }
 }
 
+void testCommandWordInterpretation(const vector<unique_ptr<P1553>>& myPackets){
+
+    for (auto & packet : myPackets){
+
+        if (packet->isPrintable()){
+            packet->interpretData(true);
+        }
+
+    }
+}
+
 int main(){
     cout << "==========================\n F15 packet data analyzer \n==========================\n\n";
 
@@ -569,6 +580,9 @@ int main(){
     // Putting the packets into a data structure
     vector<unique_ptr<P1553>> myPackets;
     myPackets = createPackets(dataBuffer, &fSize, false);
+
+    // this call tests the interpretation of command word data
+    testCommandWordInterpretation(myPackets);
 
 
     free(dataBuffer);
