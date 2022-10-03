@@ -17,10 +17,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/packet.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/packet.hpp" afterDir="false" />
-    </list>
+    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,7 +107,7 @@
       <workItem from="1663342097847" duration="3395000" />
       <workItem from="1664207295919" duration="3270000" />
       <workItem from="1664379991253" duration="1010000" />
-      <workItem from="1664733280340" duration="8585000" />
+      <workItem from="1664733280340" duration="8826000" />
     </task>
     <servers />
   </component>

@@ -1399,7 +1399,7 @@ public:
                 tmp = bitManipulator(secondsChar, 6, wordSize);
                 int seconds = bitsToInt(tmp, 6);
               
-            } 
+            }
             else if (commandWord[0] == 0x40 && commandWord[1] == 0xD3){
                 // Word 1 discreteWord10  2 bytes
                 unsigned char* discreteWord10 = bitManipulator(data, 16, fSize);
