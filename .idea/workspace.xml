@@ -19,13 +19,7 @@
   <component name="ChangeListManager">
     <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/packet.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/packet.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/f_15_data_visualization.dir/Capstone_Solution_C++/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/f_15_data_visualization.dir/Capstone_Solution_C++/main.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/f_15_data_visualization.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/f_15_data_visualization.exe" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,6 +112,7 @@
       <workItem from="1664379991253" duration="1010000" />
       <workItem from="1664733280340" duration="8826000" />
       <workItem from="1664764469748" duration="2815000" />
+      <workItem from="1664846461668" duration="351000" />
     </task>
     <servers />
   </component>
@@ -142,11 +137,6 @@
           <url>file://$PROJECT_DIR$/Capstone Solution C++/packet.hpp</url>
           <line>388</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Capstone Solution C++/main.cpp</url>
-          <line>535</line>
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
