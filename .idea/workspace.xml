@@ -17,21 +17,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Capstone Solution C++/packet.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Capstone Solution C++/test_stuff.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Capstone Solution C++/test_stuff.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/ch10.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/packet.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/packet.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-    </list>
+    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -128,7 +114,7 @@
       <workItem from="1664733280340" duration="8826000" />
       <workItem from="1664764469748" duration="2815000" />
       <workItem from="1664846461668" duration="351000" />
-      <workItem from="1665157725174" duration="4974000" />
+      <workItem from="1665157725174" duration="4994000" />
     </task>
     <servers />
   </component>
