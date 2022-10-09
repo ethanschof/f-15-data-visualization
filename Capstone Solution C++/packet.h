@@ -60,8 +60,6 @@ public:
 
     unsigned char* swapEndian(unsigned char* bytes, int numBytes);
 
-    vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize);
-
     int bitsToInt(unsigned char* bits, int numBits);
 
     unsigned long bytesToLong(unsigned char* bytes, int numBytes);

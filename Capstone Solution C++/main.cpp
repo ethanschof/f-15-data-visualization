@@ -11,12 +11,15 @@
 //basic c++ functions
 #include <iostream>
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <vector>
 #include <cmath>
+using namespace std;
 
-#include "packet.cpp"
+
+#include "packet.h"
+#include "packet_factory.h"
 
 int main(){
 
