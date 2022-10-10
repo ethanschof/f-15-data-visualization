@@ -20,7 +20,10 @@ using namespace std;
 
 #include "packet.h"
 #include "packet_factory.h"
+#include "test_stuff.h"
 
 int main(){
+    test();
+
 
 }

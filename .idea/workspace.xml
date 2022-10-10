@@ -17,7 +17,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="" />
+    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/packet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/packet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/packet_factory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/packet_factory.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/packet_factory.h" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/packet_factory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/test_stuff.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/test_stuff.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/test_stuff.h" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/test_stuff.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/f_15_data_visualization.dir/Capstone_Solution_C++/main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/f_15_data_visualization.dir/Capstone_Solution_C++/main.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/f_15_data_visualization.exe" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,11 +81,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="f_15_data_visualization" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="f_15_data_visualization" TARGET_NAME="f_15_data_visualization" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="f_15_data_visualization" RUN_TARGET_NAME="f_15_data_visualization">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -116,6 +124,7 @@
       <workItem from="1664846461668" duration="351000" />
       <workItem from="1665157725174" duration="4994000" />
       <workItem from="1665349857665" duration="724000" />
+      <workItem from="1665416306921" duration="2309000" />
     </task>
     <servers />
   </component>
@@ -134,6 +143,20 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Capstone Solution C++/test_stuff.cpp</url>
+          <line>150</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Capstone Solution C++/main.cpp</url>
+          <line>20</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
         <watch expression="newPacketLength" />

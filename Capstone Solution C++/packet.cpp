@@ -1,6 +1,5 @@
 #include "packet.h"
-
-long byteIndex = 0;
+#include "packet_factory.cpp"
 
 Packet::Packet() {
     this->data = nullptr;
@@ -20,7 +19,7 @@ Packet::Packet() {
 
 Packet::Packet(unsigned char *myPacketsData, unsigned long chanID, unsigned long packLength, unsigned long datLen,
        unsigned long datatypever, unsigned long sequenceNumber, unsigned long packetflags,
-       unsigned long myDataType, unsigned char *timeCounter, unsigned long checkSum){
+       unsigned long myDataType, unsigned char *timeCounter, unsigned long checkSum):
     data(myPacketsData),
     channelID(chanID),
     packetLength(packLength),
@@ -32,8 +31,9 @@ Packet::Packet(unsigned char *myPacketsData, unsigned long chanID, unsigned long
     relativeTimeCounter(timeCounter),
     headerCheckSum(checkSum),
     msgCount(0),
-    ChanSpecData chanSpec = ChanSpecData();
-    Messages messages;
+    chanSpec(ChanSpecData()),
+    messages(Messages())
+{
 }
 
 Packet::Packet(unsigned long chanID, unsigned long packLength, unsigned long datLen,

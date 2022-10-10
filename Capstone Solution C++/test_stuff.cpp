@@ -5,12 +5,8 @@
 #include "test_stuff.h"
 #include <iostream>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-#include <cmath>
-
 #include "packet.h"
+#include "packet_factory.h"
 
 using namespace std;
 
@@ -22,61 +18,21 @@ using namespace std;
  * @param quickDump if not 0, dump only the first 200 * quickDump bytes
  */
 void fileDump(unsigned char *data, long fileSize, int quickDump){
-    cout << "\n:::::BEGINNING FILE DUMP:::::\n";
-    int stopper = fileSize-byteIndex;
-    if(quickDump){
-        stopper = 200 * quickDump;
-    }
-    //test case 1: output hex
-    for(int i = byteIndex; i < stopper+byteIndex; i++){
-        if(i%50 == 0){
-            printf("\n%7d:  ", i);
-        }
-        printf("%2x ", data[i]);
-    }
-    cout << "\n\n";
+//    cout << "\n:::::BEGINNING FILE DUMP:::::\n";
+//    int stopper = fileSize-byteIndex;
+//    if(quickDump){
+//        stopper = 200 * quickDump;
+//    }
+//    //test case 1: output hex
+//    for(int i = byteIndex; i < stopper+byteIndex; i++){
+//        if(i%50 == 0){
+//            printf("\n%7d:  ", i);
+//        }
+//        printf("%2x ", data[i]);
+//    }
+//    cout << "\n\n";
 }
 
-/**
- * @brief takes in an array and returns the number of bits from the front requested and reallocates the file Buffer to no longer have those bits
- *          returns in BIG ENDIAN
- *
- * @bug Will not decriment if bits do not result in a byte. Ex 2 function calls for 4 bits will result in the front byte being '00' and will need to be consumed
- *
- * @param data the buffer data from the file
- * @param numBits the number of bits needed
- * @param fSize the number of bytes in the buffer
- * @return unsigned char* the bits at the top of the array of bytes
- */
-unsigned char *bitManipulator(unsigned char* data, unsigned long numBits, long *fSize){
-    unsigned long numBytes = numBits / 8;
-    unsigned long bitShift = 0;
-
-    if(numBits%8 != 0){
-        //deal with truncation
-        numBytes++;
-        bitShift = 1;
-    }
-
-    unsigned char *desiredBits = (unsigned char *)malloc(numBytes * sizeof(unsigned char));
-    for(unsigned long i = 0; i < numBytes; i++){
-        desiredBits[i] = data[i];
-    }
-
-    if(bitShift){
-        //for non-byte sized needs...
-        desiredBits[numBytes-1] = desiredBits[numBytes-1] >> (8 - numBits%8);
-        data[numBytes-1] = data[numBytes-1] << (numBits%8);
-        numBytes--;
-    }
-
-    //remove used bytes
-    for(unsigned long i = 0; i < *fSize - numBytes; i++){
-        data[i] = data[i+numBytes];
-    }
-    *fSize = *fSize - numBytes;
-    return desiredBits;
-}
 
 /**
  * @brief takes in the file Buffer ONLY and returns the number of bits from the front requested and reallocates the file Buffer to no longer have those bits
@@ -128,56 +84,6 @@ void debug(unsigned char * data, long fSize, int numPackets){
     // This causes a seg fault
     // bitManipulator(data, i*8, &fSize);
     // system("pause");
-}
-
-/**
- * @brief converts array of unsigned char into a long value, must be in Little Endian
- *      --CONCEPTUAL--
- *      bitval = 2^[bit# + (byte# * 8)]
- *      totval = totval + bit*bitval
- *
- * @param bytes the bytes and bits to be converted
- * @param numBytes the length of the array
- * @return long values contained in the array
- */
-unsigned long bytesToLong(unsigned char* bytes, int numBytes){
-    long totalVal = 0;
-
-    if(numBytes <= 4){
-        numBytes--;
-
-        for(int i = numBytes; i >= 0; i--){
-            //parse each byte (start LSB - highest array value)
-            for(int j = 0; j < 8; j++){
-                //parse each bit
-                long bitVal = (long)pow(2, (((numBytes-i)*8)+j));
-
-                if(bytes[i]&(1 << j)){
-                    totalVal = totalVal + bitVal;
-                }
-            }
-        }
-    }else{
-        cout << "ERROR: Too many Bytes to process; returning 0...\n";
-    }
-    return totalVal;
-}
-
-/**
- * @brief reverses position of bytes in the array
- *
- * @param bytes the array of bytes
- * @param numBytes the length of the array
- *
- * @return the array of bytes in Big Endian notation
- */
-unsigned char* swapEndian(unsigned char* bytes, int numBytes){
-    unsigned char* BEBytes = (unsigned char*)malloc(numBytes * sizeof(unsigned char));
-    for(int i = 0; i < numBytes; i++){
-        BEBytes[(numBytes-1)-i] = bytes[i];
-        bytes[i] = BEBytes[(numBytes-1)-i];
-    }
-    return BEBytes;
 }
 
 
@@ -287,7 +193,7 @@ int test(){
 
     // Putting the packets into a data structure
     vector<unique_ptr<Packet>> myPackets;
-    myPackets = Packet.(dataBuffer, &fSize, false);
+    myPackets = createPacketsTestData(dataBuffer, &fSize);
 
     // this call tests the interpretation of command word data
     testCommandWordInterpretation(myPackets);

@@ -12,6 +12,8 @@ using namespace std;
 
 vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize);
 
+vector<unique_ptr<Packet>> createPacketsTestData(unsigned char* data, long* fSize);
+
 unsigned char* swapEndian(unsigned char* bytes, int numBytes);
 
 int bitsToInt(unsigned char* bits, int numBits);
