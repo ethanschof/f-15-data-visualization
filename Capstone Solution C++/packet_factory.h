@@ -10,6 +10,8 @@
 #include <memory>
 using namespace std;
 
+extern long byteIndex;
+
 vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize);
 
 vector<unique_ptr<Packet>> createPacketsTestData(unsigned char* data, long* fSize);

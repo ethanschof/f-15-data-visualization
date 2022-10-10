@@ -1,5 +1,4 @@
 #include "packet.h"
-#include "packet_factory.cpp"
 
 Packet::Packet() {
     this->data = nullptr;
