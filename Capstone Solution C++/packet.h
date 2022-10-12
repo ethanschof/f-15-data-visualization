@@ -15,7 +15,6 @@
 using namespace std;
 #include "1553helper.hpp"
 
-#define F_15_DATA_VISUALIZATION_PACKET_H
 #define PACKET_SYNC_LENGTH 16
 #define CHAN_ID_LENGTH 16
 #define PACKET_LENGTH_LENGTH 32

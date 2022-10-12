@@ -147,36 +147,36 @@ unsigned char * Packet::bitManipulator(unsigned char* data, unsigned long numBit
     return desiredBits;
 }
 
-unsigned char * Packet::bitManipulator(unsigned char* data, unsigned long numBits){
-    unsigned long numBytes = numBits / 8;
-    unsigned long bitShift = 0;
-
-    if(numBits%8 != 0){
-        //deal with truncation
-        numBytes++;
-        bitShift = 1;
-    }
-
-    unsigned char *desiredBits = (unsigned char *)malloc(numBytes * sizeof(unsigned char));
-    for(unsigned long i = byteIndex; i < (byteIndex+numBytes); i++){
-        desiredBits[i-byteIndex] = data[i];
-    }
-
-    if(bitShift){
-        //for non-byte sized needs...
-        desiredBits[numBytes-1] = desiredBits[numBytes-1] >> (8 - numBits%8);
-        data[numBytes-1] = data[numBytes-1] << (numBits%8);
-        numBytes--;
-    }
-
-    //remove used bytes
-    /*for(unsigned long i = 0; i < *fSize - numBytes; i++){
-        data[i] = data[i+numBytes];
-    }*/
-    byteIndex = byteIndex + numBytes; //this working
-    //*fSize = *fSize - numBytes;
-    return desiredBits;
-}
+//unsigned char * Packet::bitManipulator(unsigned char* data, unsigned long numBits){
+//    unsigned long numBytes = numBits / 8;
+//    unsigned long bitShift = 0;
+//
+//    if(numBits%8 != 0){
+//        //deal with truncation
+//        numBytes++;
+//        bitShift = 1;
+//    }
+//
+//    unsigned char *desiredBits = (unsigned char *)malloc(numBytes * sizeof(unsigned char));
+//    for(unsigned long i = byteIndex; i < (byteIndex+numBytes); i++){
+//        desiredBits[i-byteIndex] = data[i];
+//    }
+//
+//    if(bitShift){
+//        //for non-byte sized needs...
+//        desiredBits[numBytes-1] = desiredBits[numBytes-1] >> (8 - numBits%8);
+//        data[numBytes-1] = data[numBytes-1] << (numBits%8);
+//        numBytes--;
+//    }
+//
+//    //remove used bytes
+//    /*for(unsigned long i = 0; i < *fSize - numBytes; i++){
+//        data[i] = data[i+numBytes];
+//    }*/
+//    byteIndex = byteIndex + numBytes; //this working
+//    //*fSize = *fSize - numBytes;
+//    return desiredBits;
+//}
 
 bool Packet::isPrintable(){
     if (this->msgCount == 0){

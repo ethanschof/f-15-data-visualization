@@ -158,10 +158,10 @@ int test(){
     cout << "==========================\n F15 packet data analyzer \n==========================\n\n";
 
     //get file to open
-    char fileName[25];
-    cout << "Enter the name of the ch10 file: ";
-    cin >> fileName;
-    //char* fileName = "myChap10.ch10";
+    //char fileName[25];
+    //cout << "Enter the name of the ch10 file: ";
+    //cin >> fileName;
+    char* fileName = "myChap10.ch10";
     FILE *ptr;
     ptr = fopen(fileName, "rb");
 
@@ -173,9 +173,9 @@ int test(){
     //find the size of the file
     fseek(ptr, 0, SEEK_END);
     long fSize = ftell(ptr);
-    cout << "file size (in bytes) : " << fSize << "\n";
+    cout << "file size (in Kb) : " << fSize/1024 << "\n";
 
-    //ignore ch10 header info
+    //reset pointer
     fseek(ptr, 0, SEEK_SET);
 
     //transfer binary into a buffer
@@ -184,7 +184,7 @@ int test(){
         dataBuffer[i] = (unsigned char)fgetc(ptr);
     }
 
-    debug(dataBuffer, fSize, 0);
+    //debug(dataBuffer, fSize, 0);
     string junk;
     cin >> junk;
     // Uncomment to test the bit manipulate function
@@ -193,7 +193,7 @@ int test(){
 
     // Putting the packets into a data structure
     vector<unique_ptr<Packet>> myPackets;
-    myPackets = createPacketsTestData(dataBuffer, &fSize);
+    myPackets = createPacketsTestData(dataBuffer);
 
     // this call tests the interpretation of command word data
     testCommandWordInterpretation(myPackets);
