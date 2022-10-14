@@ -338,7 +338,8 @@ vector<unique_ptr<Packet>> createPacketsTestData(unsigned char* data){
     int num1553 = 0;
 
     long * fSize = (long*) malloc(sizeof(long));
-    *fSize = sizeof(data) / sizeof(data[0]);
+    *fSize = 
+    //*fSize = sizeof(*data) / sizeof(data[0]);
 
     while (packetsCreated < 1000){
 
@@ -491,7 +492,7 @@ vector<unique_ptr<Packet>> createPacketsTestData(unsigned char* data){
                     Words thisMessageWords(commandWord1, secondWord2);
 
                     // Get the data
-                    int bitsLeftInMessage = (int)(msgLength * 8) - 32;
+                    int bitsLeftInMessage = (int)(msgLength * 8);
                     unsigned char *messageData = bitManipulator(data, bitsLeftInMessage);
 
                     packetMessages.addMessage(thisMessagesHeader, thisMessageWords, messageData);
