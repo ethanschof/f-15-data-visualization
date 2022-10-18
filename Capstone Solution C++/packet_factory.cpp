@@ -140,7 +140,7 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize){
     int packetsCreated = 0;
     int num1553 = 0;
 
-    while (!done){
+    while (packetsCreated < 10000){
 
         unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
 
@@ -338,7 +338,7 @@ vector<unique_ptr<Packet>> createPacketsTestData(unsigned char* data){
     int num1553 = 0;
 
     long * fSize = (long*) malloc(sizeof(long));
-    *fSize = 
+    //*fSize =
     //*fSize = sizeof(*data) / sizeof(data[0]);
 
     while (packetsCreated < 1000){

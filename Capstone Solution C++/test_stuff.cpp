@@ -193,7 +193,8 @@ int test(){
 
     // Putting the packets into a data structure
     vector<unique_ptr<Packet>> myPackets;
-    myPackets = createPacketsTestData(dataBuffer);
+    //myPackets = createPacketsTestData(dataBuffer);
+    myPackets = createPackets(dataBuffer, &fSize);
 
     // this call tests the interpretation of command word data
     testCommandWordInterpretation(myPackets);
