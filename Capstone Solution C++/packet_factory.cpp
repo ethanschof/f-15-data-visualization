@@ -13,8 +13,9 @@ unsigned char* swapEndian(unsigned char* bytes, int numBytes){
     unsigned char* BEBytes = (unsigned char*)malloc(numBytes * sizeof(unsigned char));
     for(int i = 0; i < numBytes; i++){
         BEBytes[(numBytes-1)-i] = bytes[i];
-        bytes[i] = BEBytes[(numBytes-1)-i];
+        //bytes[i] = BEBytes[(numBytes-1)-i];
     }
+    free(bytes);
     return BEBytes;
 }
 
@@ -140,7 +141,7 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize){
     int packetsCreated = 0;
     int num1553 = 0;
 
-    while (packetsCreated < 10000){
+    while (packetsCreated < 1000){
 
         unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
 
@@ -283,7 +284,11 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize){
 
                     // Get Command / Data words
                     unsigned char *commandWord1 = bitManipulator(data, 16);
-                    swapEndian(commandWord1, 2);
+                    //swapEndian(commandWord1, 2);
+
+                    //printf("%ud:  %2x %2x\n", commandWord1, commandWord1[0], commandWord1[1]);
+                    //string junk;
+                    //cin >> junk;
 
                     // Get the second word
                     unsigned char *secondWord2 = bitManipulator(data, 16);
@@ -328,6 +333,17 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize){
         }
         packetsCreated++;
     } // End of big loop
+
+    for (auto & packet : myPackets){
+        //        printf("%2x ", data[i]);
+        int numWords = packet->messages.commWords.size();
+        for (int i = 0; i < numWords; ++i) {
+            unsigned char* command = packet->messages.commWords[i].word1;
+            printf("%ud:  %2x %2x\n", command, command[0], command[1]);
+        }
+
+    }
+
     return myPackets;
 }
 

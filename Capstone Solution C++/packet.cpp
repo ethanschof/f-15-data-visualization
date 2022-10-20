@@ -415,7 +415,8 @@ void Packet::interpretData(bool print) {
             } // end of printing for command word 0x4035
 
 
-        } else if (commandWord[0] == 0x40 && commandWord[1] == 0x55) {
+        }
+        else if (commandWord[0] == 0x40 && commandWord[1] == 0x55) {
             // Word 1 Left Engine Total Fuel FLow Lb/Hr 2 bytes
             unsigned char *leftEngineFuelFlow = bitManipulator(data, 16, fSize);
             leftEngineFuelFlow = swapEndian(leftEngineFuelFlow, 2);
@@ -828,7 +829,8 @@ void Packet::interpretData(bool print) {
             // bit 3-0
 
 
-        } else if (commandWord[0] == 0x40 && commandWord[1] == 0x6B) {
+        }
+        else if (commandWord[0] == 0x40 && commandWord[1] == 0x6B) {
             unsigned char *word5 = bitManipulator(data, 16, fSize);
             word5 = swapEndian(word5, 2);
 
@@ -985,7 +987,8 @@ void Packet::interpretData(bool print) {
 
             bool TFBitInhibited = bitManipulator(word3, 1, wordSize);
 
-        } else if (commandWord[0] == 0x40 && commandWord[1] == 0x90) {
+        }
+        else if (commandWord[0] == 0x40 && commandWord[1] == 0x90) {
 
             // Word 1 Left Engine Fan Turbing Inlet Temp Deg C* 2 bytes
             unsigned char *leftEngineFanTemp = bitManipulator(data, 16, fSize);
