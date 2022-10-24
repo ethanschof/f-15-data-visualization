@@ -284,7 +284,7 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize){
 
                     // Get Command / Data words
                     unsigned char *commandWord1 = bitManipulator(data, 16);
-                    //swapEndian(commandWord1, 2);
+                    commandWord1 = swapEndian(commandWord1, 2);
 
                     //printf("%ud:  %2x %2x\n", commandWord1, commandWord1[0], commandWord1[1]);
                     //string junk;
@@ -500,7 +500,7 @@ vector<unique_ptr<Packet>> createPacketsTestData(unsigned char* data){
 
                     // Get Command / Data words
                     unsigned char *commandWord1 = bitManipulator(data, 16);
-                    swapEndian(commandWord1, 2);
+                    commandWord1 = swapEndian(commandWord1, 2);
 
                     // Get the second word
                     unsigned char *secondWord2 = bitManipulator(data, 16);
