@@ -62,7 +62,7 @@ public:
 
     int bitsToInt(unsigned char* bits, int numBits);
 
-    unsigned long bytesToLong(unsigned char* bytes, int numBytes);
+    static unsigned long bytesToLong(unsigned char* bytes, int numBytes);
 
     unsigned long long bytesToLongLong(unsigned char* bytes, int numBytes);
 

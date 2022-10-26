@@ -1,5 +1,7 @@
 #include "packet.h"
 
+#include <utility>
+
 Packet::Packet() {
     this->data = nullptr;
     this->channelID = 0;
@@ -11,9 +13,7 @@ Packet::Packet() {
     this->dataType = 0;
     this->relativeTimeCounter = nullptr;
     this->headerCheckSum = 0;
-    int msgCount = 0;
-    ChanSpecData chanSpec = ChanSpecData();
-    Messages messages;
+    this->msgCount = 0;
 }
 
 Packet::Packet(unsigned char *myPacketsData, unsigned long chanID, unsigned long packLength, unsigned long datLen,
@@ -50,7 +50,7 @@ Packet::Packet(unsigned long chanID, unsigned long packLength, unsigned long dat
     headerCheckSum(checkSum),
     chanSpec(channelData),
     msgCount(msgCount),
-    messages(packMessages){
+    messages(std::move(packMessages)){
 }
 
 unsigned char* Packet::swapEndian(unsigned char* bytes, int numBytes){
