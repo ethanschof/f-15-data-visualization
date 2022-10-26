@@ -13,7 +13,8 @@
 #include <cstdlib>
 
 using namespace std;
-#include "1553helper.hpp"
+#include "ChanSpecData.h"
+#include "Messages.h"
 
 #define PACKET_SYNC_LENGTH 16
 #define CHAN_ID_LENGTH 16
@@ -41,8 +42,8 @@ public:
     unsigned long dataType;
     unsigned char *relativeTimeCounter;
     unsigned long headerCheckSum;
-    ChanSpecData chanSpec; // uses ChanSpecData class from 1553helper.hpp
-    Messages messages; // uses Message class from 1553helper.hpp
+    ChanSpecData chanSpec;
+    Messages messages;
     uint16_t wordCnt;
     uint16_t* pauData;
 
