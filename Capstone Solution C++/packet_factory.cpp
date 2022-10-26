@@ -294,6 +294,7 @@ vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize){
                     // TODO figure out when this second word is needed, if it isn't then it is going to mess up all the data interpretation!
                     unsigned char *secondWord2 = bitManipulator(data, 16);
 
+                    //Words thisMessageWords(commandWord1, commandWord1);
                     Words thisMessageWords(commandWord1, secondWord2);
 
                     // Get the data

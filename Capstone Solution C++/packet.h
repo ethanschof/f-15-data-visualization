@@ -64,6 +64,8 @@ public:
 
     static unsigned long bytesToLong(unsigned char* bytes, int numBytes);
 
+    static float bytesToFloat(unsigned char* bytes, int numBytes);
+
     unsigned long long bytesToLongLong(unsigned char* bytes, int numBytes);
 
     unsigned char *bitManipulator(unsigned char* data, unsigned long numBits, long *fSize);
@@ -75,13 +77,6 @@ public:
     void interpretData(bool print);
 
 };
-
-
-
-
-
-
-
 
 
 #endif //F_15_DATA_VISUALIZATION_PACKET_H
