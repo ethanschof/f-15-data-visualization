@@ -95,7 +95,7 @@ unsigned long Packet::bytesToLong(unsigned char* bytes, int numBytes){
 }
 
 float Packet::bytesToFloat(unsigned char* bytes, int numBytes) {
-    unsigned int* totalVal;
+    unsigned int* totalVal = (unsigned int*)malloc(sizeof(int));
     float *retVal = (float*)totalVal;
 
     if (numBytes <= 4) {
