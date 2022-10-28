@@ -95,14 +95,14 @@ unsigned long Packet::bytesToLong(unsigned char* bytes, int numBytes){
 }
 
 float Packet::bytesToFloat(unsigned char* bytes, int numBytes) {
-    unsigned int* totalVal = 0;
+    unsigned int* totalVal;
     float *retVal = (float*)totalVal;
 
     if (numBytes <= 4) {
-
-        for (int i = 0; i < numBytes; i++) {
+        *totalVal = (int)bytes[0];
+        for (int i = 1; i < numBytes; i++) {
             //parse each byte (start MSB -> the lowest array value)
-            *totalVal = (*totalVal << 8) | (int)bytes[i];
+            *totalVal = (*totalVal << 8) | (unsigned int)bytes[i];
         }
     } else {
         cout << "ERROR: Too many Bytes to process; returning 0...\n";
@@ -257,7 +257,8 @@ void Packet::interpretData(bool print) {
 
             machNum[0] = machNum[0] & 0x7F;
 
-            unsigned long machNumValue = bytesToLong(machNum, 2);
+            float machNumValue = bytesToFloat(machNum, 2);
+            //unsigned long machNumValue = bytesToLong(machNum, 2);
 
             // Word 4, Pitch angle 2 bytes
             unsigned char *pitchAngle = bitManipulator(data, 16, fSize);
