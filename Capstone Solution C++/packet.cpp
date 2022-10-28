@@ -264,13 +264,15 @@ void Packet::interpretData(bool print) {
             unsigned char *pitchAngle = bitManipulator(data, 16, fSize);
             //pitchAngle = swapEndian(pitchAngle, 2);
 
-            unsigned long pitchAngleValue = bytesToLong(pitchAngle, 2);
+            float pitchAngleValue = bytesToFloat(pitchAngle, 2);
+            //unsigned long pitchAngleValue = bytesToLong(pitchAngle, 2);
 
             // Word 5 Roll Angle 2 bytes
             unsigned char *rollAngle = bitManipulator(data, 16, fSize);
             //rollAngle = swapEndian(rollAngle, 2);
 
-            unsigned long rollAngleValue = bytesToLong(rollAngle, 2);
+            float rollAngleValue = bytesToFloat(rollAngle, 2);
+            //unsigned long rollAngleValue = bytesToLong(rollAngle, 2);
 
             // Word 6 Roll Rate 2 bytes
             unsigned char *rollRate = bitManipulator(data, 16, fSize);
