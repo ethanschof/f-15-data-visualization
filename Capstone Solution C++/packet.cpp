@@ -438,37 +438,37 @@ void Packet::interpretData(bool print) {
         else if (commandWord[0] == 0x40 && commandWord[1] == 0x55) {
             // Word 1 Left Engine Total Fuel FLow Lb/Hr 2 bytes
             unsigned char *leftEngineFuelFlow = bitManipulator(data, 16, fSize);
-            leftEngineFuelFlow = swapEndian(leftEngineFuelFlow, 2);
+            //leftEngineFuelFlow = swapEndian(leftEngineFuelFlow, 2);
 
             unsigned long leftEngineFuelFlowValue = bytesToLong(leftEngineFuelFlow, 2);
 
             // Word 2 Right Engine Total Fuel Flow lb/hr 2 bytes
             unsigned char *rightEngineFuelFlow = bitManipulator(data, 16, fSize);
-            rightEngineFuelFlow = swapEndian(rightEngineFuelFlow, 2);
+            //rightEngineFuelFlow = swapEndian(rightEngineFuelFlow, 2);
 
             unsigned long rightEngineFuelFlowValue = bytesToLong(rightEngineFuelFlow, 2);
 
             // Word 3 Radar Altitude Ft 2 bytes
             unsigned char *radarAltitude = bitManipulator(data, 16, fSize);
-            radarAltitude = swapEndian(radarAltitude, 2);
+            //radarAltitude = swapEndian(radarAltitude, 2);
 
             unsigned long radarAltitudeValue = bytesToLong(radarAltitude, 2);
 
             // Word 4 Display TF G Command G 2 bytes
             unsigned char *displayTFGCommand = bitManipulator(data, 16, fSize);
-            displayTFGCommand = swapEndian(displayTFGCommand, 2);
+            //displayTFGCommand = swapEndian(displayTFGCommand, 2);
 
             unsigned long displayTFGCommandValue = bytesToLong(displayTFGCommand, 2);
 
             // Word 5 AFCS TF G Command G 2 bytes
             unsigned char *AFCSTFGCommand = bitManipulator(data, 16, fSize);
-            AFCSTFGCommand = swapEndian(AFCSTFGCommand, 2);
+            //AFCSTFGCommand = swapEndian(AFCSTFGCommand, 2);
 
             unsigned long AFCSTFGCommandValue = bytesToLong(AFCSTFGCommand, 2);
 
             // Word 6 Discrete word 04 2 bytes, 16 bool values
             unsigned char *discreteWord4 = bitManipulator(data, 16, fSize);
-            discreteWord4 = swapEndian(discreteWord4, 2);
+            //discreteWord4 = swapEndian(discreteWord4, 2);
 
             *wordSize = 2;
 
