@@ -17,7 +17,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="" />
+    <list default="true" id="29e72165-174f-4f05-8e02-39c7f1f02607" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Capstone Solution C++/packet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Capstone Solution C++/packet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -126,6 +130,7 @@
       <workItem from="1666975063894" duration="1288000" />
       <workItem from="1667316504934" duration="611000" />
       <workItem from="1667795909220" duration="5000" />
+      <workItem from="1667922318105" duration="352000" />
     </task>
     <servers />
   </component>

@@ -545,7 +545,7 @@ void Packet::interpretData(bool print) {
 
             // Word 7 Stores Data Word 1 2 bytes
             unsigned char *storeWord1 = bitManipulator(data, 16, fSize);
-            storeWord1 = swapEndian(storeWord1, 2);
+            //storeWord1 = swapEndian(storeWord1, 2);
 
             *wordSize = 2;
 
@@ -594,7 +594,7 @@ void Packet::interpretData(bool print) {
 
             // Word 8
             unsigned char *storeWord2 = bitManipulator(data, 16, fSize);
-            storeWord2 = swapEndian(storeWord2, 2);
+            //storeWord2 = swapEndian(storeWord2, 2);
 
             *wordSize = 2;
 
@@ -632,7 +632,7 @@ void Packet::interpretData(bool print) {
 
             // Word 9
             unsigned char *storeWord3 = bitManipulator(data, 16, fSize);
-            storeWord3 = swapEndian(storeWord3, 2);
+            //storeWord3 = swapEndian(storeWord3, 2);
 
             *wordSize = 2;
 
@@ -673,7 +673,7 @@ void Packet::interpretData(bool print) {
 
             // Word 10
             unsigned char *storeWord4 = bitManipulator(data, 16, fSize);
-            storeWord4 = swapEndian(storeWord4, 2);
+            //storeWord4 = swapEndian(storeWord4, 2);
 
             *wordSize = 2;
 
@@ -715,7 +715,7 @@ void Packet::interpretData(bool print) {
 
             // Word 11
             unsigned char *storeWord5 = bitManipulator(data, 16, fSize);
-            storeWord5 = swapEndian(storeWord5, 2);
+            //storeWord5 = swapEndian(storeWord5, 2);
 
             *wordSize = 2;
 
@@ -727,7 +727,7 @@ void Packet::interpretData(bool print) {
 
             // Word 12
             unsigned char *storeWord6 = bitManipulator(data, 16, fSize);
-            storeWord6 = swapEndian(storeWord6, 2);
+            //storeWord6 = swapEndian(storeWord6, 2);
 
             *wordSize = 2;
 
@@ -739,7 +739,7 @@ void Packet::interpretData(bool print) {
 
             // Word 13
             unsigned char *storeWord7 = bitManipulator(data, 16, fSize);
-            storeWord7 = swapEndian(storeWord7, 2);
+            //storeWord7 = swapEndian(storeWord7, 2);
 
             *wordSize = 2;
 
@@ -767,7 +767,7 @@ void Packet::interpretData(bool print) {
 
             // Word 15
             unsigned char *storeWord8 = bitManipulator(data, 16, fSize);
-            storeWord8 = swapEndian(storeWord8, 2);
+            //storeWord8 = swapEndian(storeWord8, 2);
 
             *wordSize = 2;
 
@@ -783,7 +783,7 @@ void Packet::interpretData(bool print) {
 
             // Word 16
             unsigned char *storeWord9 = bitManipulator(data, 16, fSize);
-            storeWord9 = swapEndian(storeWord9, 2);
+            //storeWord9 = swapEndian(storeWord9, 2);
 
             *wordSize = 2;
 
@@ -797,7 +797,7 @@ void Packet::interpretData(bool print) {
 
             // Word 17 Total Fuel Weight lb 2 bytes
             unsigned char *totalFuelWeight = bitManipulator(data, 16, fSize);
-            totalFuelWeight = swapEndian(totalFuelWeight, 2);
+            //totalFuelWeight = swapEndian(totalFuelWeight, 2);
 
             unsigned long totalFuelWeightValue = bytesToLong(totalFuelWeight, 2);
 
@@ -851,7 +851,7 @@ void Packet::interpretData(bool print) {
         }
         else if (commandWord[0] == 0x40 && commandWord[1] == 0x6B) {
             unsigned char *word5 = bitManipulator(data, 16, fSize);
-            word5 = swapEndian(word5, 2);
+            //word5 = swapEndian(word5, 2);
 
             *wordSize = 2;
 
@@ -874,7 +874,7 @@ void Packet::interpretData(bool print) {
 
             // Word 2 2 bytes
             unsigned char *word6 = bitManipulator(data, 16, fSize);
-            word6 = swapEndian(word6, 2);
+            //word6 = swapEndian(word6, 2);
 
             *wordSize = 2;
 
@@ -897,7 +897,7 @@ void Packet::interpretData(bool print) {
 
             // Word 3
             unsigned char *word7 = bitManipulator(data, 16, fSize);
-            word7 = swapEndian(word7, 2);
+            //word7 = swapEndian(word7, 2);
 
             *wordSize = 2;
 
@@ -912,11 +912,11 @@ void Packet::interpretData(bool print) {
 
             // Word 4 TFR Set Clearance Status
             unsigned char *TFRsetClearanceStatus = bitManipulator(data, 16, fSize);
-            TFRsetClearanceStatus = swapEndian(TFRsetClearanceStatus, 2);
+            //TFRsetClearanceStatus = swapEndian(TFRsetClearanceStatus, 2);
 
             // Word 5
             unsigned char *pressureRatio = bitManipulator(data, 16, fSize);
-            pressureRatio = swapEndian(pressureRatio, 2);
+            //pressureRatio = swapEndian(pressureRatio, 2);
 
             // Get the first bit to see if the data is valid
             bool pressureRatioValid = pressureRatio[0] >> 7;
@@ -928,26 +928,26 @@ void Packet::interpretData(bool print) {
 
             // Word 6
             unsigned char *barCorrectedPressureAlt = bitManipulator(data, 16, fSize);
-            barCorrectedPressureAlt = swapEndian(barCorrectedPressureAlt, 2);
+            //barCorrectedPressureAlt = swapEndian(barCorrectedPressureAlt, 2);
 
             // Unit ft
             unsigned long barCorrectedPressureAltValue = bytesToLong(barCorrectedPressureAlt, 2);
 
             // Word 7
             unsigned char *trueHeading = bitManipulator(data, 16, fSize);
-            trueHeading = swapEndian(trueHeading, 2);
+            //trueHeading = swapEndian(trueHeading, 2);
 
             unsigned long trueHeadingValue = bytesToLong(trueHeading, 2);
 
             // Word 8
             unsigned char *verticalVelocity = bitManipulator(data, 16, fSize);
-            verticalVelocity = swapEndian(verticalVelocity, 2);
+            //verticalVelocity = swapEndian(verticalVelocity, 2);
 
             unsigned long verticalVelocityValue = bytesToLong(verticalVelocity, 2);
 
             // Word 9
             unsigned char *word1 = bitManipulator(data, 16, fSize);
-            word1 = swapEndian(word1, 2);
+            //word1 = swapEndian(word1, 2);
 
             *wordSize = 2;
 
@@ -959,7 +959,7 @@ void Packet::interpretData(bool print) {
 
             // Word 10
             unsigned char *word2 = bitManipulator(data, 16, fSize);
-            word2 = swapEndian(word2, 2);
+            //word2 = swapEndian(word2, 2);
 
             *wordSize = 2;
 
@@ -972,7 +972,7 @@ void Packet::interpretData(bool print) {
 
             // word 11
             unsigned char *word3 = bitManipulator(data, 16, fSize);
-            word3 = swapEndian(word3, 2);
+            //word3 = swapEndian(word3, 2);
 
             *wordSize = 2;
 
@@ -1011,85 +1011,85 @@ void Packet::interpretData(bool print) {
 
             // Word 1 Left Engine Fan Turbing Inlet Temp Deg C* 2 bytes
             unsigned char *leftEngineFanTemp = bitManipulator(data, 16, fSize);
-            leftEngineFanTemp = swapEndian(leftEngineFanTemp, 2);
+            //leftEngineFanTemp = swapEndian(leftEngineFanTemp, 2);
 
             unsigned long leftEngineFanTempValue = bytesToLong(leftEngineFanTemp, 2);
 
             // Word 2 Left Engine Main Oil Pressure Deg PSI 2 bytes
             unsigned char *leftEngineOilPressure = bitManipulator(data, 16, fSize);
-            leftEngineOilPressure = swapEndian(leftEngineOilPressure, 2);
+            //leftEngineOilPressure = swapEndian(leftEngineOilPressure, 2);
 
             unsigned long leftEngineOilPressureValue = bytesToLong(leftEngineOilPressure, 2);
 
             // Word 3 Left Engine Nozzle Position Percent 2 bytes
             unsigned char *leftEngineNozzlePosition = bitManipulator(data, 16, fSize);
-            leftEngineNozzlePosition = swapEndian(leftEngineNozzlePosition, 2);
+            //leftEngineNozzlePosition = swapEndian(leftEngineNozzlePosition, 2);
 
             unsigned long leftEngineNozzlePositionValue = bytesToLong(leftEngineNozzlePosition, 2);
 
             // Word 4 Left Engine Core Speed RPM 2 bytes
             unsigned char *leftEngineCoreSpeed = bitManipulator(data, 16, fSize);
-            leftEngineCoreSpeed = swapEndian(leftEngineCoreSpeed, 2);
+            //leftEngineCoreSpeed = swapEndian(leftEngineCoreSpeed, 2);
 
             unsigned long leftEngineCoreSpeedValue = bytesToLong(leftEngineCoreSpeed, 2);
 
             // Word 5 Left Engine Fan Speed RPM 2 bytes
             unsigned char *leftEngineFanSpeed = bitManipulator(data, 16, fSize);
-            leftEngineFanSpeed = swapEndian(leftEngineFanSpeed, 2);
+            //leftEngineFanSpeed = swapEndian(leftEngineFanSpeed, 2);
 
             unsigned long leftEngineFanSpeedValue = bytesToLong(leftEngineFanSpeed, 2);
 
             // Word 6 Left Engine Total Temp Deg C* 2 bytes
             unsigned char *leftEngineTotalTemp = bitManipulator(data, 16, fSize);
-            leftEngineTotalTemp = swapEndian(leftEngineTotalTemp, 2);
+            //leftEngineTotalTemp = swapEndian(leftEngineTotalTemp, 2);
 
             unsigned long leftEngineTotalTempValue = bytesToLong(leftEngineTotalTemp, 2);
 
             // Word 7 Left Engine Power Level Angle Deg 2 bytes
             unsigned char *leftEnginePowerLevelAngle = bitManipulator(data, 16, fSize);
-            leftEnginePowerLevelAngle = swapEndian(leftEnginePowerLevelAngle, 2);
+            //leftEnginePowerLevelAngle = swapEndian(leftEnginePowerLevelAngle, 2);
 
             unsigned long leftEnginePowerLevelAngleValue = bytesToLong(leftEnginePowerLevelAngle, 2);
 
             // Word 8 Right Engine Fan Turbing Inlet Temp Deg C* 2 bytes
             unsigned char *rightEngineFanTemp = bitManipulator(data, 16, fSize);
-            rightEngineFanTemp = swapEndian(rightEngineFanTemp, 2);
+            //rightEngineFanTemp = swapEndian(rightEngineFanTemp, 2);
 
             unsigned long rightEngineFanTempValue = bytesToLong(rightEngineFanTemp, 2);
 
             // Word 9 Right Engine Main Oil Pressure PSI 2 bytes
             unsigned char *rightEngineOilPressure = bitManipulator(data, 16, fSize);
-            rightEngineOilPressure = swapEndian(rightEngineOilPressure, 2);
+            //rightEngineOilPressure = swapEndian(rightEngineOilPressure, 2);
 
             unsigned long rightEngineOilPressureValue = bytesToLong(rightEngineOilPressure, 2);
 
             // Word 10 Right Engine Nozzle Position Percent 2 bytes
             unsigned char *rightEngineNozzlePosition = bitManipulator(data, 16, fSize);
-            rightEngineNozzlePosition = swapEndian(rightEngineNozzlePosition, 2);
+            //rightEngineNozzlePosition = swapEndian(rightEngineNozzlePosition, 2);
 
             unsigned long rightEngineNozzlePositionValue = bytesToLong(rightEngineNozzlePosition, 2);
 
             // Word 11 Right Engine Core Speed RPM 2 bytes
             unsigned char *rightEngineCoreSpeed = bitManipulator(data, 16, fSize);
-            rightEngineCoreSpeed = swapEndian(rightEngineCoreSpeed, 2);
+            //rightEngineCoreSpeed = swapEndian(rightEngineCoreSpeed, 2);
 
             unsigned long rightEngineCoreSpeedValue = bytesToLong(rightEngineCoreSpeed, 2);
 
             // Word 12 Right Engine Fan Spead RPM 2 bytes
             unsigned char *rightEngineFanSpeed = bitManipulator(data, 16, fSize);
-            rightEngineFanSpeed = swapEndian(rightEngineFanSpeed, 2);
+            //rightEngineFanSpeed = swapEndian(rightEngineFanSpeed, 2);
 
             unsigned long rightEngineFanSpeedValue = bytesToLong(rightEngineFanSpeed, 2);
 
             // Word 13 Right Engine Total Temp Deg C* 2 bytes
             unsigned char *rightEngineTotalTemp = bitManipulator(data, 16, fSize);
-            rightEngineTotalTemp = swapEndian(rightEngineTotalTemp, 2);
+            //rightEngineTotalTemp = swapEndian(rightEngineTotalTemp, 2);
 
             unsigned long rightEngineTotalTempValue = bytesToLong(rightEngineTotalTemp, 2);
 
             // Word 14 Right Engine Power Lever Angle Deg 2 bytes
             unsigned char *rightEnginePowerLevelAngle = bitManipulator(data, 16, fSize);
-            rightEnginePowerLevelAngle = swapEndian(rightEnginePowerLevelAngle, 2);
+            //rightEnginePowerLevelAngle = swapEndian(rightEnginePowerLevelAngle, 2);
 
             unsigned long rightEnginePowerLevelAngleValue = bytesToLong(rightEnginePowerLevelAngle, 2);
 
@@ -1170,7 +1170,7 @@ void Packet::interpretData(bool print) {
 
             // Word 16 Right Engine Validity Word 1 2 bytes
             unsigned char *rightEngineValidityWord1 = bitManipulator(data, 16, fSize);
-            rightEngineValidityWord1 = swapEndian(rightEngineValidityWord1, 2);
+            //rightEngineValidityWord1 = swapEndian(rightEngineValidityWord1, 2);
 
             unsigned long rightEngineValidityWord1Value = bytesToLong(rightEngineValidityWord1, 2);
 
@@ -1246,7 +1246,7 @@ void Packet::interpretData(bool print) {
         } else if (commandWord[0] == 0x40 && commandWord[1] == 0xB0) {
             // Word 1 Discrete Word 8 2 bytes
             unsigned char *discreteWord8 = bitManipulator(data, 16, fSize);
-            discreteWord8 = swapEndian(discreteWord8, 2);
+            //discreteWord8 = swapEndian(discreteWord8, 2);
 
             *wordSize = 2;
 
@@ -1260,7 +1260,7 @@ void Packet::interpretData(bool print) {
 
             // Word 2 Overload Warning System Status 2 bytes
             unsigned char *overloadWarningSystemStatus = bitManipulator(data, 16, fSize);
-            overloadWarningSystemStatus = swapEndian(overloadWarningSystemStatus, 2);
+            //overloadWarningSystemStatus = swapEndian(overloadWarningSystemStatus, 2);
 
             *wordSize = 2;
 
@@ -1312,7 +1312,7 @@ void Packet::interpretData(bool print) {
 
             // Word 3 Discrete Word 9 2 bytes
             unsigned char *discreteWord9 = bitManipulator(data, 16, fSize);
-            discreteWord9 = swapEndian(discreteWord9, 2);
+            //discreteWord9 = swapEndian(discreteWord9, 2);
 
             *wordSize = 2;
 
@@ -1346,73 +1346,73 @@ void Packet::interpretData(bool print) {
 
             // Word 4 Forward Fuselage Warning Ratio 2 bytes
             unsigned char *fwdFuselageWarningRatio = bitManipulator(data, 16, fSize);
-            fwdFuselageWarningRatio = swapEndian(fwdFuselageWarningRatio, 2);
+            //fwdFuselageWarningRatio = swapEndian(fwdFuselageWarningRatio, 2);
 
             unsigned long fwdFuselageWarningRatioValue = bytesToLong(fwdFuselageWarningRatio, 2);
 
             // Word 5 Wing Warning Ratio 2 bytes
             unsigned char *wingWarningRatio = bitManipulator(data, 16, fSize);
-            wingWarningRatio = swapEndian(wingWarningRatio, 2);
+            //wingWarningRatio = swapEndian(wingWarningRatio, 2);
 
             unsigned long wingWarningRatioValue = bytesToLong(wingWarningRatio, 2);
 
             // Word 6 Left Horizontal Tail Warning Ratio 2 bytes
             unsigned char *lHorizontalTailWarningRatio = bitManipulator(data, 16, fSize);
-            lHorizontalTailWarningRatio = swapEndian(lHorizontalTailWarningRatio, 2);
+            //lHorizontalTailWarningRatio = swapEndian(lHorizontalTailWarningRatio, 2);
 
             unsigned long lHorizontalTailWarningRatioValue = bytesToLong(lHorizontalTailWarningRatio, 2);
 
             // Word 7 Right Horizontal Tail Warning Ratio 2 bytes
             unsigned char *rHorizontalTailWarningRatio = bitManipulator(data, 16, fSize);
-            rHorizontalTailWarningRatio = swapEndian(rHorizontalTailWarningRatio, 2);
+            //rHorizontalTailWarningRatio = swapEndian(rHorizontalTailWarningRatio, 2);
 
             unsigned long rHorizontalTailWarningRatioValue = bytesToLong(rHorizontalTailWarningRatio, 2);
 
             // Word 8 Pylon Warning Ratio 2 bytes
             unsigned char *pylonWarningRatio = bitManipulator(data, 16, fSize);
-            pylonWarningRatio = swapEndian(pylonWarningRatio, 2);
+            //pylonWarningRatio = swapEndian(pylonWarningRatio, 2);
 
             unsigned long pylonWarningRatioValue = bytesToLong(pylonWarningRatio, 2);
 
             // Word 9 Mass Items Warning Ratio 2 bytes
             unsigned char *massItemsWarningRatio = bitManipulator(data, 16, fSize);
-            massItemsWarningRatio = swapEndian(massItemsWarningRatio, 2);
+            //massItemsWarningRatio = swapEndian(massItemsWarningRatio, 2);
 
             unsigned long massItemsWarningRatioValue = bytesToLong(massItemsWarningRatio, 2);
 
             // Word 10 CFT Warning Ratio 2 bytes
             unsigned char *CFTWarningRatio = bitManipulator(data, 16, fSize);
-            CFTWarningRatio = swapEndian(CFTWarningRatio, 2);
+            //CFTWarningRatio = swapEndian(CFTWarningRatio, 2);
 
             unsigned long CFTWarningRatioValue = bytesToLong(CFTWarningRatio, 2);
 
             // Word 11 Forward Fuselage NZ Allowable 2 bytes
             unsigned char *fwdFuselageNZAllowable = bitManipulator(data, 16, fSize);
-            fwdFuselageNZAllowable = swapEndian(fwdFuselageNZAllowable, 2);
+            //fwdFuselageNZAllowable = swapEndian(fwdFuselageNZAllowable, 2);
 
             unsigned long fwdFuselageNZAllowableValue = bytesToLong(fwdFuselageNZAllowable, 2);
 
             // Word 12 Wing NZ Allowable 2 bytes
             unsigned char *wingNZAllowable = bitManipulator(data, 16, fSize);
-            wingNZAllowable = swapEndian(wingNZAllowable, 2);
+            //wingNZAllowable = swapEndian(wingNZAllowable, 2);
 
             unsigned long wingNZAllowableValue = bytesToLong(wingNZAllowable, 2);
 
             // Word 13 Pylon NZ Allowable 2 bytes
             unsigned char *pylonNZAllowable = bitManipulator(data, 16, fSize);
-            pylonNZAllowable = swapEndian(pylonNZAllowable, 2);
+            //pylonNZAllowable = swapEndian(pylonNZAllowable, 2);
 
             unsigned long pylonNZAllowableValue = bytesToLong(pylonNZAllowable, 2);
 
             // Word 14 CFT NZ Allowable 2 bytes
             unsigned char *CFTNZAllowable = bitManipulator(data, 16, fSize);
-            CFTNZAllowable = swapEndian(CFTNZAllowable, 2);
+            //CFTNZAllowable = swapEndian(CFTNZAllowable, 2);
 
             unsigned long CFTNZAllowableValue = bytesToLong(CFTNZAllowable, 2);
 
             // Word 15 Time 2 bytes
             unsigned char *time = bitManipulator(data, 16, fSize);
-            time = swapEndian(time, 2);
+            //time = swapEndian(time, 2);
 
             *wordSize = 2;
 
@@ -1447,7 +1447,7 @@ void Packet::interpretData(bool print) {
 
             // Word 16 Seconds 2 bytes with Valid Bit
             unsigned char *secondsChar = bitManipulator(data, 16, fSize);
-            secondsChar = swapEndian(secondsChar, 2);
+            //secondsChar = swapEndian(secondsChar, 2);
 
             *wordSize = 2;
 
@@ -1468,7 +1468,7 @@ void Packet::interpretData(bool print) {
         } else if (commandWord[0] == 0x40 && commandWord[1] == 0xD3) {
             // Word 1 discreteWord10  2 bytes
             unsigned char *discreteWord10 = bitManipulator(data, 16, fSize);
-            discreteWord10 = swapEndian(discreteWord10, 2);
+            //discreteWord10 = swapEndian(discreteWord10, 2);
 
             *wordSize = 2;
 
@@ -1481,7 +1481,7 @@ void Packet::interpretData(bool print) {
 
             // Word 2 discreteWord11  2 bytes
             unsigned char *discreteWord11 = bitManipulator(data, 16, fSize);
-            discreteWord11 = swapEndian(discreteWord11, 2);
+            //discreteWord11 = swapEndian(discreteWord11, 2);
 
             *wordSize = 2;
 
@@ -1494,7 +1494,7 @@ void Packet::interpretData(bool print) {
 
             // Word 3 Overload Warning System Status 2  2 bytes
             unsigned char *overloadWarning = bitManipulator(data, 16, fSize);
-            overloadWarning = swapEndian(overloadWarning, 2);
+            //overloadWarning = swapEndian(overloadWarning, 2);
 
             *wordSize = 2;
             // bit 15
@@ -1521,31 +1521,31 @@ void Packet::interpretData(bool print) {
 
             // Word 4 Aircraft Gross Weight Lb  2 bytes
             unsigned char *ACWeight = bitManipulator(data, 16, fSize);
-            ACWeight = swapEndian(ACWeight, 2);
+            //ACWeight = swapEndian(ACWeight, 2);
 
             unsigned long ACWeightValue = bytesToLong(ACWeight, 2);
 
             // Word 5 Left CFT Filtered Fuel Weight Lb  2 bytes
             unsigned char *leftFuelWeight = bitManipulator(data, 16, fSize);
-            leftFuelWeight = swapEndian(leftFuelWeight, 2);
+            //leftFuelWeight = swapEndian(leftFuelWeight, 2);
 
             unsigned long leftFuelWeightValue = bytesToLong(leftFuelWeight, 2);
 
             // Word 6 Right CFT Filtered Fuel Weight Lb  2 bytes
             unsigned char *rightFuelWeight = bitManipulator(data, 16, fSize);
-            rightFuelWeight = swapEndian(rightFuelWeight, 2);
+            //rightFuelWeight = swapEndian(rightFuelWeight, 2);
 
             unsigned long rightFuelWeightValue = bytesToLong(rightFuelWeight, 2);
 
             // Word 7 Total Filtered Fuel Weight Lb  2 bytes
             unsigned char *totalFuelWeight = bitManipulator(data, 16, fSize);
-            totalFuelWeight = swapEndian(totalFuelWeight, 2);
+            //totalFuelWeight = swapEndian(totalFuelWeight, 2);
 
             unsigned long totalFuelWeightValue = bytesToLong(totalFuelWeight, 2);
 
             // Word 8 Date 6 bytes
             unsigned char *date = bitManipulator(data, 48, fSize);
-            date = swapEndian(date, 6);
+            //date = swapEndian(date, 6);
 
             *wordSize = 6;
 
@@ -1590,7 +1590,7 @@ void Packet::interpretData(bool print) {
 
             // Word 11 Mission Type Code 2 bytes
             unsigned char *missionTypeCode = bitManipulator(data, 16, fSize);
-            missionTypeCode = swapEndian(missionTypeCode, 2);
+            //missionTypeCode = swapEndian(missionTypeCode, 2);
 
             *wordSize = 2;
             // First byte is spare
@@ -1606,7 +1606,7 @@ void Packet::interpretData(bool print) {
 
             // Word 12 Aircraft Serial Number 6 bytes
             unsigned char *ACSerialNum = bitManipulator(data, 48, fSize);
-            ACSerialNum = swapEndian(ACSerialNum, 2);
+            //ACSerialNum = swapEndian(ACSerialNum, 2);
 
             *wordSize = 6;
 
@@ -1651,7 +1651,7 @@ void Packet::interpretData(bool print) {
 
             // Word 15 Wing ID 4 bytes
             unsigned char *wingID = bitManipulator(data, 32, fSize);
-            wingID = swapEndian(wingID, 2);
+            //wingID = swapEndian(wingID, 2);
 
             *wordSize = 4;
 
@@ -1681,7 +1681,7 @@ void Packet::interpretData(bool print) {
 
             // Word 17 SFDR IBIT Control
             unsigned char *IBITControl = bitManipulator(data, 16, fSize);
-            IBITControl = swapEndian(IBITControl, 2);
+            //IBITControl = swapEndian(IBITControl, 2);
 
             *wordSize = 2;
 
@@ -1695,20 +1695,20 @@ void Packet::interpretData(bool print) {
 
             // Word 18 Station 2 Total Weight Lb 2 bytes
             unsigned char *station2Weight = bitManipulator(data, 16, fSize);
-            station2Weight = swapEndian(station2Weight, 2);
+            //station2Weight = swapEndian(station2Weight, 2);
 
             unsigned long station2WeightValue = bytesToLong(station2Weight, 2);
 
             // Word 19 Station 8 Total Weight Lb 2 bytes
             unsigned char *station8Weight = bitManipulator(data, 16, fSize);
-            station8Weight = swapEndian(station8Weight, 2);
+            //station8Weight = swapEndian(station8Weight, 2);
 
             unsigned long station8WeightValue = bytesToLong(station8Weight, 2);
 
         } else if (commandWord[0] == 0x40 && commandWord[1] == 0xE8) {
             // Word 1 GCWS Status Discretes  2 bytes
             unsigned char *GCWSStatusDiscretes = bitManipulator(data, 16, fSize);
-            GCWSStatusDiscretes = swapEndian(GCWSStatusDiscretes, 2);
+            //GCWSStatusDiscretes = swapEndian(GCWSStatusDiscretes, 2);
 
             *wordSize = 2;
 
@@ -1781,7 +1781,7 @@ void Packet::interpretData(bool print) {
 
             // Word 2 GCWS Validity Discretes  2 bytes
             unsigned char *GCWSValidityDiscretes = bitManipulator(data, 16, fSize);
-            GCWSValidityDiscretes = swapEndian(GCWSValidityDiscretes, 2);
+            //GCWSValidityDiscretes = swapEndian(GCWSValidityDiscretes, 2);
 
             *wordSize = 2;
 
@@ -1854,7 +1854,7 @@ void Packet::interpretData(bool print) {
 
             // Word 3 GCWS Data Reasonable Discretes  2 bytes
             unsigned char *GCWSReasonableDiscretes = bitManipulator(data, 16, fSize);
-            GCWSReasonableDiscretes = swapEndian(GCWSReasonableDiscretes, 2);
+            //GCWSReasonableDiscretes = swapEndian(GCWSReasonableDiscretes, 2);
 
             *wordSize = 2;
 
@@ -1927,31 +1927,31 @@ void Packet::interpretData(bool print) {
 
             // Word 4 GCWS HD feet 2 bytes
             unsigned char *GCWSHD = bitManipulator(data, 16, fSize);
-            GCWSHD = swapEndian(GCWSHD, 2);
+            //GCWSHD = swapEndian(GCWSHD, 2);
 
             unsigned long GCWSHDValue = bytesToLong(GCWSHD, 2);
 
             // Word 5 GCWS HM feet 2 bytes
             unsigned char *GCWSHM = bitManipulator(data, 16, fSize);
-            GCWSHM = swapEndian(GCWSHM, 2);
+            //GCWSHM = swapEndian(GCWSHM, 2);
 
             unsigned long GCWSHMValue = bytesToLong(GCWSHM, 2);
 
             // Word 6 GCWS HT feet 2 bytes
             unsigned char *GCWSHT = bitManipulator(data, 16, fSize);
-            GCWSHT = swapEndian(GCWSHT, 2);
+            //GCWSHT = swapEndian(GCWSHT, 2);
 
             unsigned long GCWSHTValue = bytesToLong(GCWSHT, 2);
 
             // Word 7 GCWS HDB feet 2 bytes
             unsigned char *GCWSHDB = bitManipulator(data, 16, fSize);
-            GCWSHDB = swapEndian(GCWSHDB, 2);
+            //GCWSHDB = swapEndian(GCWSHDB, 2);
 
             unsigned long GCWSHDBValue = bytesToLong(GCWSHDB, 2);
 
             // Word 8 GCWS NZ Maximum 2 bytes
             unsigned char *GCWSNZ = bitManipulator(data, 16, fSize);
-            GCWSNZ = swapEndian(GCWSNZ, 2);
+            //GCWSNZ = swapEndian(GCWSNZ, 2);
 
             unsigned long GCWSNZValue = bytesToLong(GCWSNZ, 2);
 
