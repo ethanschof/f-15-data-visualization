@@ -137,7 +137,7 @@ unsigned char * bitManipulator(unsigned char* data, unsigned long numBits){
 
 Packet getOnePacket(unsigned char* data, long* fSize){
 
-    
+
     unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
 
     // checks for packet sync
