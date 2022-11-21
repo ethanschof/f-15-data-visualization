@@ -39,4 +39,6 @@ unsigned char *bitManipulator(unsigned char* data, unsigned long numBits, long *
 
 unsigned char *bitManipulator(unsigned char* data, unsigned long numBits);
 
+Packet getOnePacket(unsigned char* data, long* fSize);
+
 #endif //F_15_DATA_VISUALIZATION_PACKET_FACTORY_HPP

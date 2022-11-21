@@ -18,8 +18,8 @@
 using namespace std;
 
 
-#include "packet.h"
-#include "packet_factory.h"
+#include "packet.hpp"
+#include "packet_factory.hpp"
 #include "test_stuff.h"
 
 int main(){

@@ -13,8 +13,8 @@
 #include <cmath>
 #include <memory>
 
-#include "packet.h"
-#include "packet_factory.h"
+#include "packet.hpp"
+#include "packet_factory.hpp"
 
 using namespace std;
 
