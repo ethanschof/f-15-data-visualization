@@ -1,8 +1,8 @@
 //
 // Created by C23Ethan.Schofield on 10/9/2022.
 //
-#include "packet_factory.h"
-#include "packet.h"
+#include "packet_factory.hpp"
+#include "packet.hpp"
 #include <vector>
 #include <memory>
 using namespace std;

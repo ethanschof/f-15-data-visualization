@@ -2,8 +2,8 @@
 // Created by C23Ethan.Schofield on 10/7/2022.
 //
 
-#ifndef F_15_DATA_VISUALIZATION_PACKET_H
-#define F_15_DATA_VISUALIZATION_PACKET_H
+#ifndef F_15_DATA_VISUALIZATION_PACKET_HPP
+#define F_15_DATA_VISUALIZATION_PACKET_HPP
 
 #include <string>
 #include <vector>
@@ -47,6 +47,34 @@ public:
     uint16_t wordCnt;
     uint16_t* pauData;
 
+
+    // Word 0x4035 attributes
+    bool airspeedValid;
+    float trueAirspeedValue;
+    bool angleAttackValid;
+    float angleAttackValue;
+    bool machNumValid;
+    float machNumValue;
+    float pitchAngleValue;
+    float rollAngleValue;
+    float rollRateValue;
+    float pitchRateValue;
+    float yawRateValue;
+    float rollAccelerationValue;
+    float pitchAccelerationValue;
+    float yawAccelerationValue;
+    float longitudinalAccelValue;
+    float lateralAccelValue;
+    float rollRateAFCSValue;
+    float lateralStickForceValue;
+    float longitudinalStickForceValue;
+    float rStabilatorDeflectionValue;
+    float lStabilatorDeflectionValue;
+    float normalAccelValue;
+    bool sideslipAngleINVALID;
+    float sideslipAngleValue;
+    float dynamicPressureValue;
+
     Packet();
 
     Packet(unsigned char *myPacketsData, unsigned long chanID, unsigned long packLength, unsigned long datLen,
@@ -79,4 +107,4 @@ public:
 };
 
 
-#endif //F_15_DATA_VISUALIZATION_PACKET_H
+#endif //F_15_DATA_VISUALIZATION_PACKET_HPP

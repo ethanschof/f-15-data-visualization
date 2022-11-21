@@ -2,8 +2,8 @@
 // Created by C23Ethan.Schofield on 10/9/2022.
 //
 
-#ifndef F_15_DATA_VISUALIZATION_PACKET_FACTORY_H
-#define F_15_DATA_VISUALIZATION_PACKET_FACTORY_H
+#ifndef F_15_DATA_VISUALIZATION_PACKET_FACTORY_HPP
+#define F_15_DATA_VISUALIZATION_PACKET_FACTORY_HPP
 
 #define PACKET_SYNC_LENGTH 16
 #define CHAN_ID_LENGTH 16
@@ -16,7 +16,7 @@
 #define RELATIVE_TIME_COUNTER_LENGTH 48
 #define HEADER_CHECKSUM_LENGTH 16
 
-#include "packet.h"
+#include "packet.hpp"
 #include <vector>
 #include <memory>
 using namespace std;
@@ -39,4 +39,4 @@ unsigned char *bitManipulator(unsigned char* data, unsigned long numBits, long *
 
 unsigned char *bitManipulator(unsigned char* data, unsigned long numBits);
 
-#endif //F_15_DATA_VISUALIZATION_PACKET_FACTORY_H
+#endif //F_15_DATA_VISUALIZATION_PACKET_FACTORY_HPP
