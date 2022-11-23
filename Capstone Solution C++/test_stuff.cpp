@@ -5,8 +5,8 @@
 #include "test_stuff.h"
 #include <iostream>
 
-#include "packet.hpp"
-#include "packet_factory.hpp"
+#include "Packet.hpp"
+#include "Packet_factory.hpp"
 
 using namespace std;
 
