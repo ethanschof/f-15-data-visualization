@@ -1,15 +1,15 @@
 //
 // Created by C23Ethan.Schofield on 10/9/2022.
 //
-#include "packet_factory.hpp"
-#include "packet.hpp"
+#include "Packet_factory.hpp"
+#include "Packet.hpp"
 #include <vector>
 #include <memory>
 using namespace std;
 
 long byteIndex = 0;
 
-unsigned char* swapEndian(unsigned char* bytes, int numBytes){
+unsigned char* Packet_factory::swapEndian(unsigned char* bytes, int numBytes){
     unsigned char* BEBytes = (unsigned char*)malloc(numBytes * sizeof(unsigned char));
     for(int i = 0; i < numBytes; i++){
         BEBytes[(numBytes-1)-i] = bytes[i];
@@ -19,7 +19,7 @@ unsigned char* swapEndian(unsigned char* bytes, int numBytes){
     return BEBytes;
 }
 
-int bitsToInt(unsigned char* bits, int numBits){
+int Packet_factory::bitsToInt(unsigned char* bits, int numBits){
     int value = 0;
     for (int i = 1; i <= numBits; ++i) {
         value = value + (int)bits[i] * pow(2, numBits-1);
@@ -28,7 +28,7 @@ int bitsToInt(unsigned char* bits, int numBits){
     return value;
 }
 
-unsigned long bytesToLong(unsigned char* bytes, int numBytes){
+unsigned long Packet_factory::bytesToLong(unsigned char* bytes, int numBytes){
     unsigned long totalVal = 0;
 
     if(numBytes <= 4){
@@ -51,7 +51,7 @@ unsigned long bytesToLong(unsigned char* bytes, int numBytes){
     return totalVal;
 }
 
-unsigned long long bytesToLongLong(unsigned char* bytes, int numBytes){
+unsigned long long Packet_factory::bytesToLongLong(unsigned char* bytes, int numBytes){
     unsigned long long totalVal = 0;
 
     if(numBytes <= 8){
@@ -74,7 +74,7 @@ unsigned long long bytesToLongLong(unsigned char* bytes, int numBytes){
     return totalVal;
 }
 
-unsigned char * bitManipulator(unsigned char* data, unsigned long numBits, long *fSize){
+unsigned char * Packet_factory::bitManipulator(unsigned char* data, unsigned long numBits, long *fSize){
     unsigned long numBytes = numBits / 8;
     unsigned long bitShift = 0;
 
@@ -104,7 +104,7 @@ unsigned char * bitManipulator(unsigned char* data, unsigned long numBits, long 
     return desiredBits;
 }
 
-unsigned char * bitManipulator(unsigned char* data, unsigned long numBits){
+unsigned char * Packet_factory::bitManipulator(unsigned char* data, unsigned long numBits){
     unsigned long numBytes = numBits / 8;
     unsigned long bitShift = 0;
 
@@ -135,7 +135,7 @@ unsigned char * bitManipulator(unsigned char* data, unsigned long numBits){
     return desiredBits;
 }
 
-Packet getOnePacket(unsigned char* data, long* fSize){
+Packet Packet_factory::getOnePacket(unsigned char* data, long* fSize){
 
 
     unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
@@ -320,9 +320,10 @@ Packet getOnePacket(unsigned char* data, long* fSize){
                                               newCheckSum};
         }
     }
+    return Packet{};
 };
 
-vector<unique_ptr<Packet>> createPackets(unsigned char* data, long* fSize){
+vector<unique_ptr<Packet>> Packet_factory::createPackets(unsigned char* data, long* fSize){
     vector<unique_ptr < Packet>> myPackets;
     int done = 0;
     int packetsCreated = 0;
