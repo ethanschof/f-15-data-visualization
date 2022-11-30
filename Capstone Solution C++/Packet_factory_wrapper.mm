@@ -14,7 +14,11 @@
 {
     Packet_factory factory;
     
-    return factory.getOnePacket(<#unsigned char *data#>, <#long *fSize#>)
+    Packet myPacket;
+    
+    myPacket = factory.getOnePacket(unsigned char* data, long *fSize);
+    
+    return myPacket;
 }
 
 @end
