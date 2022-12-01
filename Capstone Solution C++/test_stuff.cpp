@@ -114,7 +114,7 @@ void testBitManipulate(unsigned char *dataBuffer, long fSize){
             cout << "How many bits? ";
             int input;
             cin >> input;
-            unsigned char *tester = bitManipulator(dataBuffer, input, &fSize);
+            unsigned char *tester = Packet_factory::bitManipulator(dataBuffer, input, &fSize);
             //output desired bits
             int numBytes = input/8;
             if(input%8){numBytes++;}
@@ -126,11 +126,11 @@ void testBitManipulate(unsigned char *dataBuffer, long fSize){
             cout << "\n";
 
             //convert to long SANITY CHECK #3
-            cout << "DECIMAL VALUE:  " << bytesToLong(tester, numBytes) << "\n";
+            cout << "DECIMAL VALUE:  " << Packet_factory::bytesToLong(tester, numBytes) << "\n";
 
             //convert to Big Endian Notation SANITY CHECK #4
             cout << "BIG ENDIAN:  ";
-            unsigned char* tester2 = swapEndian(tester, numBytes);
+            unsigned char* tester2 = Packet_factory::swapEndian(tester, numBytes);
             for(int i = 0; i < numBytes; i++){
                 printf("%2x ", tester2[i]);
             }
@@ -194,7 +194,7 @@ int test(){
     // Putting the packets into a data structure
     vector<unique_ptr<Packet>> myPackets;
     //myPackets = createPacketsTestData(dataBuffer);
-    myPackets = createPackets(dataBuffer, &fSize);
+    myPackets = Packet_factory::createPackets(dataBuffer, &fSize);
 
     // this call tests the interpretation of command word data
     testCommandWordInterpretation(myPackets);

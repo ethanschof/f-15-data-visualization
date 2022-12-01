@@ -329,7 +329,7 @@ vector<unique_ptr<Packet>> Packet_factory::createPackets(unsigned char* data, lo
     int packetsCreated = 0;
     int num1553 = 0;
 
-    while (packetsCreated < 10000){
+    while (packetsCreated < 1000){
 
         unsigned char *packetSync = bitManipulator(data, (long)PACKET_SYNC_LENGTH);
 
